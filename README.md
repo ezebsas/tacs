@@ -11,6 +11,7 @@ TP TACS - Be a Good API Citizen [![Build Status](https://jenkins-tethree.rhcloud
 ```
 1. Install Eclipse Mars with m2 plugging [Maven Plugging].
 2. Import Proyect as a Existing Maven Proyect.
+3. Check that the Project Facets are configured correctly.
 ```
 - Running Proyect in Eclipse Mars
 ```
