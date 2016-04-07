@@ -22,7 +22,8 @@ public class CommonControllerTest {
 	@Ignore
 	public void toJsonParseCorrectly() {
 		try {
-			assertEquals("{\"name\":\"Daniel\",\"id\":\"1\"}", controller.toJson(new User("1", "Daniel")));
+			assertEquals("{\"name\":\"Daniel\",\"id\":\"1\",\"valid\":true,\"favorites\":[]}",
+					controller.toJson(new User("1", "Daniel")));
 		} catch (IOException e) {
 			fail("Object couldn't be parse to Json Format");
 		}

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class UsersControllerTests {
+public class UsersControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
