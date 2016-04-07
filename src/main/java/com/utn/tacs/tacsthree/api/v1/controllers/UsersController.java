@@ -23,12 +23,12 @@ public class UsersController extends CommonController {
 		userList.add(new User("6", "Facu"));
 	}
 
-	public String getAllUsers() throws JsonGenerationException, JsonMappingException, IOException {
-		return toJson(userList);
+	public List<User> getAllUsers() throws JsonGenerationException, JsonMappingException, IOException {
+		return userList;
 	}
 
-	public String getUser(Integer id)
+	public User getUser(Integer id)
 			throws NoSuchElementException, JsonGenerationException, JsonMappingException, IOException {
-		return toJson(userList.stream().filter(u -> u.getId().equals(id.toString())).findFirst().get());
+		return userList.stream().filter(u -> u.getId().equals(id.toString())).findFirst().get();
 	}
 }
