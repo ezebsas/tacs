@@ -3,9 +3,8 @@ package com.utn.tacs.tacsthree.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements TacsModel {
+public class User extends TacsModel {
 
-	private String id = null;
 	private String name = null;
 	private List<MarvelCharacter> favoriteCharacters = new ArrayList<MarvelCharacter>();
 
@@ -15,14 +14,6 @@ public class User implements TacsModel {
 	public User(String _id, String _name) {
 		setId(_id);
 		setName(_name);
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {

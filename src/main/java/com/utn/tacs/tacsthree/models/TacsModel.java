@@ -1,5 +1,16 @@
 package com.utn.tacs.tacsthree.models;
 
-public interface TacsModel {
-	public Boolean isValid();
+public abstract class TacsModel {
+
+	private String id = null;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public abstract Boolean isValid();
 }

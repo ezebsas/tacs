@@ -3,19 +3,10 @@ package com.utn.tacs.tacsthree.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharacterGroup implements TacsModel {
+public class CharacterGroup extends TacsModel {
 
-	private String id = null;
 	private String name = null;
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
