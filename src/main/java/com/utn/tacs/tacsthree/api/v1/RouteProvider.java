@@ -30,9 +30,11 @@ public class RouteProvider {
 	@GET
 	@Path("/users/{id}")
 	@Produces("application/json")
-	public Response user(@PathParam("id") Integer id) {
+	public Response user(@PathParam("id") String rawId) {
 		try {
-			return Response.ok(userController.getUser(id)).build();
+			return Response.ok(userController.getUser(Integer.valueOf(rawId))).build();
+		} catch (NumberFormatException e) {
+			return Response.status(Status.BAD_REQUEST).build();
 		} catch (IOException e) {
 			return Response.serverError().build();
 		} catch (NoSuchElementException e) {

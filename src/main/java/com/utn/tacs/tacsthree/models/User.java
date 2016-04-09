@@ -1,25 +1,19 @@
 package com.utn.tacs.tacsthree.models;
 
-public class User {
+import java.util.ArrayList;
+import java.util.List;
 
-	private String id;
-	private String name;
+public class User extends TacsModel {
 
-	@SuppressWarnings("unused")
-	private User() {
+	private String name = null;
+	private List<MarvelCharacter> favoriteCharacters = new ArrayList<MarvelCharacter>();
+
+	public User() {
 	}
 
 	public User(String _id, String _name) {
-		this.id = _id;
-		this.name = _name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+		setId(_id);
+		setName(_name);
 	}
 
 	public String getName() {
@@ -28,5 +22,28 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<MarvelCharacter> getFavorites() {
+		return favoriteCharacters;
+	}
+
+	public void addFavorite(MarvelCharacter _charact) {
+		this.favoriteCharacters.add(_charact);
+	}
+
+	public Boolean removeFavorite(MarvelCharacter _charact) {
+		return this.favoriteCharacters.remove(_charact);
+	}
+
+	@Override
+	public Boolean isValid() {
+		if (this.getId() == null)
+			return false;
+		if (this.getName() == null)
+			return false;
+		if (this.getFavorites() == null)
+			return false;
+		return true;
 	}
 }
