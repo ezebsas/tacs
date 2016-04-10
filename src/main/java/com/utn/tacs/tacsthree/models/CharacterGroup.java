@@ -2,9 +2,10 @@ package com.utn.tacs.tacsthree.models;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+import org.mongodb.morphia.annotations.Entity;
 
+@Entity
 public class CharacterGroup extends TacsModel {
 
 	private String name = null;

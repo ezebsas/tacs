@@ -10,9 +10,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
-import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
 
-@Embedded
+@Entity
 public class User extends TacsModel {
 
 	private String name = null;
