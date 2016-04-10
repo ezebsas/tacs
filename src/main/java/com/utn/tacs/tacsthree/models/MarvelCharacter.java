@@ -16,7 +16,7 @@ public class MarvelCharacter extends TacsModel {
 	private List<String> stories; // A resource list of stories in which this character appears.
 	private List<String> events; // A resource list of events in which this character appears.
 	private List<String> series; // A resource list of series in which this character appears.
-	
+
 	public String getName() {
 		return name;
 	}
