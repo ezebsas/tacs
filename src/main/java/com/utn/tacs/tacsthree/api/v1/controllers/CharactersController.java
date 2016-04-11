@@ -24,11 +24,18 @@ public class CharactersController extends CommonController{
 		personajes.add(hulk);
 		
 	}
+	
 
+
+	// Metodos para/characters:
+
+	//GET: Devuelve una lista de todos los personajes.
 	public List<MarvelCharacter> getAllCharacters() throws JsonGenerationException, JsonMappingException, IOException {
 		return personajes;
 	}
+	//Metodos para /characters/{:id}:
 
+	//GET: Devuelve el personaje cuyo id sea igual al provisto.
 	public MarvelCharacter getCharacter(Integer id)
 			throws NoSuchElementException, JsonGenerationException, JsonMappingException, IOException {
 		return personajes.stream().filter(c -> c.getId().equals(id.toString())).findFirst().get();

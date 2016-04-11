@@ -1,7 +1,12 @@
 package com.utn.tacs.tacsthree.models;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 
 public class User extends TacsModel {
 
@@ -36,9 +41,22 @@ public class User extends TacsModel {
 		return this.favoriteCharacters.remove(_charact);
 	}
 	
-	public User actualizarCon(User usuario){
-		this.setName(usuario.getName());
+	public Boolean removeFavoriteById(String _id) throws JsonGenerationException, JsonMappingException, NumberFormatException, NoSuchElementException, IOException{
+		return this.removeFavorite(this.getFavorite(Integer.valueOf(_id)));
+	}
+	
+	public void removeFavorites() {
+		this.favoriteCharacters.clear();
+	}
+	
+	public TacsModel actualizarCon(TacsModel usuario){
+		this.setName(((User) usuario).getName());
 		return this;
+	}
+	
+	public MarvelCharacter getFavorite(Integer id)
+			throws NoSuchElementException, JsonGenerationException, JsonMappingException, IOException {
+		return favoriteCharacters.stream().filter(u -> u.getId().equals(id.toString())).findFirst().get();
 	}
 	
 	@Override

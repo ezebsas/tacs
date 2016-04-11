@@ -13,4 +13,8 @@ public abstract class TacsModel {
 	}
 	
 	public abstract Boolean isValid();
+
+	public TacsModel actualizarCon(TacsModel tacsModel) {
+		return null;		
+	}
 }
