@@ -26,6 +26,6 @@ public class RouteProviderTest {
 
 	@Test
 	public void userNotFoundTest() {
-		assertEquals(Status.NOT_FOUND.getStatusCode(), route.user("666").getStatus());
+		assertEquals(Status.NOT_FOUND.getStatusCode(), route.user("1309b8799a96331925075301").getStatus());
 	}
 }

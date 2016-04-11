@@ -8,7 +8,7 @@ import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
-public class UsersController extends CommonController {
+public class UsersController {
 	private UserDAO userRepository;
 	private MarvelCharacterDAO characterRepository;
 

@@ -6,7 +6,7 @@ import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
-public class MarvelCharactersController extends CommonController {
+public class MarvelCharactersController {
 	private MarvelCharacterDAO repository;
 
 	public MarvelCharactersController(MarvelCharacterDAO _repository) {

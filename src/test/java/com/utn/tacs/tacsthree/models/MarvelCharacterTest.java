@@ -11,7 +11,7 @@ public class MarvelCharacterTest {
 	@Test
 	public void createCharacterRequiredValues() {
 		MarvelCharacter testSpidey = new MarvelCharacter();
-		testSpidey.setId("1");
+		testSpidey.setId("5709b8799a96331925075306");
 		testSpidey.valid();
 	}
 

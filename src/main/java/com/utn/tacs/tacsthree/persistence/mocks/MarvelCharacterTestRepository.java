@@ -13,9 +13,9 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 	public List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 
 	public MarvelCharacterTestRepository() {
-		characters.add(new MarvelCharacter("1", "Peter Benjamin Parker",
+		characters.add(new MarvelCharacter("1309b8799a96331925075301", "Peter Benjamin Parker",
 				"Peter can cling to most surfaces, has superhuman strength..."));
-		characters.add(new MarvelCharacter("2", "Robert Bruce Banner",
+		characters.add(new MarvelCharacter("1309b8799a96331925075302", "Robert Bruce Banner",
 				"Dr. Bruce Banner is a genius in nuclear physics, possessing a ..."));
 	}
 

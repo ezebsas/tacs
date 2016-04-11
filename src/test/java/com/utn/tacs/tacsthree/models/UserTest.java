@@ -10,9 +10,9 @@ public class UserTest {
 
 	@Test
 	public void createUserRequiredValues() {
-		new User("1", "Test").valid();
+		new User("5709b8799a96331925075306", "Test").valid();
 		User testSubject = new User();
-		testSubject.setId("1");
+		testSubject.setId("5709b8799a96331925075306");
 		testSubject.setName("Test");
 		testSubject.valid();
 	}
@@ -31,7 +31,7 @@ public class UserTest {
 	@Test
 	public void createUserWithoutName() {
 		User testSubject = new User();
-		testSubject.setId("2");
+		testSubject.setId("5709b8799a96331925075306");
 		try {
 			testSubject.valid();
 		} catch (InvalidTacsModelException e) {

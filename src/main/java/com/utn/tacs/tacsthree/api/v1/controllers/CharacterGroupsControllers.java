@@ -9,7 +9,7 @@ import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
-public class CharacterGroupsControllers extends CommonController {
+public class CharacterGroupsControllers {
 
 	private CharacterGroupDAO repository;
 	private MarvelCharacterDAO characterRepo;
