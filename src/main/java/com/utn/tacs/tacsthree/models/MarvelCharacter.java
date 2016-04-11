@@ -3,6 +3,8 @@ package com.utn.tacs.tacsthree.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+
 public class MarvelCharacter extends TacsModel {
 	// http://developer.marvel.com/documentation/entity_types
 	
@@ -21,13 +23,16 @@ public class MarvelCharacter extends TacsModel {
 		
 	}
 	
+	public MarvelCharacter(String _id) {
+		this.setId(_id);
+	}
+
 	public MarvelCharacter(String _id, String nombre, String descripcion){
 		this.setId(_id);
 		this.setName(nombre);
 		this.setDescription(descripcion);
 		
 	}
-	
 	public String getName() {
 		return name;
 	}
@@ -109,8 +114,9 @@ public class MarvelCharacter extends TacsModel {
 	}
 
 	@Override
-	public Boolean isValid() {
-		return this.getId() != null;
+	public void valid() {
+		if (this.getId() == null)
+			throw new InvalidTacsModelException("invalid id");
 	}
 
 }

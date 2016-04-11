@@ -5,8 +5,7 @@
 	<artifactId>tacsthree</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Simple CXF Java-first SOAP project using Spring configuration</name>
-	<description>Simple CXF Java-first SOAP project using Spring configuration</description>
+	<name>TacsThree Marvel API Proyect</name>
 	<repositories>
 		<repository>
 			<id>jboss</id>
@@ -15,6 +14,7 @@
 	</repositories>
 	<properties>
 		<resteasy.version>3.0.16.Final</resteasy.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -152,4 +152,5 @@
 			</repositories>
 		</profile>
 	</profiles>
+	<description>TacsThree Marvel API Proyect</description>
 </project>

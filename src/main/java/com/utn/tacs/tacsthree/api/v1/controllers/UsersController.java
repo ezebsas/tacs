@@ -1,111 +1,79 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
+import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.UserDAO;
 
 public class UsersController extends CommonController {
-	private List<User> userList = new ArrayList<User>();
+	private UserDAO userRepository;
+	private MarvelCharacterDAO characterRepository;
 
-	public UsersController() {
-		userList.add(new User("1", "Tom"));
-		userList.add(new User("2", "Seba"));
-		userList.add(new User("3", "Fabi"));
-		userList.add(new User("4", "Eze"));
-		userList.add(new User("5", "Ramiro"));
-		userList.add(new User("6", "Facu"));
+	public UsersController(UserDAO _users, MarvelCharacterDAO _characters) {
+		this.userRepository = _users;
 	}
 
-	//	metodos para /users:
-	//
-	
-	//	GET: Devuelve una lista de todos los usuarios
-	public List<User> getAllUsers() throws JsonGenerationException, JsonMappingException, IOException {
+	public List<User> getAllUsers() {
+		return userRepository.get();
+	}
+
+	public User getUser(String id) throws InexistentTacsModelException {
+		return userRepository.get(new User(id));
+	}
+
+	public User createUser(User user) throws InvalidTacsModelException {
+		user.valid();
+		userRepository.save(user);
+		return user;
+	}
+
+	public List<User> updateUsers(List<User> userList) throws InexistentTacsModelException, InvalidTacsModelException {
+		userList.forEach(u -> updateUser(u));
 		return userList;
 	}
-	
-	//
-	//POST: Si creo el nuevo usuario.
-	public List<User> addUser(User unUsuario){
-		userList.add(new User(unUsuario.getId(), unUsuario.getName()));
-		return userList;
+
+	public User updateUser(User user) throws InexistentTacsModelException, InvalidTacsModelException {
+		user.valid();
+		userRepository.get(user);
+		userRepository.save(user);
+		return user;
 	}
 
-	//
-	//PUT: 200, actualiza todos los usuarios.
-	public User updateUser(User find, User usuario)	{//deprecado, eliminar
-		return (User) find.actualizarCon(usuario);
-		
-	}	
-	public User updateUser(Integer id, User usuario) throws JsonGenerationException, JsonMappingException, NoSuchElementException, IOException	{
-		return (User) this.getUser(id).actualizarCon(usuario);		
-	}
-
-	//
-	//DELETE: 200, borra todos los usuarios.
 	public void deleteUsers() {
-		userList.clear();
-	}
-	
-	//Metodos para /users/{:id}:
-
-	//GET: Devuelve el usuario cuyo id sea igual al provisto.
-	public User getUser(Integer id)
-			throws NoSuchElementException, JsonGenerationException, JsonMappingException, IOException {
-		return this.getObjectById(id, userList);
+		userRepository.delete();
 	}
 
-	//PUT: Actualiza el usuario cuyo id sea igual al provisto.
-	public boolean updateUsers(List<User> newList) {
-		return this.updateList(userList, newList);
+	public void deleteUser(String _id) throws InexistentTacsModelException {
+		userRepository.delete(new User(_id));
 	}
 
-	//DELETE: Borra el usuario cuyo id sea igual al provisto.
-	public boolean deleteUser(String _id) {
-		return this.deleteElementInList(_id, userList);				
+	// Favorite Characters
+
+	public void getFavoritesOf(String _id) throws InexistentTacsModelException {
+		getUser(_id).getFavorites();
 	}
 
-
-
-	// Metodos para /users/{:id}/characters:
-
-	//GET: Devuelve la lista de personajes favoritos del usuario cuyo id sea igual al provisto.
-	public void getFavorites(String rawId)
-			throws JsonGenerationException, JsonMappingException, NumberFormatException, NoSuchElementException, IOException {
-		this.getUser(Integer.valueOf(rawId)).getFavorites();
+	public void addFavorite(String _id, MarvelCharacter _character)
+			throws InexistentTacsModelException, InvalidTacsModelException {
+		User user = getUser(_id);
+		user.addFavorite(_character);
+		updateUser(user);
 	}
 
-	//POST: Agrega como favorito el personaje dado al usuario cuyo id sea igual al provisto.
-	public void addFavorite(String rawId, MarvelCharacter personaje) 
-			throws JsonGenerationException, JsonMappingException, NumberFormatException, NoSuchElementException, IOException {
-		this.getUser(Integer.valueOf(rawId)).addFavorite(personaje);
+	public void removeFavorites(String _id) throws InexistentTacsModelException, InvalidTacsModelException {
+		User user = getUser(_id);
+		user.removeFavorites();
+		updateUser(user);
 	}
 
-	//DELETE: Borra todos los favoritos del usuario cuyo id sea igual al provisto..
-	public void removeFavorites(String rawId)
-			throws JsonGenerationException, JsonMappingException, NumberFormatException, NoSuchElementException, IOException {
-		this.getUser(Integer.valueOf(rawId)).removeFavorites();
+	public void removeFavorite(String userId, String favId)
+			throws InexistentTacsModelException, InvalidTacsModelException {
+		User user = getUser(userId);
+		MarvelCharacter fav = characterRepository.get(new MarvelCharacter(favId));
+		user.removeFavorite(fav);
+		updateUser(user);
 	}
-
-	//Metodos para /users/{:id}/characters/{:id2}:
-
-	//DELETE: Borra el favorito con id igual a :id2 del usuario cuyo id sea igual a :id.
-
-	public void removeFavorite(String rawIdU, String rawIdC)
-			throws JsonGenerationException, JsonMappingException, NumberFormatException, NoSuchElementException, IOException {
-		this.getUser(Integer.valueOf(rawIdU)).removeFavoriteById(rawIdC);
-	}
-	
-	
-	
-
-	
-	
 }

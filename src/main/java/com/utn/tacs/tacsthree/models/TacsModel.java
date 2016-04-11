@@ -1,5 +1,7 @@
 package com.utn.tacs.tacsthree.models;
 
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+
 public abstract class TacsModel {
 
 	private String id = null;
@@ -11,10 +13,6 @@ public abstract class TacsModel {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public abstract Boolean isValid();
 
-	public TacsModel actualizarCon(TacsModel tacsModel) {
-		return null;		
-	}
+	public abstract void valid() throws InvalidTacsModelException;
 }
