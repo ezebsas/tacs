@@ -1,34 +1,79 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
+import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.UserDAO;
 
 public class UsersController extends CommonController {
+	private UserDAO userRepository;
+	private MarvelCharacterDAO characterRepository;
 
-	private List<User> userList = new ArrayList<User>();
-
-	public UsersController() {
-		userList.add(new User("1", "Tom"));
-		userList.add(new User("2", "Seba"));
-		userList.add(new User("3", "Fabi"));
-		userList.add(new User("4", "Eze"));
-		userList.add(new User("5", "Ramiro"));
-		userList.add(new User("6", "Facu"));
+	public UsersController(UserDAO _users, MarvelCharacterDAO _characters) {
+		this.userRepository = _users;
 	}
 
-	public List<User> getAllUsers() throws JsonGenerationException, JsonMappingException, IOException {
+	public List<User> getAllUsers() {
+		return userRepository.get();
+	}
+
+	public User getUser(String id) throws InexistentTacsModelException {
+		return userRepository.get(new User(id));
+	}
+
+	public User createUser(User user) throws InvalidTacsModelException {
+		user.valid();
+		userRepository.save(user);
+		return user;
+	}
+
+	public List<User> updateUsers(List<User> userList) throws InexistentTacsModelException, InvalidTacsModelException {
+		userList.forEach(u -> updateUser(u));
 		return userList;
 	}
 
-	public User getUser(Integer id)
-			throws NoSuchElementException, JsonGenerationException, JsonMappingException, IOException {
-		return userList.stream().filter(u -> u.getId().equals(id.toString())).findFirst().get();
+	public User updateUser(User user) throws InexistentTacsModelException, InvalidTacsModelException {
+		user.valid();
+		userRepository.get(user);
+		userRepository.save(user);
+		return user;
+	}
+
+	public void deleteUsers() {
+		userRepository.delete();
+	}
+
+	public void deleteUser(String _id) throws InexistentTacsModelException {
+		userRepository.delete(new User(_id));
+	}
+
+	// Favorite Characters
+
+	public void getFavoritesOf(String _id) throws InexistentTacsModelException {
+		getUser(_id).getFavorites();
+	}
+
+	public void addFavorite(String _id, MarvelCharacter _character)
+			throws InexistentTacsModelException, InvalidTacsModelException {
+		User user = getUser(_id);
+		user.addFavorite(_character);
+		updateUser(user);
+	}
+
+	public void removeFavorites(String _id) throws InexistentTacsModelException, InvalidTacsModelException {
+		User user = getUser(_id);
+		user.removeFavorites();
+		updateUser(user);
+	}
+
+	public void removeFavorite(String userId, String favId)
+			throws InexistentTacsModelException, InvalidTacsModelException {
+		User user = getUser(userId);
+		MarvelCharacter fav = characterRepository.get(new MarvelCharacter(favId));
+		user.removeFavorite(fav);
+		updateUser(user);
 	}
 }

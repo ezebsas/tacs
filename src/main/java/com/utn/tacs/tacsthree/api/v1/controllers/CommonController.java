@@ -19,5 +19,4 @@ public class CommonController {
 			throws JsonParseException, JsonMappingException, IOException {
 		return mapper.readValue(json, klass);
 	}
-
 }

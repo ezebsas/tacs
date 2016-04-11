@@ -4,19 +4,24 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+
 public class MarvelCharacterTest {
 
 	@Test
 	public void createCharacterRequiredValues() {
 		MarvelCharacter testSpidey = new MarvelCharacter();
 		testSpidey.setId("1");
-		assertTrue("Required attributes working properly", testSpidey.isValid());
+		testSpidey.valid();
 	}
 
 	@Test
 	public void createCharacterWithoutId() {
 		MarvelCharacter testSpidey = new MarvelCharacter();
-		assertFalse("Id is required", testSpidey.isValid());
+		try {
+			testSpidey.valid();
+		} catch (InvalidTacsModelException e) {
+			assertEquals("invalid id", e.getMessage());
+		}
 	}
-
 }

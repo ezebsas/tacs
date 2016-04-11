@@ -3,10 +3,19 @@ package com.utn.tacs.tacsthree.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+
 public class CharacterGroup extends TacsModel {
 
 	private String name = null;
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
+
+	public CharacterGroup() {
+	}
+
+	public CharacterGroup(String _id) {
+		setId(_id);
+	}
 
 	public String getName() {
 		return name;
@@ -28,15 +37,18 @@ public class CharacterGroup extends TacsModel {
 		return this.characters.remove(_charact);
 	}
 
+	public void removeAllCharacters() {
+		this.characters.clear();
+	}
+
 	@Override
-	public Boolean isValid() {
+	public void valid() {
 		if (this.getId() == null)
-			return false;
+			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
-			return false;
+			throw new InvalidTacsModelException("invalid name");
 		if (this.getCharacters().isEmpty())
-			return false;
-		return true;
+			throw new InvalidTacsModelException("invalid characters");
 	}
 
 }
