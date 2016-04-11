@@ -1,14 +1,14 @@
-package com.utn.tacs.tacsthree.persistence;
+package com.utn.tacs.tacsthree.persistence.mongo;
 
 import org.mongodb.morphia.Datastore;
 
 import com.utn.tacs.tacsthree.models.User;
 
-public class UserRepository {
+public class UserMongoRepository {
 
 	private Datastore datastore;
 
-	public UserRepository(Datastore _datastore) {
+	public UserMongoRepository(Datastore _datastore) {
 		this.datastore = _datastore;
 	}
 

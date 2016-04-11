@@ -1,14 +1,14 @@
-package com.utn.tacs.tacsthree.persistence;
+package com.utn.tacs.tacsthree.persistence.mongo;
 
 import org.mongodb.morphia.Datastore;
 
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 
-public class CharacterGroupRepository {
+public class CharacterGroupMongoRepository {
 
 	private Datastore datastore;
 
-	public CharacterGroupRepository(Datastore _datastore) {
+	public CharacterGroupMongoRepository(Datastore _datastore) {
 		this.datastore = _datastore;
 	}
 

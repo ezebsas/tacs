@@ -10,12 +10,13 @@ import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
 import com.utn.tacs.tacsthree.models.User;
+import com.utn.tacs.tacsthree.persistence.mongo.UserMongoRepository;
 
 public class UserMongoMorphiaTest {
 
 	MongoClient client = new MongoClient();
 	Datastore datastore;
-	UserRepository repository;
+	UserMongoRepository repository;
 
 	@Before
 	public void setUp() {
@@ -23,7 +24,7 @@ public class UserMongoMorphiaTest {
 		Morphia morphia = new Morphia();
 		morphia.mapPackage("com.utn.tacs.tacsthree.models");
 		datastore = morphia.createDatastore(client, "tacs_test");
-		repository = new UserRepository(datastore);
+		repository = new UserMongoRepository(datastore);
 	}
 
 	@After
