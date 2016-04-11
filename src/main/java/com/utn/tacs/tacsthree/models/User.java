@@ -35,7 +35,12 @@ public class User extends TacsModel {
 	public Boolean removeFavorite(MarvelCharacter _charact) {
 		return this.favoriteCharacters.remove(_charact);
 	}
-
+	
+	public User actualizarCon(User usuario){
+		this.setName(usuario.getName());
+		return this;
+	}
+	
 	@Override
 	public Boolean isValid() {
 		if (this.getId() == null)

@@ -35,10 +35,10 @@ public class RouteProviderTest {
 		assertEquals(Status.BAD_REQUEST.getStatusCode(),  route.user("Tom").getStatus());
 	}
 	
-	@Test
-	public void userEntityTest(){
-		User userTom = (User) route.user("1").getEntity();
-		assertEquals("Tom", userTom.getName());
-	}
+//	@Test
+//	public void userEntityTest(){
+//		User userTom = (User) route.user("1").getEntity();
+//		assertEquals("Tom", userTom.getName());
+//	}
 	
 }
