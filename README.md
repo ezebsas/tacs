@@ -1,4 +1,4 @@
-TP TACS - Be a Good API Citizen [![Build Status](https://jenkins-tethree.rhcloud.com/buildStatus/icon?job=tacsthree1c16-build)](https://jenkins-tethree.rhcloud.com/job/tacsthree1c16-build/)
+TP TACS - Be a Good API Citizen [![Build Status](https://jenkins-tethree.rhcloud.com/job/tacsthree-github/badge/icon)](https://jenkins-tethree.rhcloud.com/job/tacsthree-github/)
 ================================
 
 - Running the app
