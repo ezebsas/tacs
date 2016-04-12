@@ -68,14 +68,15 @@ public class UsersController {
 	public User addFavorite(String _id, MarvelCharacter _character)
 			throws InexistentTacsModelException, InvalidTacsModelException, DuplicateTacsModelException {
 		User user = getUser(_id);
+		MarvelCharacter obtainedCharacter = null;
 		try {
-			characterRepository.get(_character);
+			obtainedCharacter = characterRepository.get(_character);
 			user.getFavorite(_character);
 			throw new DuplicateTacsModelException("character already favorite");
 		} catch (InexistentTacsModelException e) {
 			throw new InvalidTacsModelException("character doesn't exist");
 		} catch (NoSuchElementException e) {
-			user.addFavorite(_character);
+			user.addFavorite(obtainedCharacter);
 			return updateUser(user);
 		}
 	}

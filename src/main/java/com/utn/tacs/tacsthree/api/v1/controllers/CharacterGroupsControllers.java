@@ -71,14 +71,15 @@ public class CharacterGroupsControllers {
 	public CharacterGroup addCharacter(String _id, MarvelCharacter _character)
 			throws InexistentTacsModelException, InvalidTacsModelException, DuplicateTacsModelException {
 		CharacterGroup group = getGroup(_id);
+		MarvelCharacter obtainedCharacter = null;
 		try {
-			characterRepo.get(_character);
+			obtainedCharacter = characterRepo.get(_character);
 			group.getCharacter(_character);
 			throw new DuplicateTacsModelException("character already in group");
 		} catch (InexistentTacsModelException e) {
 			throw new InvalidTacsModelException("character doesn't exist");
 		} catch (NoSuchElementException e) {
-			group.addCharacters(_character);
+			group.addCharacters(obtainedCharacter);
 			return updateGroup(group);
 		}
 	}
