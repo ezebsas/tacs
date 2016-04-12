@@ -11,9 +11,4 @@ notifications:
       - fabi.n.delacruz@gmail.com
       - facun.lujan@gmail.com
       - mollinedoezequiel@gmail.com
-    on_success: change
-    on_failure: always
   slack: tacs3:7adxThyns7ZyKYeVBT0IIkAL
-    on_success: change
-    on_failure: always
-    on_start: never
