@@ -9,6 +9,7 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 
 import com.utn.tacs.tacsthree.models.User;
+import com.utn.tacs.tacsthree.helpers.EncoderDecoder;
 
 public class UsersController extends CommonController {
 
@@ -31,4 +32,16 @@ public class UsersController extends CommonController {
 			throws NoSuchElementException, JsonGenerationException, JsonMappingException, IOException {
 		return userList.stream().filter(u -> u.getId().equals(id.toString())).findFirst().get();
 	}
+        
+        public String authenticate(String user,String password) throws IOException, Exception {
+            EncoderDecoder ed =new EncoderDecoder();
+            for (int i=0; i<userList.size(); i++){
+                if(userList.get(i).getName().equals(user)&&
+                        userList.get(i).getEncryptedPassword()
+                                .equals(ed.encode(password))){
+                    return userList.get(i).getId();
+                }            
+            }
+            return null;
+        }
 }
