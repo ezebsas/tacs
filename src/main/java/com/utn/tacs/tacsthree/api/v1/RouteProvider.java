@@ -21,6 +21,7 @@ import com.utn.tacs.tacsthree.persistence.UserDAO;
 import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
+
 @Path("api/v1/")
 public class RouteProvider {
 
@@ -29,15 +30,19 @@ public class RouteProvider {
 	private UsersController userController = new UsersController(userRepo, characRepo);
 	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
 
-	// Users paths
-
+	//Lista de Usuarios - Rutas
+	
 	@GET
 	@Path("/users")
 	@Produces("application/json")
 	public Response users() {
-		return Response.ok(userController.getAllUsers()).build();
+		try {
+			return Response.ok(userController.getAllUsers()).build();
+		} catch (NullPointerException e) {
+			return Response.serverError().build();
+		}
 	}
-
+	
 	@POST
 	@Path("/users")
 	@Consumes("application/json")
@@ -48,29 +53,36 @@ public class RouteProvider {
 		} catch (InvalidTacsModelException e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
+		 
 	}
-
+	
 	@PUT
 	@Path("/users")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response putUser(List<User> listaUsuarios) {
+	public Response updateUser(List<User> listaUsuarios) {
 		try {
 			return Response.ok(userController.updateUsers(listaUsuarios)).build();
-		} catch (InexistentTacsModelException e) {
-			return Response.status(Status.NOT_FOUND).build();
-		} catch (InvalidTacsModelException e) {
+		} catch(InvalidTacsModelException e) {
 			return Response.status(Status.BAD_REQUEST).build();
+		} catch(InexistentTacsModelException e){
+			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-
+	
 	@DELETE
 	@Path("/users")
 	public Response deleteUsers() {
-		userController.deleteUsers();
-		return Response.ok().build();
+		try {
+			userController.deleteUsers();
+			return Response.ok().build();
+		} catch(NullPointerException e){
+			return Response.serverError().build();
+		}
 	}
 
+	//Pedidos por ID - Rutas
+	
 	@GET
 	@Path("/users/{id}")
 	@Produces("application/json")
@@ -80,40 +92,60 @@ public class RouteProvider {
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
+		
 	}
-
+	
 	@PUT
 	@Path("/users/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response putUser(User usuario) {
+	public Response putUser(@PathParam("id") String rawId, User usuario) {
 		try {
-			return Response.ok(userController.updateUser(usuario)).build();
-		} catch (InexistentTacsModelException e) {
-			return Response.status(Status.NOT_FOUND).build();
+			return Response.ok(userController.updateUser(rawId)).build();			
 		} catch (InvalidTacsModelException e) {
 			return Response.status(Status.BAD_REQUEST).build();
+		} catch (InexistentTacsModelException e) {
+			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-
+	
 	@DELETE
 	@Path("/users/{id}")
 	public Response deleteUser(@PathParam("id") String rawId) {
-		try {
+		try{
 			userController.deleteUser(rawId);
 			return Response.ok().build();
-		} catch (InexistentTacsModelException e) {
+		} catch(InexistentTacsModelException e){
+			return Response.status(Status.NOT_FOUND).build();
+		} 
+	}
+	
+	//Personajes de Usuario - Rutas
+	
+	@GET
+	@Path("/users/{id}/characters")
+	@Produces("application/json")
+	public Response getUserCharacters(@PathParam("id") String rawId){
+		try{
+			userController.getFavoritesOf(rawId);
+			return Response.ok().build();
+		}catch(InexistentTacsModelException e){
 			return Response.status(Status.NOT_FOUND).build();
 		}
+		
 	}
-
-	// Marvel Character paths
-
+	
+	//Personajes - Rutas
+	
 	@GET
 	@Path("/characters")
 	@Produces("application/json")
 	public Response characters() {
-		return Response.ok(characterController.getAllCharacters()).build();
+		try {
+			return Response.ok(characterController.getAllCharacters()).build();
+		} catch (NullPointerException e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	@GET
@@ -126,5 +158,5 @@ public class RouteProvider {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-
+	
 }
