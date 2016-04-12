@@ -1,4 +1,4 @@
-package com.utn.tacs.tacsthree.persistence;
+package com.utn.tacs.tacsthree.persistence.mongo;
 
 import static org.junit.Assert.*;
 

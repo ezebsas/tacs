@@ -22,7 +22,7 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 		groupList.clear();
 	}
 
-	private CharacterGroupTestRepository() {
+	public CharacterGroupTestRepository() {
 		restart();
 	}
 
@@ -54,7 +54,7 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 	@Override
 	public void delete(CharacterGroup group) throws InexistentTacsModelException {
 		try {
-			CharacterGroup _group = groupList.stream().filter(o -> o.getId().equals(group.getId())).findFirst().get();
+			CharacterGroup _group = get(group);
 			groupList.remove(_group);
 		} catch (InexistentTacsModelException e) {
 			throw new InexistentTacsModelException("delete failed");

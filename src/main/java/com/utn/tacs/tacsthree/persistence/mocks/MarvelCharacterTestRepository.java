@@ -26,7 +26,7 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 				"Dr. Bruce Banner is a genius in nuclear physics, possessing a ..."));
 	}
 
-	private MarvelCharacterTestRepository() {
+	public MarvelCharacterTestRepository() {
 		restart();
 	}
 
