@@ -1,7 +1,9 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
@@ -29,8 +31,13 @@ public class CharacterGroupsControllers {
 
 	public CharacterGroup createGroup(CharacterGroup group) throws InvalidTacsModelException {
 		group.valid();
-		repository.save(group);
-		return group;
+		try {
+			getGroup(group.getId());
+		} catch (InexistentTacsModelException e) {
+			repository.save(group);
+			return group;
+		}
+		throw new DuplicateTacsModelException("user already exists");
 	}
 
 	public List<CharacterGroup> updateGroups(List<CharacterGroup> groupList) {
@@ -61,11 +68,19 @@ public class CharacterGroupsControllers {
 		return getGroup(_id).getCharacters();
 	}
 
-	public void addCharacter(String _id, MarvelCharacter _character)
-			throws InexistentTacsModelException, InvalidTacsModelException {
+	public CharacterGroup addCharacter(String _id, MarvelCharacter _character)
+			throws InexistentTacsModelException, InvalidTacsModelException, DuplicateTacsModelException {
 		CharacterGroup group = getGroup(_id);
-		group.addCharacters(_character);
-		updateGroup(group);
+		try {
+			characterRepo.get(_character);
+			group.getCharacter(_character);
+			throw new DuplicateTacsModelException("character already in group");
+		} catch (InexistentTacsModelException e) {
+			throw new InvalidTacsModelException("character doesn't exist");
+		} catch (NoSuchElementException e) {
+			group.addCharacters(_character);
+			return updateGroup(group);
+		}
 	}
 
 	public void removeCharacters(String _id) throws InexistentTacsModelException, InvalidTacsModelException {
@@ -74,7 +89,7 @@ public class CharacterGroupsControllers {
 		updateGroup(group);
 	}
 
-	public void deleteCharacter(String _groupId, String _characterId)
+	public void removeCharacter(String _groupId, String _characterId)
 			throws InexistentTacsModelException, InvalidTacsModelException {
 		CharacterGroup group = getGroup(_groupId);
 		MarvelCharacter character = characterRepo.get(new MarvelCharacter(_characterId));

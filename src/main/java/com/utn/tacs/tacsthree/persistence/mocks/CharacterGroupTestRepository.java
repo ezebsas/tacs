@@ -10,15 +10,24 @@ import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 
 public class CharacterGroupTestRepository implements CharacterGroupDAO {
 
+	public static CharacterGroupTestRepository instance = new CharacterGroupTestRepository();
+
+	public static CharacterGroupTestRepository getInstance() {
+		return instance;
+	}
+
 	private List<CharacterGroup> groupList = new ArrayList<CharacterGroup>();
 
-	public CharacterGroupTestRepository() {
-		// TODO Auto-generated constructor stub
+	public void restart() {
+		groupList.clear();
+	}
+
+	private CharacterGroupTestRepository() {
+		restart();
 	}
 
 	@Override
 	public List<CharacterGroup> get() {
-		// TODO Auto-generated method stub
 		return groupList;
 	}
 
@@ -44,7 +53,10 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 
 	@Override
 	public void delete(CharacterGroup group) throws InexistentTacsModelException {
-		if (!groupList.remove(group)) {
+		try {
+			CharacterGroup _group = groupList.stream().filter(o -> o.getId().equals(group.getId())).findFirst().get();
+			groupList.remove(_group);
+		} catch (InexistentTacsModelException e) {
 			throw new InexistentTacsModelException("delete failed");
 		}
 	}

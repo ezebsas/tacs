@@ -1,12 +1,8 @@
 package com.utn.tacs.tacsthree.models;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
@@ -54,9 +50,8 @@ public class User extends TacsModel {
 		this.favoriteCharacters.clear();
 	}
 
-	public MarvelCharacter getFavorite(Integer id)
-			throws NoSuchElementException, JsonGenerationException, JsonMappingException, IOException {
-		return favoriteCharacters.stream().filter(u -> u.getId().equals(id.toString())).findFirst().get();
+	public MarvelCharacter getFavorite(MarvelCharacter _charact) throws NoSuchElementException {
+		return getFavorites().stream().filter(u -> u.getId().equals(_charact.getId())).findFirst().get();
 	}
 
 	@Override

@@ -52,4 +52,8 @@ public class CharacterGroup extends TacsModel {
 			throw new InvalidTacsModelException("invalid characters");
 	}
 
+	public MarvelCharacter getCharacter(MarvelCharacter _character) {
+		return getCharacters().stream().filter(u -> u.getId().equals(_character.getId())).findFirst().get();
+	}
+
 }

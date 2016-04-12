@@ -9,15 +9,27 @@ import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
 public class UserTestRepository implements UserDAO {
-	private List<User> userList = new ArrayList<User>();
 
-	public UserTestRepository() {
+	public static UserTestRepository instance = new UserTestRepository();
+
+	public static UserTestRepository getInstance() {
+		return instance;
+	}
+
+	public void restart() {
+		userList.clear();
 		userList.add(new User("5709b8799a96331925075301", "Tom"));
 		userList.add(new User("5709b8799a96331925075302", "Seba"));
 		userList.add(new User("5709b8799a96331925075303", "Fabi"));
 		userList.add(new User("5709b8799a96331925075304", "Eze"));
 		userList.add(new User("5709b8799a96331925075305", "Ramiro"));
 		userList.add(new User("5709b8799a96331925075306", "Facu"));
+	}
+
+	private List<User> userList = new ArrayList<User>();
+
+	private UserTestRepository() {
+		restart();
 	}
 
 	@Override
@@ -47,7 +59,10 @@ public class UserTestRepository implements UserDAO {
 
 	@Override
 	public void delete(User user) throws InexistentTacsModelException {
-		if (!userList.remove(user)) {
+		try {
+			User _user = userList.stream().filter(o -> o.getId().equals(user.getId())).findFirst().get();
+			userList.remove(_user);
+		} catch (InexistentTacsModelException e) {
 			throw new InexistentTacsModelException("delete failed");
 		}
 	}

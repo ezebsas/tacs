@@ -13,6 +13,10 @@
 	<servlet>
 		<servlet-name>resteasy-servlet</servlet-name>
 		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.utn.tacs.tacsthree.jsonmapper</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>resteasy-servlet</servlet-name>

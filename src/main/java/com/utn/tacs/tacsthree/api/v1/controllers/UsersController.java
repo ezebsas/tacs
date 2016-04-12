@@ -1,6 +1,9 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
@@ -14,6 +17,7 @@ public class UsersController {
 
 	public UsersController(UserDAO _users, MarvelCharacterDAO _characters) {
 		this.userRepository = _users;
+		this.characterRepository = _characters;
 	}
 
 	public List<User> getAllUsers() {
@@ -24,10 +28,15 @@ public class UsersController {
 		return userRepository.get(new User(id));
 	}
 
-	public User createUser(User user) throws InvalidTacsModelException {
+	public User createUser(User user) throws InvalidTacsModelException, DuplicateTacsModelException {
 		user.valid();
-		userRepository.save(user);
-		return user;
+		try {
+			getUser(user.getId());
+		} catch (InexistentTacsModelException e) {
+			userRepository.save(user);
+			return user;
+		}
+		throw new DuplicateTacsModelException("user already exists");
 	}
 
 	public List<User> updateUsers(List<User> userList) throws InexistentTacsModelException, InvalidTacsModelException {
@@ -52,15 +61,23 @@ public class UsersController {
 
 	// Favorite Characters
 
-	public void getFavoritesOf(String _id) throws InexistentTacsModelException {
-		getUser(_id).getFavorites();
+	public List<MarvelCharacter> getFavoritesOf(String _id) throws InexistentTacsModelException {
+		return getUser(_id).getFavorites();
 	}
 
-	public void addFavorite(String _id, MarvelCharacter _character)
-			throws InexistentTacsModelException, InvalidTacsModelException {
+	public User addFavorite(String _id, MarvelCharacter _character)
+			throws InexistentTacsModelException, InvalidTacsModelException, DuplicateTacsModelException {
 		User user = getUser(_id);
-		user.addFavorite(_character);
-		updateUser(user);
+		try {
+			characterRepository.get(_character);
+			user.getFavorite(_character);
+			throw new DuplicateTacsModelException("character already favorite");
+		} catch (InexistentTacsModelException e) {
+			throw new InvalidTacsModelException("character doesn't exist");
+		} catch (NoSuchElementException e) {
+			user.addFavorite(_character);
+			return updateUser(user);
+		}
 	}
 
 	public void removeFavorites(String _id) throws InexistentTacsModelException, InvalidTacsModelException {
