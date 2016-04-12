@@ -96,4 +96,6 @@ public class UsersController {
 		user.removeCharacter(fav);
 		updateUser(user);
 	}
+        
+
 }
