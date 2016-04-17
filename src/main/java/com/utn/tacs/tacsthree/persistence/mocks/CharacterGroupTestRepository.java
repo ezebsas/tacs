@@ -43,7 +43,6 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 	public CharacterGroup get(CharacterGroup group) throws InexistentTacsModelException {
 		for (CharacterGroup _group : groupList)
 			if (_group.sameModels(group))
-				return _group;
 		throw new InexistentTacsModelException("get failed");
 	}
 
