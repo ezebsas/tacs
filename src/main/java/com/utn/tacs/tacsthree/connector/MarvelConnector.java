@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
@@ -22,9 +23,13 @@ import com.utn.tacs.tacsthree.jsonmapper.ObjectMapperProvider;
 
 public class MarvelConnector {
 
+	private static final String GET_REQUEST = "GET REQUEST %s";
+	private static final String GET_RESPONSE = "GET RESPONSE %s STATUS %s";
 	private static final String ERROR_LOG = "An error occurred. Error code %s, message: %s";
 
-	ResteasyClient client = new ResteasyClientBuilder().build().register(new ObjectMapperProvider());
+	private static final Logger LOGGER = Logger.getLogger(MarvelConnector.class);
+
+	private ResteasyClient client = new ResteasyClientBuilder().build().register(new ObjectMapperProvider());
 
 	public List<MarvelApiCharacter> getCharacter(Long id) {
 		return get(createCharacterUrl(id)).getResults();
@@ -52,12 +57,12 @@ public class MarvelConnector {
 
 	private MarvelApiCharacterDataContainer get(String url) {
 		WebTarget target = client.target(url);
-		Response response = target.request().get(Response.class);
-		MarvelApiCharacterDataWrapper dataWrapper = response.readEntity(MarvelApiCharacterDataWrapper.class);
-		return handleResponse(dataWrapper);
-	}
 
-	private MarvelApiCharacterDataContainer handleResponse(MarvelApiCharacterDataWrapper dataWrapper) {
+		LOGGER.info(format(GET_REQUEST, url));
+		Response response = target.request().get(Response.class);
+		LOGGER.info(format(GET_RESPONSE, url, response.getStatus()));
+
+		MarvelApiCharacterDataWrapper dataWrapper = response.readEntity(MarvelApiCharacterDataWrapper.class);
 		int status = dataWrapper.getCode();
 
 		if (200 == status) {
@@ -66,4 +71,9 @@ public class MarvelConnector {
 			throw new MarvelApiException(format(ERROR_LOG, status, dataWrapper.getStatus()));
 		}
 	}
+
+	public void setClient(ResteasyClient client) {
+		this.client = client;
+	}
+
 }
