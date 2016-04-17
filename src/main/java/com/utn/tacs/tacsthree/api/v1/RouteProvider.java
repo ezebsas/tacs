@@ -36,7 +36,7 @@ public class RouteProvider {
 	private CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
 	private UsersController userController = new UsersController(userRepo, characRepo);
 	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
-	private CharacterGroupsControllers groupsController = new CharacterGroupsControllers(groupsRepo, characRepo);
+	private CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
 	private ReportsController reportsController = new ReportsController();
 	@GET
 	@Path("/users")
@@ -316,19 +316,6 @@ public class RouteProvider {
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (DuplicateTacsModelException e) {
 			return Response.status(Status.CONFLICT).build();
-		}
-	}
-
-	@DELETE
-	@Path("/groups/{id}/characters")
-	public Response deleteGroupCharacters(@PathParam("id") String rawId) {
-		try {
-			groupsController.removeCharacters(rawId);
-			return Response.ok().build();
-		} catch (InvalidTacsModelException e) {
-			return Response.status(Status.BAD_REQUEST).build();
-		} catch (InexistentTacsModelException e) {
-			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
 

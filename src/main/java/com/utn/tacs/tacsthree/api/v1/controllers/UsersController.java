@@ -1,8 +1,6 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-
 import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;

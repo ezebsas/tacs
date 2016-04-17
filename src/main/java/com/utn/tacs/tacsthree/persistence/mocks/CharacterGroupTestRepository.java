@@ -16,20 +16,22 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 		return instance;
 	}
 
-	private List<CharacterGroup> groupList = new ArrayList<CharacterGroup>();
+	public List<CharacterGroup> groupList = new ArrayList<CharacterGroup>();
 
 	public void restart() {
 		groupList.clear();
-	}
-
-	public CharacterGroupTestRepository() {
-		restart();
+		Integer index = 0;
 		for (MarvelCharacter _charac : MarvelCharacterTestRepository.getInstance().get()) {
 			CharacterGroup group = new CharacterGroup();
+			group.setId((index++).toString() + "709b8799a96331925075510");
 			group.setName("Group of " + _charac.getName());
 			group.addCharacters(_charac);
 			groupList.add(group);
 		}
+	}
+
+	public CharacterGroupTestRepository() {
+		restart();
 	}
 
 	@Override

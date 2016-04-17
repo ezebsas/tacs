@@ -2,10 +2,8 @@ package com.utn.tacs.tacsthree.persistence.mocks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
-import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
