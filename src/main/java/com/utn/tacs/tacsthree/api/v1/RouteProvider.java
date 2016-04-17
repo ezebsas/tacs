@@ -38,6 +38,7 @@ public class RouteProvider {
 	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
 	private CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
 	private ReportsController reportsController = new ReportsController();
+
 	@GET
 	@Path("/users")
 	@Produces("application/json")
@@ -331,10 +332,15 @@ public class RouteProvider {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/reports")
+	@Produces("application/json")
 	public Response getReports() {
-		return Response.ok(reportsController.getReports()).build();		
+		try {
+			return Response.ok(reportsController.getReports()).build();
+		} catch (NullPointerException e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 }
