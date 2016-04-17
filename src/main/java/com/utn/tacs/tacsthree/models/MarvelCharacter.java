@@ -7,32 +7,50 @@ import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
 public class MarvelCharacter extends TacsModel {
 	// http://developer.marvel.com/documentation/entity_types
-	
+
+	private Long characterId;
 	private String name = null; // The name of the character.
-	private String description = null; // Short bio or description of the character.
-	private LocalDate modified; // The date the resource was most recently modified.
-	private String resourceURI; //	The canonical URL identifier for this resource.
-	private List<String> urls; // A set of public web site URLs for the resource.
-	private String thumbnailUrl; //	The representative image for this character.
-	private List<String> comics; // A resource list containing comics which feature this character.
-	private List<String> stories; // A resource list of stories in which this character appears.
-	private List<String> events; // A resource list of events in which this character appears.
-	private List<String> series; // A resource list of series in which this character appears.
-	
-	public MarvelCharacter(){
-		
+	private String description = null; // Short bio or description of the
+										// character.
+	private LocalDate modified; // The date the resource was most recently
+								// modified.
+	private String resourceURI; // The canonical URL identifier for this
+								// resource.
+	private List<String> urls; // A set of public web site URLs for the
+								// resource.
+	private String thumbnailUrl; // The representative image for this character.
+	private List<String> comics; // A resource list containing comics which
+									// feature this character.
+	private List<String> stories; // A resource list of stories in which this
+									// character appears.
+	private List<String> events; // A resource list of events in which this
+									// character appears.
+	private List<String> series; // A resource list of series in which this
+									// character appears.
+
+	public MarvelCharacter() {
+
 	}
-	
+
 	public MarvelCharacter(String _id) {
 		this.setId(_id);
 	}
 
-	public MarvelCharacter(String _id, String nombre, String descripcion){
+	public MarvelCharacter(String _id, String nombre, String descripcion) {
 		this.setId(_id);
 		this.setName(nombre);
 		this.setDescription(descripcion);
-		
+
 	}
+
+	public Long getCharacterId() {
+		return characterId;
+	}
+
+	public void setCharacterId(Long characterId) {
+		this.characterId = characterId;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -40,7 +58,7 @@ public class MarvelCharacter extends TacsModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
