@@ -2,10 +2,10 @@ package com.utn.tacs.tacsthree.persistence.mocks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
+import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 
 public class CharacterGroupTestRepository implements CharacterGroupDAO {
@@ -24,6 +24,12 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 
 	public CharacterGroupTestRepository() {
 		restart();
+		for (MarvelCharacter _charac : MarvelCharacterTestRepository.getInstance().get()) {
+			CharacterGroup group = new CharacterGroup();
+			group.setName("Group of " + _charac.getName());
+			group.addCharacters(_charac);
+			groupList.add(group);
+		}
 	}
 
 	@Override
@@ -33,11 +39,10 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 
 	@Override
 	public CharacterGroup get(CharacterGroup group) throws InexistentTacsModelException {
-		try {
-			return groupList.stream().filter(o -> o.getId().equals(group.getId())).findFirst().get();
-		} catch (NoSuchElementException e) {
-			throw new InexistentTacsModelException("get failed");
-		}
+		for (CharacterGroup _group : groupList)
+			if (_group.sameModels(group))
+				return _group;
+		throw new InexistentTacsModelException("get failed");
 	}
 
 	@Override

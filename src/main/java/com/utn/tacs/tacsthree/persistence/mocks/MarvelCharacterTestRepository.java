@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
+import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
 public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
@@ -36,12 +37,11 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 	}
 
 	@Override
-	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
-		try {
-			return characters.stream().filter(o -> o.getId().equals(_character.getId())).findFirst().get();
-		} catch (NoSuchElementException e) {
-			throw new InexistentTacsModelException("get failed");
-		}
+	public MarvelCharacter get(TacsModel _character) throws InexistentTacsModelException {
+		for (MarvelCharacter character : characters)
+			if (character.sameModels(_character))
+				return character;
+		throw new InexistentTacsModelException("get failed");
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
@@ -38,11 +39,10 @@ public class UserTestRepository implements UserDAO {
 
 	@Override
 	public User get(User user) throws InexistentTacsModelException {
-		try {
-			return userList.stream().filter(o -> o.getId().equals(user.getId())).findFirst().get();
-		} catch (NoSuchElementException e) {
-			throw new InexistentTacsModelException("get failed");
-		}
+		for (User _user : userList)
+			if (_user.sameModels(user))
+				return _user;
+		throw new InexistentTacsModelException("get failed");
 	}
 
 	@Override

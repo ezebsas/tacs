@@ -34,7 +34,7 @@ public class CharacterGroup extends TacsModel {
 		this.characters.add(_charact);
 	}
 
-	public Boolean removeCharacters(MarvelCharacter _charact) {
+	public Boolean removeCharacters(TacsModel _charact) {
 		return this.characters.remove(_charact);
 	}
 
@@ -52,7 +52,7 @@ public class CharacterGroup extends TacsModel {
 			throw new InvalidTacsModelException("invalid characters");
 	}
 
-	public MarvelCharacter getCharacter(MarvelCharacter _character) {
+	public TacsModel getCharacter(TacsModel _character) {
 		return getCharacters().stream().filter(u -> u.getId().equals(_character.getId())).findFirst().get();
 	}
 

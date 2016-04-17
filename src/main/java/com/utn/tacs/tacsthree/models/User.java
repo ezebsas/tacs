@@ -2,8 +2,8 @@ package com.utn.tacs.tacsthree.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
 import org.mongodb.morphia.annotations.Entity;
@@ -12,7 +12,7 @@ import org.mongodb.morphia.annotations.Entity;
 public class User extends TacsModel {
 
 	private String name = null;
-	private List<MarvelCharacter> favoriteCharacters = new ArrayList<MarvelCharacter>();
+	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 
 	public User() {
 	}
@@ -34,24 +34,28 @@ public class User extends TacsModel {
 		this.name = name;
 	}
 
-	public List<MarvelCharacter> getFavorites() {
-		return favoriteCharacters;
+	public List<MarvelCharacter> getCharacters() {
+		return characters;
 	}
 
-	public void addFavorite(MarvelCharacter _charact) {
-		this.favoriteCharacters.add(_charact);
+	public void addCharacter(MarvelCharacter _charact) {
+		this.characters.add(_charact);
 	}
 
-	public Boolean removeFavorite(MarvelCharacter _charact) {
-		return this.favoriteCharacters.remove(_charact);
+	public Boolean removeCharacter(TacsModel _charact) {
+		return this.characters.remove(_charact);
 	}
 
-	public void removeFavorites() {
-		this.favoriteCharacters.clear();
+	public void removeCharacters() {
+		this.characters.clear();
 	}
 
-	public MarvelCharacter getFavorite(MarvelCharacter _charact) throws NoSuchElementException {
-		return getFavorites().stream().filter(u -> u.getId().equals(_charact.getId())).findFirst().get();
+	public TacsModel getCharacter(TacsModel _charact) throws InexistentTacsModelException {
+		for (TacsModel character : getCharacters()) {
+			if (character.getId().equals(_charact.getId()))
+				return character;
+		}
+		throw new InexistentTacsModelException("character is not favorite of user: " + getName());
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class User extends TacsModel {
 			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
 			throw new InvalidTacsModelException("invalid name");
-		if (this.getFavorites() == null)
+		if (this.getCharacters() == null)
 			throw new InvalidTacsModelException("invalid favorites");
 	}
 }

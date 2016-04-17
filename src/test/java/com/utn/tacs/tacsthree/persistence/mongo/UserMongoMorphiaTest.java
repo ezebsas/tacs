@@ -50,7 +50,7 @@ public class UserMongoMorphiaTest {
 		User persistedUser = datastore.get(testSubject);
 		assertEquals("Id isn't same", testSubject.getId(), persistedUser.getId());
 		assertEquals("Name isn't same", testSubject.getName(), persistedUser.getName());
-		assertEquals("Favourites size isn't same", testSubject.getFavorites().size(),
-				persistedUser.getFavorites().size());
+		assertEquals("Favourites size isn't same", testSubject.getCharacters().size(),
+				persistedUser.getCharacters().size());
 	}
 }

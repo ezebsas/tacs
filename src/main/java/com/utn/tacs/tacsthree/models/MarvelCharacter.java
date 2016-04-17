@@ -136,5 +136,4 @@ public class MarvelCharacter extends TacsModel {
 		if (this.getId() == null)
 			throw new InvalidTacsModelException("invalid id");
 	}
-
 }
