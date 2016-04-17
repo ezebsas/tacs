@@ -5,9 +5,17 @@ import static java.lang.String.format;
 public class MarvelImage {
 
 	private static final String STANDARD_AMAZING = "standard_amazing";
-	private static final String URL_PATTERN = "%s%s%s";
+	private static final String URL_PATTERN = "%s/%s.%s";
 	private String path;
 	private String extension;
+
+	public MarvelImage(String path, String extension) {
+		this.path = path;
+		this.extension = extension;
+	}
+
+	public MarvelImage() {
+	}
 
 	public String getPath() {
 		return path;

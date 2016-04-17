@@ -31,8 +31,8 @@ public class MarvelConnector {
 
 	private ResteasyClient client = new ResteasyClientBuilder().build().register(new ObjectMapperProvider());
 
-	public List<MarvelApiCharacter> getCharacter(Long id) {
-		return get(createCharacterUrl(id)).getResults();
+	public MarvelApiCharacter getCharacter(Long id) {
+		return get(createCharacterUrl(id)).getResults().get(0);
 	}
 
 	public List<MarvelApiCharacter> getAllCharacters() {
