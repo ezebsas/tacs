@@ -13,6 +13,7 @@ public class User extends TacsModel {
 
 	private String name = null;
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
+	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
 
 	public User() {
 	}
@@ -50,6 +51,30 @@ public class User extends TacsModel {
 		this.characters.clear();
 	}
 
+	public List<CharacterGroup> getGroups() {
+		return groups;
+	}
+
+	public CharacterGroup getGroup(CharacterGroup _group) throws InexistentTacsModelException {
+		for (CharacterGroup group : getGroups()) {
+			if (group.getId().equals(_group.getId()))
+				return group;
+		}
+		throw new InexistentTacsModelException("group was not created by user: " + getName());
+	}
+
+	public void addGroup(CharacterGroup _group) {
+		this.groups.add(_group);
+	}
+
+	public Boolean removeGroup(CharacterGroup _group) {
+		return this.groups.remove(_group);
+	}
+
+	public void removeGroup() {
+		this.groups.clear();
+	}
+
 	public TacsModel getCharacter(TacsModel _charact) throws InexistentTacsModelException {
 		for (TacsModel character : getCharacters()) {
 			if (character.getId().equals(_charact.getId()))
@@ -65,6 +90,8 @@ public class User extends TacsModel {
 		if (this.getName() == null)
 			throw new InvalidTacsModelException("invalid name");
 		if (this.getCharacters() == null)
-			throw new InvalidTacsModelException("invalid favorites");
+			throw new InvalidTacsModelException("invalid favorite list");
+		if (this.getGroups() == null)
+			throw new InvalidTacsModelException("invalid group list");
 	}
 }
