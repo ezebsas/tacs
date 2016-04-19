@@ -2,6 +2,8 @@ package com.utn.tacs.tacsthree.models;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import org.mongodb.morphia.annotations.Entity;
 
@@ -34,12 +36,15 @@ public class CharacterGroup extends TacsModel {
 		this.characters.add(_charact);
 	}
 
-	public Boolean removeCharacters(MarvelCharacter _charact) {
-		return this.characters.remove(_charact);
+	public MarvelCharacter getCharacter(TacsModel _character) throws InexistentTacsModelException {
+		for (MarvelCharacter character : getCharacters())
+			if (character.sameModels(_character))
+				return character;
+		throw new InexistentTacsModelException("character is not in group");
 	}
 
-	public void removeAllCharacters() {
-		this.characters.clear();
+	public Boolean removeCharacters(TacsModel _charact) {
+		return this.characters.remove(_charact);
 	}
 
 	@Override
@@ -50,10 +55,6 @@ public class CharacterGroup extends TacsModel {
 			throw new InvalidTacsModelException("invalid name");
 		if (this.getCharacters().isEmpty())
 			throw new InvalidTacsModelException("invalid characters");
-	}
-
-	public MarvelCharacter getCharacter(MarvelCharacter _character) {
-		return getCharacters().stream().filter(u -> u.getId().equals(_character.getId())).findFirst().get();
 	}
 
 }

@@ -91,69 +91,68 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void getFavoriteOfUser() {
+	public void getCharacterOfUser() {
 		User _user = new User("5709b8799a96331925075301", "Tom2");
-		_user.addFavorite(new MarvelCharacter("5709b8799a96331925075301", "Test", "Hey Baby!"));
+		_user.addCharacter(new MarvelCharacter("5709b8799a96331925075301", "Test", "Hey Baby!"));
 		controller.updateUser(_user);
-		assertEquals(1, controller.getFavoritesOf("5709b8799a96331925075301").size());
+		assertEquals(1, controller.getCharactersOf("5709b8799a96331925075301").size());
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
-	public void getFavoriteOfInvalidUser() {
-		controller.getFavoritesOf("123ab1111a96331925075301");
+	public void getCharacterOfInvalidUser() {
+		controller.getCharactersOf("123ab1111a96331925075301");
 	}
 
 	@Test
-	public void addFavoriteOfUser() {
-		controller.addFavorite("5709b8799a96331925075301",
+	public void addCharacterOfUser() {
+		controller.addCharacter("5709b8799a96331925075301",
 				new MarvelCharacter("1309b8799a96331925075301", "Test", "Hey Baby!"));
-		assertEquals(1, controller.getUser("5709b8799a96331925075301").getFavorites().size());
+		assertEquals(1, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
-	public void addFavoriteOfInexistentUser() {
-		controller.addFavorite("123ab8788a96331925075301",
+	public void addCharacterOfInexistentUser() {
+		controller.addCharacter("123ab8788a96331925075301",
 				new MarvelCharacter("123ab1111a96331925075301", "Test", "Hey Baby!"));
 	}
 
 	@Test(expected = InvalidTacsModelException.class)
-	public void addFavoriteOfInvalidUser() {
-		controller.addFavorite("5709b8799a96331925075301", new MarvelCharacter());
+	public void addCharacterOfInvalidUser() {
+		controller.addCharacter("5709b8799a96331925075301", new MarvelCharacter());
 	}
 
 	@Test
-	public void removeFavoritesOfUser() {
-		controller.addFavorite("5709b8799a96331925075301",
+	public void removeCharactersOfUser() {
+		controller.addCharacter("5709b8799a96331925075301",
 				new MarvelCharacter("1309b8799a96331925075301", "Test", "Hey Baby!"));
-		controller.addFavorite("5709b8799a96331925075301",
+		controller.addCharacter("5709b8799a96331925075301",
 				new MarvelCharacter("1309b8799a96331925075302", "Test2", "Hey Baby!"));
-		assertEquals(2, controller.getUser("5709b8799a96331925075301").getFavorites().size());
-		controller.removeFavorites("5709b8799a96331925075301");
-		assertEquals(0, controller.getUser("5709b8799a96331925075301").getFavorites().size());
+		assertEquals(2, controller.getUser("5709b8799a96331925075301").getCharacters().size());
+		controller.removeCharactersOf("5709b8799a96331925075301");
+		assertEquals(0, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
 	public void removeFavoritesOfInexistentUser() {
-		controller.removeFavorites("123ab8788a96331925075301");
+		controller.removeCharactersOf("123ab8788a96331925075301");
 	}
 
 	@Test
-	public void removeFavoriteOfUser() {
-		characRepo.get();
-		controller.addFavorite("5709b8799a96331925075301", characRepo.get().get(0));
-		controller.addFavorite("5709b8799a96331925075301", characRepo.get().get(1));
-		assertEquals(2, controller.getUser("5709b8799a96331925075301").getFavorites().size());
-		controller.removeFavorite("5709b8799a96331925075301", characRepo.get().get(0).getId());
-		assertEquals(1, controller.getUser("5709b8799a96331925075301").getFavorites().size());
+	public void removeCharacterOfUser() {
+		controller.addCharacter("5709b8799a96331925075301", characRepo.get().get(0));
+		controller.addCharacter("5709b8799a96331925075301", characRepo.get().get(1));
+		assertEquals(2, controller.getUser("5709b8799a96331925075301").getCharacters().size());
+		controller.removeCharacter("5709b8799a96331925075301", characRepo.get().get(0).getId());
+		assertEquals(1, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
-	public void removeFavoriteOfInexistentUser() {
-		controller.removeFavorite("123ab1111a96331925075302", "123ab1111a96331925075302");
+	public void removeCharacterOfInexistentUser() {
+		controller.removeCharacter("123ab1111a96331925075302", "123ab1111a96331925075302");
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
-	public void removeInexistentFavoriteOfUser() {
-		controller.removeFavorite("5709b8799a96331925075301", "123ab1111a96331925075302");
+	public void removeInexistentCharacterOfUser() {
+		controller.removeCharacter("5709b8799a96331925075301", "123ab1111a96331925075302");
 	}
 }

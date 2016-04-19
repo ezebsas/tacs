@@ -19,6 +19,7 @@ import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
+import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
@@ -35,7 +36,8 @@ public class RouteProvider {
 	private CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
 	private UsersController userController = new UsersController(userRepo, characRepo);
 	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
-	private CharacterGroupsControllers groupsController = new CharacterGroupsControllers(groupsRepo, characRepo);
+	private CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
+	private ReportsController reportsController = new ReportsController();
 
 	@GET
 	@Path("/users")
@@ -129,9 +131,9 @@ public class RouteProvider {
 	@GET
 	@Path("/users/{id}/characters")
 	@Produces("application/json")
-	public Response getUserFavorites(@PathParam("id") String rawId) {
+	public Response getUserCharacters(@PathParam("id") String rawId) {
 		try {
-			return Response.ok(userController.getFavoritesOf(rawId)).build();
+			return Response.ok(userController.getCharactersOf(rawId)).build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
@@ -142,9 +144,9 @@ public class RouteProvider {
 	@Path("/users/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response addUserFavorite(@PathParam("id") String rawId, MarvelCharacter charac) {
+	public Response addUserCharacter(@PathParam("id") String rawId, MarvelCharacter charac) {
 		try {
-			return Response.ok(userController.addFavorite(rawId, charac)).build();
+			return Response.ok(userController.addCharacter(rawId, charac)).build();
 		} catch (InvalidTacsModelException e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (InexistentTacsModelException e) {
@@ -156,9 +158,9 @@ public class RouteProvider {
 
 	@DELETE
 	@Path("/users/{id}/characters")
-	public Response deleteUserFavorites(@PathParam("id") String rawId) {
+	public Response deleteUserCharacter(@PathParam("id") String rawId) {
 		try {
-			userController.removeFavorites(rawId);
+			userController.removeCharactersOf(rawId);
 			return Response.ok().build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -169,9 +171,9 @@ public class RouteProvider {
 
 	@DELETE
 	@Path("/users/{id}/characters/{id2}")
-	public Response deleteUserSingleFavorite(@PathParam("id") String usrId, @PathParam("id2") String characId) {
+	public Response deleteUserSingleCharacter(@PathParam("id") String usrId, @PathParam("id2") String characId) {
 		try {
-			userController.removeFavorite(usrId, characId);
+			userController.removeCharacter(usrId, characId);
 			return Response.ok().build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -306,7 +308,7 @@ public class RouteProvider {
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response addCharacter(@PathParam("id") String chId, MarvelCharacter character) {
+	public Response addCharacter(@PathParam("id") String chId, TacsModel character) {
 		try {
 			return Response.ok(groupsController.addCharacter(chId, character)).build();
 		} catch (InvalidTacsModelException e) {
@@ -315,19 +317,6 @@ public class RouteProvider {
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (DuplicateTacsModelException e) {
 			return Response.status(Status.CONFLICT).build();
-		}
-	}
-
-	@DELETE
-	@Path("/groups/{id}/characters")
-	public Response deleteGroupCharacters(@PathParam("id") String rawId) {
-		try {
-			groupsController.removeCharacters(rawId);
-			return Response.ok().build();
-		} catch (InvalidTacsModelException e) {
-			return Response.status(Status.BAD_REQUEST).build();
-		} catch (InexistentTacsModelException e) {
-			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
 
@@ -341,6 +330,17 @@ public class RouteProvider {
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
+		}
+	}
+
+	@GET
+	@Path("/reports")
+	@Produces("application/json")
+	public Response getReports() {
+		try {
+			return Response.ok(reportsController.getReports()).build();
+		} catch (NullPointerException e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 }
