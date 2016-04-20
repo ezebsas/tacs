@@ -31,18 +31,18 @@ import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 @Path("api/v1/")
 public class RouteProvider {
 
-	private UserDAO userRepo = UserTestRepository.getInstance();
-	private MarvelCharacterDAO characRepo = MarvelCharacterTestRepository.getInstance();
-	private CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
-	private UsersController userController = new UsersController(userRepo, characRepo);
-	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
-	private CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
-	private ReportsController reportsController = new ReportsController();
+	public  UserDAO userRepo = UserTestRepository.getInstance();
+	public MarvelCharacterDAO characRepo = MarvelCharacterTestRepository.getInstance();
+	public CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
+	public UsersController userController = new UsersController(userRepo, characRepo);
+	public MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
+	public CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
+	public ReportsController reportsController = new ReportsController();
 
 	@GET
 	@Path("/users")
 	@Produces("application/json")
-	public Response users() {
+	public Response getUsers() {
 		try {
 			return Response.ok(userController.getAllUsers()).build();
 		} catch (NullPointerException e) {
@@ -68,7 +68,7 @@ public class RouteProvider {
 	@Path("/users")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response updateUser(List<User> listaUsuarios) {
+	public Response updateUsers(List<User> listaUsuarios) {
 		try {
 			return Response.ok(userController.updateUsers(listaUsuarios)).build();
 		} catch (InvalidTacsModelException e) {
@@ -92,7 +92,7 @@ public class RouteProvider {
 	@GET
 	@Path("/users/{id}")
 	@Produces("application/json")
-	public Response user(@PathParam("id") String rawId) {
+	public Response getUser(@PathParam("id") String rawId) {
 		try {
 			return Response.ok(userController.getUser(rawId)).build();
 		} catch (InexistentTacsModelException e) {
@@ -105,7 +105,7 @@ public class RouteProvider {
 	@Path("/users/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response putUser(@PathParam("id") String rawId, User usuario) {
+	public Response updateUser(@PathParam("id") String rawId, User usuario) {
 		try {
 			if (!rawId.equals(usuario.getId()))
 				throw new InvalidTacsModelException("user id doesnt match path id");
