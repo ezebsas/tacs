@@ -43,8 +43,15 @@ public class User extends TacsModel {
 		this.characters.add(_charact);
 	}
 
-	public Boolean removeCharacter(TacsModel _charact) {
-		return this.characters.remove(_charact);
+	public void removeCharacter(TacsModel _charact) throws InexistentTacsModelException {
+		MarvelCharacter chosen = null;
+		for (MarvelCharacter character : getCharacters()) {
+			if (character.sameModels(_charact))
+				chosen = character;
+		}
+		if (chosen == null)
+			throw new InexistentTacsModelException("Character isn't favorite of " + getName());
+		this.characters.remove(chosen);
 	}
 
 	public void removeCharacters() {
@@ -67,16 +74,23 @@ public class User extends TacsModel {
 		this.groups.add(_group);
 	}
 
-	public Boolean removeGroup(CharacterGroup _group) {
-		return this.groups.remove(_group);
+	public void removeGroup(CharacterGroup _group) {
+		CharacterGroup chosen = null;
+		for (CharacterGroup group : getGroups()) {
+			if (group.sameModels(_group))
+				chosen = group;
+		}
+		if (chosen == null)
+			throw new InexistentTacsModelException("Group wasn't created by " + getName());
+		this.groups.remove(chosen);
 	}
 
 	public void removeGroup() {
 		this.groups.clear();
 	}
 
-	public TacsModel getCharacter(TacsModel _charact) throws InexistentTacsModelException {
-		for (TacsModel character : getCharacters()) {
+	public MarvelCharacter getCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
+		for (MarvelCharacter character : getCharacters()) {
 			if (character.getId().equals(_charact.getId()))
 				return character;
 		}

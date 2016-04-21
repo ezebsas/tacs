@@ -7,10 +7,11 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
@@ -42,11 +43,6 @@ public class RouteProviderTest {
 	public void addUserTest() {
 		Response response = route.addUser(new User("5709b8799a96331925075300", "Test Subject"));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		try {
-			route.userRepo.get(new User("5709b8799a96331925075300"));
-		} catch (InexistentTacsModelException e) {
-			fail("User isn't in the test repo");
-		}
 	}
 
 	@Test
@@ -68,12 +64,6 @@ public class RouteProviderTest {
 		list.add(new User("5709b8799a96331925075302", "Test Subject 2"));
 		Response response = route.updateUsers(list);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		try {
-			assertEquals("Test Subject 1", route.userRepo.get(new User("5709b8799a96331925075301")).getName());
-			assertEquals("Test Subject 2", route.userRepo.get(new User("5709b8799a96331925075302")).getName());
-		} catch (InexistentTacsModelException e) {
-			fail("Users aren't in the test repo");
-		}
 	}
 
 	@Test
@@ -83,12 +73,6 @@ public class RouteProviderTest {
 		list.add(new User("5709b8799a96331925075302", "Test Subject 2"));
 		Response response = route.updateUsers(list);
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-		try {
-			assertNotEquals(null, route.userRepo.get(new User("5709b8799a96331925075301")).getName());
-			assertNotEquals("Test Subject 2", route.userRepo.get(new User("5709b8799a96331925075302")).getName());
-		} catch (InexistentTacsModelException e) {
-			fail("Users got updated");
-		}
 	}
 
 	@Test
@@ -98,12 +82,6 @@ public class RouteProviderTest {
 		list.add(new User("5709b8799a96331925075302", "Test Subject 2"));
 		Response response = route.updateUsers(list);
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
-		try {
-			assertNotEquals("Test Subject 2", route.userRepo.get(new User("5709b8799a96331925075302")).getName());
-			route.userRepo.get(new User("5709b8799a96331925075300"));
-			fail("Updated User got created");
-		} catch (InexistentTacsModelException e) {
-		}
 	}
 
 	@Test
@@ -117,7 +95,6 @@ public class RouteProviderTest {
 	public void getUser() {
 		Response response = route.getUser("5709b8799a96331925075301");
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		assertEquals("5709b8799a96331925075301", ((User) response.getEntity()).getId());
 	}
 
 	@Test
@@ -130,18 +107,84 @@ public class RouteProviderTest {
 	public void deleteUser() {
 		Response response = route.deleteUser("5709b8799a96331925075301");
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		try {
-			route.userRepo.get(new User("5709b8799a96331925075301"));
-			fail("User didn't get deleted");
-		} catch (InexistentTacsModelException e) {
-		}
 	}
 
 	@Test
 	public void deleteUserCatchesInexistentUser() {
-		Integer previousUsersAmount = route.userRepo.get().size();
 		Response response = route.deleteUser("5709b8799a96331925075300");
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
-		assertEquals(previousUsersAmount, route.userRepo.get().size(), 0);
 	}
+
+	@Test
+	public void getUserCharacters() {
+		Response response = route.getUserCharacters("5709b8799a96331925075301");
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getUserCharactersCatchesInexistentUser() {
+		Response response = route.getUserCharacters("5709b8799a96331925075300");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addUserCharacter() {
+		Response response = route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addUserCharacterCatchesInexistentUser() {
+		Response response = route.addUserCharacter("5709b8799a96331925075300", route.characRepo.get().get(0));
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addUserCharacterCatchesInexistentCharacter() {
+		Response response = route.addUserCharacter("5709b8799a96331925075301",
+				new MarvelCharacter("5709b8799b9a331925075300"));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addUserCharacterCatchesDuplicateCharacter() {
+		route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
+		Response response = route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
+		assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteUserCharacter() {
+		Response response = route.deleteUserCharacters("5709b8799a96331925075301");
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteUserCharacterCatchesInexistentCharacter() {
+		Response response = route.deleteUserCharacters("5709b8799a96331925075300");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteUserSingleCharacter() {
+		route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
+		Response response = route.deleteUserSingleCharacter("5709b8799a96331925075301",
+				route.characRepo.get().get(0).getId());
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteUserSingleCharacterCatchesInexistentCharacter() {
+		Response response = route.deleteUserSingleCharacter("5709b8799a96331925075301",
+				route.characRepo.get().get(0).getId());
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteUserSingleCharacterCatchesInexistentUser() {
+		Response response = route.deleteUserSingleCharacter("5709b8799a96331925075300",
+				route.characRepo.get().get(0).getId());
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
 }

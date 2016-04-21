@@ -158,7 +158,7 @@ public class RouteProvider {
 
 	@DELETE
 	@Path("/users/{id}/characters")
-	public Response deleteUserCharacter(@PathParam("id") String rawId) {
+	public Response deleteUserCharacters(@PathParam("id") String rawId) {
 		try {
 			userController.removeCharactersOf(rawId);
 			return Response.ok().build();
@@ -185,7 +185,7 @@ public class RouteProvider {
 	@GET
 	@Path("/characters")
 	@Produces("application/json")
-	public Response characters() {
+	public Response getCharacters() {
 		try {
 			return Response.ok(characterController.getAllCharacters()).build();
 		} catch (NullPointerException e) {
@@ -196,7 +196,7 @@ public class RouteProvider {
 	@GET
 	@Path("/characters/{id}")
 	@Produces("application/json")
-	public Response character(@PathParam("id") String rawId) {
+	public Response getCharacter(@PathParam("id") String rawId) {
 		try {
 			return Response.ok(characterController.getCharacter(rawId)).build();
 		} catch (InexistentTacsModelException e) {
