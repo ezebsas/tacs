@@ -435,7 +435,35 @@ public class RouteProviderTest {
 
 	@Test
 	public void deleteGroupCharacter() {
-		Response response = route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(0));
+		route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(1));
+		Response response = route.deleteGroupCharacter("0709b8799a96331925075510",
+				route.characRepo.get().get(0).getId());
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteGroupCharacterCatchesInexistentCharacter() {
+		route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(1));
+		Response response = route.deleteGroupCharacter("0709b8799a96331925075510", "0709b8799a96331925075510");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteGroupCharacterCatchesInvalidGroup() {
+		Response response = route.deleteGroupCharacter("0709b8799a96331925075510",
+				route.characRepo.get().get(0).getId());
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteGroupCharacterCatchesInexistentCharacterInGroup() {
+		Response response = route.deleteGroupCharacter("0709b8799a96331925075510",
+				route.characRepo.get().get(1).getId());
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getReports() {
+		assertEquals(Status.OK.getStatusCode(), route.getReports().getStatus());
 	}
 }

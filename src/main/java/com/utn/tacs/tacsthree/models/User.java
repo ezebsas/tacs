@@ -43,12 +43,11 @@ public class User extends TacsModel {
 		this.characters.add(_charact);
 	}
 
-	public void removeCharacter(TacsModel _charact) throws InexistentTacsModelException {
+	public void removeCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
 		MarvelCharacter chosen = null;
-		for (MarvelCharacter character : getCharacters()) {
+		for (MarvelCharacter character : getCharacters())
 			if (character.sameModels(_charact))
 				chosen = character;
-		}
 		if (chosen == null)
 			throw new InexistentTacsModelException("Character isn't favorite of " + getName());
 		this.characters.remove(chosen);

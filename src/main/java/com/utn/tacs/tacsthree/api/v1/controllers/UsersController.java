@@ -5,7 +5,6 @@ import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
@@ -91,7 +90,7 @@ public class UsersController {
 	public void removeCharacter(String userId, String favId)
 			throws InexistentTacsModelException, InvalidTacsModelException {
 		User user = getUser(userId);
-		TacsModel fav = characterRepository.get(new MarvelCharacter(favId));
+		MarvelCharacter fav = characterRepository.get(new MarvelCharacter(favId));
 		user.removeCharacter(fav);
 		updateUser(user);
 	}
