@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
@@ -104,6 +105,41 @@ public class RouteProviderTest {
 	}
 
 	@Test
+	public void updateUser() {
+		User user = new User("5709b8799a96331925075301", "Test Subject 1");
+		Response response = route.updateUser(user.getId(), user);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateUserCatchesInvalidPath() {
+		User user = new User("5709b8799a96331925075301", "Test Subject 1");
+		Response response = route.updateUser("5709b8799a96331925075302", user);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateUserCatchesInvalidUser() {
+		User user = new User("5709b8799a96331925075301");
+		Response response = route.updateUser(user.getId(), user);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateUserCatchesInexistentUser() {
+		User user = new User("aaa9b8799a96331925075301", "Test Subject 1");
+		Response response = route.updateUser(user.getId(), user);
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateUserCatchesInexistentPath() {
+		User user = new User("5709b8799a96331925075301", "Test Subject 1");
+		Response response = route.updateUser("aaa9b8799a96331925075301", user);
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
 	public void deleteUser() {
 		Response response = route.deleteUser("5709b8799a96331925075301");
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -187,4 +223,219 @@ public class RouteProviderTest {
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
+	@Test
+	public void getCharacters() {
+		Response response = route.getCharacters();
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getCharacter() {
+		Response response = route.getCharacter("1309b8799a96331925075301");
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getCharacterInexistentCharacter() {
+		Response response = route.getCharacter("1309b8799a963319250753a1");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getGroups() {
+		Response response = route.getGroups();
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getGroup() {
+		Response response = route.getGroup("0709b8799a96331925075510");
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getGroupInexistentCharacter() {
+		Response response = route.getGroup("0a09b8799a96331925075510");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addGroup() {
+		CharacterGroup group = new CharacterGroup("9909b8799a96331925075510");
+		group.setName("Test Subject");
+		group.addCharacters(route.characRepo.get().get(0));
+		Response response = route.addGroup(group);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addGroupTestCatchesInvalidGroup() {
+		CharacterGroup group = new CharacterGroup("9909b8799a96331925075510");
+		group.setName("Test Subject");
+		Response response = route.addGroup(group);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addGroupTestCatchesDuplicatedGroup() {
+		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
+		group.setName("Test Subject");
+		group.addCharacters(route.characRepo.get().get(0));
+		Response response = route.addGroup(group);
+		assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroups() {
+		List<CharacterGroup> list = new ArrayList<CharacterGroup>();
+
+		CharacterGroup group1 = new CharacterGroup("0709b8799a96331925075510");
+		CharacterGroup group2 = new CharacterGroup("1709b8799a96331925075510");
+		group1.setName("Test Subject");
+		group2.setName("Test Subject");
+		group1.addCharacters(route.characRepo.get().get(0));
+		group2.addCharacters(route.characRepo.get().get(0));
+
+		list.add(group1);
+		list.add(group2);
+		Response response = route.updateGroups(list);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroupsCatchesInvalidGroups() {
+		List<CharacterGroup> list = new ArrayList<CharacterGroup>();
+
+		CharacterGroup group1 = new CharacterGroup("0709b8799a96331925075510");
+		CharacterGroup group2 = new CharacterGroup("1709b8799a96331925075510");
+		group1.setName("Test Subject");
+		group2.setName("Test Subject");
+		group2.addCharacters(route.characRepo.get().get(0));
+		list.add(group1);
+		list.add(group2);
+		Response response = route.updateGroups(list);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroupsCatchesInexistentGroups() {
+		List<CharacterGroup> list = new ArrayList<CharacterGroup>();
+
+		CharacterGroup group1 = new CharacterGroup("a709b8799a96331925075510");
+		CharacterGroup group2 = new CharacterGroup("1709b8799a96331925075510");
+		group1.setName("Test Subject");
+		group2.setName("Test Subject");
+		group1.addCharacters(route.characRepo.get().get(0));
+		group2.addCharacters(route.characRepo.get().get(0));
+
+		list.add(group1);
+		list.add(group2);
+		Response response = route.updateGroups(list);
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteAllGroups() {
+		Response response = route.deleteAllGroups();
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroup() {
+		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
+		group.setName("Test Subject");
+		group.addCharacters(route.characRepo.get().get(0));
+		Response response = route.updateGroup(group.getId(), group);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroupCatchesInvalidPath() {
+		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
+		group.setName("Test Subject");
+		group.addCharacters(route.characRepo.get().get(0));
+		Response response = route.updateGroup("1709b8799a96331925075510", group);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroupCatchesInvalidGroup() {
+		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
+		group.setName("Test Subject");
+		Response response = route.updateGroup(group.getId(), group);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroupCatchesInexistentGroup() {
+		CharacterGroup group = new CharacterGroup("aa09b8799a96331925075510");
+		group.setName("Test Subject");
+		group.addCharacters(route.characRepo.get().get(0));
+		Response response = route.updateGroup(group.getId(), group);
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void updateGroupCatchesInexistentPath() {
+		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
+		group.setName("Test Subject");
+		group.addCharacters(route.characRepo.get().get(0));
+		Response response = route.updateGroup("aaa9b8799a96331925075510", group);
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteGroup() {
+		Response response = route.deleteGroup("0709b8799a96331925075510");
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteGroupCatchesInexistentGroup() {
+		Response response = route.deleteGroup("aaa9b8799a96331925075510");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void groupCharacters() {
+		Response response = route.groupCharacters("0709b8799a96331925075510");
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void groupCharactersCatchesInexistentGroup() {
+		Response response = route.groupCharacters("aaa9b8799a96331925075510");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addGroupCharacter() {
+		Response response = route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(1));
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addGroupCharacterCatchesInvalidGroup() {
+		Response response = route.addGroupCharacter("0709b8799a96331925075510",
+				new MarvelCharacter("0709b8799a96331925075510"));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addGroupCharacterCatchesInexistentGroup() {
+		Response response = route.addGroupCharacter("aaa9b8799a96331925075510", route.characRepo.get().get(1));
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addGroupCharacterCatchesDuplicateCharacter() {
+		Response response = route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(0));
+		assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void deleteGroupCharacter() {
+		Response response = route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(0));
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
 }
