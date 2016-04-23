@@ -8,7 +8,7 @@ import com.utn.tacs.tacsthree.models.ReportFavoriteCharacterRanking;
 
 public class ReportsController {
 
-	private List<Report> reports = new ArrayList<Report>();
+	public List<Report> reports = new ArrayList<Report>();
 
 	public ReportsController() {
 		reports.add(new ReportFavoriteCharacterRanking());

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
 public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
@@ -36,7 +35,7 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 	}
 
 	@Override
-	public MarvelCharacter get(TacsModel _character) throws InexistentTacsModelException {
+	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
 		for (MarvelCharacter character : characters)
 			if (character.sameModels(_character))
 				return character;

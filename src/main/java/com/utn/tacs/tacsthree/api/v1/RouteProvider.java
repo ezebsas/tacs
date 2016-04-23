@@ -19,7 +19,6 @@ import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
@@ -308,7 +307,7 @@ public class RouteProvider {
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response addGroupCharacter(@PathParam("id") String chId, TacsModel character) {
+	public Response addGroupCharacter(@PathParam("id") String chId, MarvelCharacter character) {
 		try {
 			return Response.ok(groupsController.addCharacter(chId, character)).build();
 		} catch (InvalidTacsModelException e) {

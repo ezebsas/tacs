@@ -68,7 +68,7 @@ public class CharacterGroupsController {
 		return getGroup(_id).getCharacters();
 	}
 
-	public CharacterGroup addCharacter(String _id, TacsModel _character)
+	public CharacterGroup addCharacter(String _id, MarvelCharacter _character)
 			throws InexistentTacsModelException, InvalidTacsModelException, DuplicateTacsModelException {
 		CharacterGroup group = getGroup(_id);
 		MarvelCharacter obtainedCharacter = null;
