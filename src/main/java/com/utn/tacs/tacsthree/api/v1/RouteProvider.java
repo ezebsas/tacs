@@ -23,6 +23,7 @@ import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
@@ -32,7 +33,7 @@ import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 public class RouteProvider {
 
 	private UserDAO userRepo = UserTestRepository.getInstance();
-	private MarvelCharacterDAO characRepo = MarvelCharacterTestRepository.getInstance();
+	private MarvelCharacterDAO characRepo = new MarvelCharacterDAOImpl();
 	private CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
 	private UsersController userController = new UsersController(userRepo, characRepo);
 	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
