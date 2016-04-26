@@ -89,8 +89,8 @@ public class CharacterGroupsController {
 	public void removeCharacter(String _groupId, String _characterId)
 			throws InexistentTacsModelException, InvalidTacsModelException {
 		CharacterGroup group = getGroup(_groupId);
-		TacsModel character = characterRepo.get(new MarvelCharacter(_characterId));
-		group.removeCharacters(character);
+		MarvelCharacter character = characterRepo.get(new MarvelCharacter(_characterId));
+		group.removeCharacter(character);
 		updateGroup(group);
 	}
 }
