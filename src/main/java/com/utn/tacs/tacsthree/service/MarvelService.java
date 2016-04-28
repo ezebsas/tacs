@@ -4,8 +4,6 @@ import static com.google.common.collect.Lists.transform;
 
 import java.util.List;
 
-import javax.inject.Named;
-
 import com.google.common.base.Function;
 import com.utn.tacs.tacsthree.connector.MarvelConnector;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
@@ -14,7 +12,6 @@ import com.utn.tacs.tacsthree.connector.api.MarvelItem;
 import com.utn.tacs.tacsthree.connector.api.MarvelResource;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 
-@Named
 public class MarvelService {
 
 	private static Function<MarvelItem, String> ITEM_TRANSFORM = new Function<MarvelItem, String>() {
