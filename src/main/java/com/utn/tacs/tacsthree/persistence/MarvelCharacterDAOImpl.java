@@ -2,42 +2,59 @@ package com.utn.tacs.tacsthree.persistence;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.bson.types.ObjectId;
-
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.service.MarvelService;
-
+ 
 public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 
+	private static MarvelCharacterDAOImpl instance = new MarvelCharacterDAOImpl();
+
 	private MarvelService marvelService = new MarvelService();
-	private Map<String, MarvelCharacter> characters;
+	private Map<Long, MarvelCharacter> characters = new HashMap<Long, MarvelCharacter>();
+
+	public static MarvelCharacterDAOImpl getInstance() {
+		return instance;
+	}
 
 	@Override
 	public List<MarvelCharacter> get() {
-		characters = marvelService.getAllCharacters().stream()
-				.collect(Collectors.toMap(v -> ObjectId.get().toHexString(), v -> v));
+		if (characters.isEmpty()) {
+			this.reload();
+		}
+
 		return newArrayList(characters.values());
 	}
 
 	@Override
-	public MarvelCharacter get(TacsModel _character) throws InexistentTacsModelException {
-		if (characters == null) {
-			this.get();
-		}
-		MarvelCharacter marvelCharacter = characters.get(_character.getId());
+	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
+		MarvelCharacter marvelCharacter = characters.get(_character.getCharacterId());
 
-		if (marvelCharacter != null) {
-			return marvelCharacter;
-		} else {
-			throw new InexistentTacsModelException("get failed");
+		if (marvelCharacter == null) {
+			marvelCharacter = marvelService.getCharacter(_character.getCharacterId());
+			if(marvelCharacter == null) {
+				throw new InexistentTacsModelException("get failed");
+			} else {
+				characters.put(marvelCharacter.getCharacterId(), marvelCharacter);
+			}
 		}
+
+		return marvelCharacter;
 	}
 
+	private void reload() {
+		Map<Long, MarvelCharacter> characters = Maps.newHashMap();
+		List<MarvelCharacter> allCharacters = marvelService.getAllCharacters();
+
+		for (MarvelCharacter marvelCharacter : allCharacters) {
+			characters.put(marvelCharacter.getCharacterId(), marvelCharacter);
+		}
+		
+		this.characters = characters;
+	}
 }

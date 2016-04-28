@@ -19,13 +19,11 @@ import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
-import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 
@@ -33,7 +31,7 @@ import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 public class RouteProvider {
 
 	private UserDAO userRepo = UserTestRepository.getInstance();
-	private MarvelCharacterDAO characRepo = new MarvelCharacterDAOImpl();
+	private MarvelCharacterDAO characRepo = MarvelCharacterDAOImpl.getInstance();
 	private CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
 	private UsersController userController = new UsersController(userRepo, characRepo);
 	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
@@ -199,7 +197,7 @@ public class RouteProvider {
 	@Produces("application/json")
 	public Response character(@PathParam("id") String rawId) {
 		try {
-			return Response.ok(characterController.getCharacter(rawId)).build();
+			return Response.ok(characterController.getCharacter(Long.valueOf(rawId))).build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
@@ -309,7 +307,7 @@ public class RouteProvider {
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response addCharacter(@PathParam("id") String chId, TacsModel character) {
+	public Response addCharacter(@PathParam("id") String chId, MarvelCharacter character) {
 		try {
 			return Response.ok(groupsController.addCharacter(chId, character)).build();
 		} catch (InvalidTacsModelException e) {

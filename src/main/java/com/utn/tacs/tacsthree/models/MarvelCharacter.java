@@ -1,6 +1,6 @@
 package com.utn.tacs.tacsthree.models;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
@@ -9,24 +9,16 @@ public class MarvelCharacter extends TacsModel {
 	// http://developer.marvel.com/documentation/entity_types
 
 	private Long characterId;
-	private String name = null; // The name of the character.
-	private String description = null; // Short bio or description of the
-										// character.
-	private LocalDate modified; // The date the resource was most recently
-								// modified.
-	private String resourceURI; // The canonical URL identifier for this
-								// resource.
-	private List<String> urls; // A set of public web site URLs for the
-								// resource.
-	private String thumbnailUrl; // The representative image for this character.
-	private List<String> comics; // A resource list containing comics which
-									// feature this character.
-	private List<String> stories; // A resource list of stories in which this
-									// character appears.
-	private List<String> events; // A resource list of events in which this
-									// character appears.
-	private List<String> series; // A resource list of series in which this
-									// character appears.
+	private String name = null;
+	private String description = null; 
+	private Date modified; 
+	private String resourceURI;
+	private List<String> urls;
+	private String thumbnailUrl; 
+	private List<String> comics;
+	private List<String> stories; 
+	private List<String> events;
+	private List<String> series; 
 
 	public MarvelCharacter() {
 
@@ -34,6 +26,10 @@ public class MarvelCharacter extends TacsModel {
 
 	public MarvelCharacter(String _id) {
 		this.setId(_id);
+	}
+	
+	public MarvelCharacter(Long characterId) {
+		this.characterId = characterId;
 	}
 
 	public MarvelCharacter(String _id, String nombre, String descripcion) {
@@ -51,82 +47,161 @@ public class MarvelCharacter extends TacsModel {
 		this.characterId = characterId;
 	}
 
+	/**
+	 * @return The name of the character
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * The name of the character
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * 
+	 * @return Short bio or description of the character
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Short bio or description of the character
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public LocalDate getModified() {
+	/**
+	 * 
+	 * @return The date the resource was most recently modified
+	 */
+	public Date getModified() {
 		return modified;
 	}
 
-	public void setModified(LocalDate modified) {
+	/**
+	 * The date the resource was most recently modified
+	 * @param modified 
+	 */
+	public void setModified(Date modified) {
 		this.modified = modified;
 	}
 
+	/**
+	 * 
+	 * @return The canonical URL identifier for this resource
+	 */
 	public String getResourceURI() {
 		return resourceURI;
 	}
 
+	/**
+	 * The canonical URL identifier for this resource
+	 * @param resourceURI
+	 */
 	public void setResourceURI(String resourceURI) {
 		this.resourceURI = resourceURI;
 	}
 
+	/**
+	 * 
+	 * @return A set of public web site URLs for the resource
+	 */
 	public List<String> getUrls() {
 		return urls;
 	}
 
+	/**
+	 * A set of public web site URLs for the resource
+	 * @param urls
+	 */
 	public void setUrls(List<String> urls) {
 		this.urls = urls;
 	}
 
+	/**
+	 * 
+	 * @return The representative image for this character
+	 */
 	public String getThumbnailUrl() {
 		return thumbnailUrl;
 	}
 
+	/**
+	 * The representative image for this character
+	 * @param thumbnailUrl
+	 */
 	public void setThumbnailUrl(String thumbnailUrl) {
 		this.thumbnailUrl = thumbnailUrl;
 	}
 
+	/**
+	 * 
+	 * @return List containing comics which feature this character
+	 */
 	public List<String> getComics() {
 		return comics;
 	}
 
+	/**
+	 * List containing comics which feature this character
+	 * @param comics
+	 */
 	public void setComics(List<String> comics) {
 		this.comics = comics;
 	}
 
+	/**
+	 * 
+	 * @return List of stories in which this character appears.
+	 */
 	public List<String> getStories() {
 		return stories;
 	}
 
+	/**
+	 * List of stories in which this character appears.
+	 * @param stories
+	 */
 	public void setStories(List<String> stories) {
 		this.stories = stories;
 	}
 
+	/**
+	 * 
+	 * @return List of events in which this character appears
+	 */
 	public List<String> getEvents() {
 		return events;
 	}
 
+	/**
+	 * List of events in which this character appears
+	 * @param events
+	 */
 	public void setEvents(List<String> events) {
 		this.events = events;
 	}
 
+	/**
+	 * 
+	 * @return List of series in which this character appears
+	 */
 	public List<String> getSeries() {
 		return series;
 	}
 
+	/**
+	 * List of series in which this character appears
+	 * @param series
+	 */
 	public void setSeries(List<String> series) {
 		this.series = series;
 	}

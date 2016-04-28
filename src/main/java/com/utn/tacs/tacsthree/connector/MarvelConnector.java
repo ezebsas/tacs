@@ -38,14 +38,18 @@ public class MarvelConnector {
 	public List<MarvelApiCharacter> getAllCharacters() {
 		List<MarvelApiCharacter> characters = new ArrayList<MarvelApiCharacter>();
 
-		Integer offset = 0;
-		List<MarvelApiCharacter> response = new ArrayList<>();
+		MarvelApiCharacterDataContainer response = get(createCharactersUrl(0, MAX_LIMIT));
 
-		do {
-			response = getCharacters(MAX_LIMIT, offset);
-			characters.addAll(response);
-			offset += response.size();
-		} while (MAX_LIMIT == response.size());
+		Long total = response.getTotal();
+		Integer offset = MAX_LIMIT;
+		while (offset < total) {
+			try {
+			characters.addAll(getCharacters(MAX_LIMIT, offset));
+			} catch (Exception e) {
+				LOGGER.error(String.format("Cannot get characters with offset %s and limit %s",offset, MAX_LIMIT), e);
+			}
+			offset += MAX_LIMIT;
+		} 
 
 		return characters;
 	}
@@ -62,6 +66,14 @@ public class MarvelConnector {
 		Response response = target.request().get(Response.class);
 		LOGGER.info(format(GET_RESPONSE, url, response.getStatus()));
 
+		if (response.getStatus() == 200) {
+			return handleApiResponse(response);
+		} else {
+			throw new RuntimeException();
+		}
+	}
+
+	private MarvelApiCharacterDataContainer handleApiResponse(Response response) {
 		MarvelApiCharacterDataWrapper dataWrapper = response.readEntity(MarvelApiCharacterDataWrapper.class);
 		int status = dataWrapper.getCode();
 

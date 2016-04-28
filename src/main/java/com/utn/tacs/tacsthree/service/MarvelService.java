@@ -4,13 +4,26 @@ import static com.google.common.collect.Lists.transform;
 
 import java.util.List;
 
+import javax.inject.Named;
+
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.utn.tacs.tacsthree.connector.MarvelConnector;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
 import com.utn.tacs.tacsthree.connector.api.MarvelImage;
+import com.utn.tacs.tacsthree.connector.api.MarvelItem;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 
+@Named
 public class MarvelService {
+
+	private static Function<MarvelItem, String> ITEM_TRANSFORM = new Function<MarvelItem, String>() {
+
+		@Override
+		public String apply(MarvelItem item) {
+			return item.getName();
+		}
+	};
 
 	private static Function<MarvelApiCharacter, MarvelCharacter> TRANSFORM_FUNCTION = new Function<MarvelApiCharacter, MarvelCharacter>() {
 
@@ -19,6 +32,7 @@ public class MarvelService {
 			MarvelCharacter marvelCharacter = new MarvelCharacter();
 			marvelCharacter.setCharacterId(input.getId());
 			marvelCharacter.setName(input.getName());
+			marvelCharacter.setModified(input.getModified());
 			marvelCharacter.setDescription(input.getDescription());
 			marvelCharacter.setResourceURI(input.getResourceURI());
 
@@ -27,6 +41,11 @@ public class MarvelService {
 				marvelCharacter.setThumbnailUrl(thumbnail.imageUrlStandardAmazing());
 			}
 
+			marvelCharacter.setComics(Lists.transform(input.getComics().getItems(), ITEM_TRANSFORM));
+			marvelCharacter.setSeries(Lists.transform(input.getSeries().getItems(), ITEM_TRANSFORM));
+			marvelCharacter.setEvents(Lists.transform(input.getEvents().getItems(), ITEM_TRANSFORM));
+			marvelCharacter.setStories(Lists.transform(input.getStories().getItems(), ITEM_TRANSFORM));
+			
 			return marvelCharacter;
 		}
 	};

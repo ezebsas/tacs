@@ -53,6 +53,11 @@
 			<version>${resteasy.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
 			<groupId>net.sf.scannotation</groupId>
 			<artifactId>scannotation</artifactId>
 			<version>1.0.2</version>
@@ -155,8 +160,8 @@
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-enforcer-plugin</artifactId>
 							<configuration>
-								<source>1.8</source>
-								<target>1.8</target>
+								<source>1.7</source>
+								<target>1.7</target>
 								<skip>true</skip>
 							</configuration>
 						</plugin>
