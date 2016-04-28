@@ -7,11 +7,11 @@ import java.util.List;
 import javax.inject.Named;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.utn.tacs.tacsthree.connector.MarvelConnector;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
 import com.utn.tacs.tacsthree.connector.api.MarvelImage;
 import com.utn.tacs.tacsthree.connector.api.MarvelItem;
+import com.utn.tacs.tacsthree.connector.api.MarvelResource;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 
 @Named
@@ -41,12 +41,22 @@ public class MarvelService {
 				marvelCharacter.setThumbnailUrl(thumbnail.imageUrlStandardAmazing());
 			}
 
-			marvelCharacter.setComics(Lists.transform(input.getComics().getItems(), ITEM_TRANSFORM));
-			marvelCharacter.setSeries(Lists.transform(input.getSeries().getItems(), ITEM_TRANSFORM));
-			marvelCharacter.setEvents(Lists.transform(input.getEvents().getItems(), ITEM_TRANSFORM));
-			marvelCharacter.setStories(Lists.transform(input.getStories().getItems(), ITEM_TRANSFORM));
-			
+			marvelCharacter.setComics(transformResource(input.getComics()));
+			marvelCharacter.setSeries(transformResource(input.getSeries()));
+			marvelCharacter.setEvents(transformResource(input.getEvents()));
+			marvelCharacter.setStories(transformResource(input.getStories()));
+
 			return marvelCharacter;
+		}
+
+		private List<String> transformResource(MarvelResource resource) {
+			if (resource != null) {
+				List<MarvelItem> items = resource.getItems();
+				if (items != null) {
+					return transform(items, ITEM_TRANSFORM);
+				}
+			}
+			return null;
 		}
 	};
 
