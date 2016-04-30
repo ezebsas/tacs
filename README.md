@@ -1,5 +1,4 @@
 TP TACS - Be a Good API Citizen [![Travis Build Status](https://travis-ci.org/tferraro/tacs.svg?branch=master)](https://travis-ci.org/tferraro/tacs)
-================================
 
 - Running the app
 ```
@@ -25,4 +24,3 @@ TP TACS - Be a Good API Citizen [![Travis Build Status](https://travis-ci.org/tf
 The OpenShift `jbossews` cartridge documentation can be found at:
 
 http://openshift.github.io/documentation/oo_cartridge_guide.html#tomcat
-
