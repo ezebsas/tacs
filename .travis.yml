@@ -3,12 +3,4 @@ jdk:
   - oraclejdk8
 services: mongodb
 notifications:
-  email:
-    recipients:
-      - tetferraro@gmail.com
-      - sgomezbattista@gmail.com
-      - ramiroyep@gmail.com
-      - fabi.n.delacruz@gmail.com
-      - facun.lujan@gmail.com
-      - mollinedoezequiel@gmail.com
   slack: tacs3:7adxThyns7ZyKYeVBT0IIkAL
