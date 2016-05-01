@@ -8,17 +8,17 @@ import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 public class MarvelCharacter extends TacsModel {
 	// http://developer.marvel.com/documentation/entity_types
 
-	private Long characterId;
+	private Long idMarvel;
 	private String name = null;
-	private String description = null; 
-	private Date modified; 
+	private String description = null;
+	private Date modified;
 	private String resourceURI;
 	private List<String> urls;
-	private String thumbnailUrl; 
+	private String thumbnailUrl;
 	private List<String> comics;
-	private List<String> stories; 
+	private List<String> stories;
 	private List<String> events;
-	private List<String> series; 
+	private List<String> series;
 
 	public MarvelCharacter() {
 
@@ -27,9 +27,9 @@ public class MarvelCharacter extends TacsModel {
 	public MarvelCharacter(String _id) {
 		this.setId(_id);
 	}
-	
-	public MarvelCharacter(Long characterId) {
-		this.characterId = characterId;
+
+	public MarvelCharacter(Long idMarvel) {
+		this.idMarvel = idMarvel;
 	}
 
 	public MarvelCharacter(String _id, String nombre, String descripcion) {
@@ -39,12 +39,12 @@ public class MarvelCharacter extends TacsModel {
 
 	}
 
-	public Long getCharacterId() {
-		return characterId;
+	public Long getIdMarvel() {
+		return idMarvel;
 	}
 
-	public void setCharacterId(Long characterId) {
-		this.characterId = characterId;
+	public void setIdMarvel(Long idMarvel) {
+		this.idMarvel = idMarvel;
 	}
 
 	/**
@@ -56,6 +56,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * The name of the character
+	 * 
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -72,6 +73,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * Short bio or description of the character
+	 * 
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -88,7 +90,8 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * The date the resource was most recently modified
-	 * @param modified 
+	 * 
+	 * @param modified
 	 */
 	public void setModified(Date modified) {
 		this.modified = modified;
@@ -104,6 +107,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * The canonical URL identifier for this resource
+	 * 
 	 * @param resourceURI
 	 */
 	public void setResourceURI(String resourceURI) {
@@ -120,6 +124,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * A set of public web site URLs for the resource
+	 * 
 	 * @param urls
 	 */
 	public void setUrls(List<String> urls) {
@@ -136,6 +141,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * The representative image for this character
+	 * 
 	 * @param thumbnailUrl
 	 */
 	public void setThumbnailUrl(String thumbnailUrl) {
@@ -152,6 +158,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * List containing comics which feature this character
+	 * 
 	 * @param comics
 	 */
 	public void setComics(List<String> comics) {
@@ -168,6 +175,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * List of stories in which this character appears.
+	 * 
 	 * @param stories
 	 */
 	public void setStories(List<String> stories) {
@@ -184,6 +192,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * List of events in which this character appears
+	 * 
 	 * @param events
 	 */
 	public void setEvents(List<String> events) {
@@ -200,6 +209,7 @@ public class MarvelCharacter extends TacsModel {
 
 	/**
 	 * List of series in which this character appears
+	 * 
 	 * @param series
 	 */
 	public void setSeries(List<String> series) {

@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.service.MarvelService;
- 
+
 public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 
 	private static MarvelCharacterDAOImpl instance = new MarvelCharacterDAOImpl();
@@ -33,14 +33,14 @@ public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 
 	@Override
 	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
-		MarvelCharacter marvelCharacter = characters.get(_character.getCharacterId());
+		MarvelCharacter marvelCharacter = characters.get(_character.getIdMarvel());
 
 		if (marvelCharacter == null) {
-			marvelCharacter = marvelService.getCharacter(_character.getCharacterId());
-			if(marvelCharacter == null) {
+			marvelCharacter = marvelService.getCharacter(_character.getIdMarvel());
+			if (marvelCharacter == null) {
 				throw new InexistentTacsModelException("get failed");
 			} else {
-				characters.put(marvelCharacter.getCharacterId(), marvelCharacter);
+				characters.put(marvelCharacter.getIdMarvel(), marvelCharacter);
 			}
 		}
 
@@ -52,9 +52,9 @@ public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 		List<MarvelCharacter> allCharacters = marvelService.getAllCharacters();
 
 		for (MarvelCharacter marvelCharacter : allCharacters) {
-			characters.put(marvelCharacter.getCharacterId(), marvelCharacter);
+			characters.put(marvelCharacter.getIdMarvel(), marvelCharacter);
 		}
-		
+
 		this.characters = characters;
 	}
 }
