@@ -1,14 +1,13 @@
 package com.utn.tacs.tacsthree.models;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
-
-
-import org.mongodb.morphia.annotations.Entity;
+import java.util.List;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+
+import org.mongodb.morphia.annotations.Entity;
 
 @Entity
 public class User extends TacsModel {
@@ -111,14 +110,7 @@ public class User extends TacsModel {
 		}
 		throw new InexistentTacsModelException("character is not favorite of user: " + getName());
 	}
-        
-        public String getEncryptedPassword() {
-		return encryptedPassword;
-	}
 
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
-	}
 
 	@Override
 	public void valid() {

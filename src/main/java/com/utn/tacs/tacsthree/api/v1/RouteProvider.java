@@ -10,7 +10,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.POST;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.util.HashMap; 
@@ -34,6 +33,20 @@ import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 import com.utn.tacs.tacsthree.auth.Authenticator;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
+import com.utn.tacs.tacsthree.api.v1.controllers.*;
+import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+import com.utn.tacs.tacsthree.models.CharacterGroup;
+import com.utn.tacs.tacsthree.models.MarvelCharacter;
+import com.utn.tacs.tacsthree.models.User;
+import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
+import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.UserDAO;
+import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
+import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
+import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
+import com.utn.tacs.tacsthree.auth.Authenticator;
 
 @Path("api/v1/")
 public class RouteProvider {
