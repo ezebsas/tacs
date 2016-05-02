@@ -40,7 +40,8 @@ public class CharacterGroupsController {
 	}
 
 	public List<CharacterGroup> updateGroups(List<CharacterGroup> groupList) {
-		groupList.forEach(u -> updateGroup(u));
+		for (CharacterGroup group : groupList)
+			updateGroup(group);
 		return groupList;
 	}
 
