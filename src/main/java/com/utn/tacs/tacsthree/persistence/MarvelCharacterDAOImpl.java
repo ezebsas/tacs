@@ -63,7 +63,7 @@ public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 		return marvelCharacter;
 	}
 
-	private MarvelCharacter findCharacter(MarvelCharacter _character) {
+	private MarvelCharacter findCharacter(final MarvelCharacter _character) {
 		List<MarvelCharacter> filtered = newArrayList(filter(characters.values(), new Predicate<MarvelCharacter>() {
 
 			@Override
