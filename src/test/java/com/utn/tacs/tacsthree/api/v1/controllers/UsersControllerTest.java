@@ -1,6 +1,6 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -93,7 +93,7 @@ public class UsersControllerTest {
 	@Test
 	public void getCharacterOfUser() {
 		User _user = new User("5709b8799a96331925075301", "Tom2");
-		_user.addCharacter(new MarvelCharacter("5709b8799a96331925075301", "Test", "Hey Baby!"));
+		_user.addCharacter(new MarvelCharacter("5709b8799a96331925075301", 200L, "Test", "Hey Baby!"));
 		controller.updateUser(_user);
 		assertEquals(1, controller.getCharactersOf("5709b8799a96331925075301").size());
 	}
@@ -106,14 +106,14 @@ public class UsersControllerTest {
 	@Test
 	public void addCharacterOfUser() {
 		controller.addCharacter("5709b8799a96331925075301",
-				new MarvelCharacter("1309b8799a96331925075301", "Test", "Hey Baby!"));
+				new MarvelCharacter("1309b8799a96331925075301", 200L, "Test", "Hey Baby!"));
 		assertEquals(1, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
 	public void addCharacterOfInexistentUser() {
 		controller.addCharacter("123ab8788a96331925075301",
-				new MarvelCharacter("123ab1111a96331925075301", "Test", "Hey Baby!"));
+				new MarvelCharacter("123ab1111a96331925075301", 200L, "Test", "Hey Baby!"));
 	}
 
 	@Test(expected = InvalidTacsModelException.class)
@@ -124,9 +124,9 @@ public class UsersControllerTest {
 	@Test
 	public void removeCharactersOfUser() {
 		controller.addCharacter("5709b8799a96331925075301",
-				new MarvelCharacter("1309b8799a96331925075301", "Test", "Hey Baby!"));
+				new MarvelCharacter("1309b8799a96331925075301", 200L, "Test", "Hey Baby!"));
 		controller.addCharacter("5709b8799a96331925075301",
-				new MarvelCharacter("1309b8799a96331925075302", "Test2", "Hey Baby!"));
+				new MarvelCharacter("1309b8799a96331925075302", 200L, "Test2", "Hey Baby!"));
 		assertEquals(2, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 		controller.removeCharactersOf("5709b8799a96331925075301");
 		assertEquals(0, controller.getUser("5709b8799a96331925075301").getCharacters().size());

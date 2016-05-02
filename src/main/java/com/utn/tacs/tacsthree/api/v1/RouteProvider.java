@@ -13,7 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.utn.tacs.tacsthree.api.v1.controllers.*;
+import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
+import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
+import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
+import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
 import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
@@ -22,16 +25,16 @@ import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
-import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
-import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
+import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
 @Path("api/v1/")
 public class RouteProvider {
 
 	public UserDAO userRepo = UserTestRepository.getInstance();
-	public MarvelCharacterDAO characRepo = MarvelCharacterTestRepository.getInstance();
+	public MarvelCharacterDAO characRepo = MarvelCharacterDAOImpl.getInstance();
 	public CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
 	public UsersController userController = new UsersController(userRepo, characRepo);
 	public MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
@@ -197,7 +200,7 @@ public class RouteProvider {
 	@Produces("application/json")
 	public Response getCharacter(@PathParam("id") String rawId) {
 		try {
-			return Response.ok(characterController.getCharacter(rawId)).build();
+			return Response.ok(characterController.getCharacterByMarvelId(Long.valueOf(rawId))).build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
