@@ -2,9 +2,6 @@ package com.utn.tacs.tacsthree.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-
-
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
@@ -17,12 +14,9 @@ public class User extends TacsModel {
         private String password = null;
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
-
 	private List<MarvelCharacter> favoriteCharacters = new ArrayList<MarvelCharacter>();
-        private String encryptedPassword= null;
-        private Date current_sign_in_at; 
-                
-	public User() {
+
+        public User() {
 	}
 
 	public User(String _id) {
@@ -116,14 +110,8 @@ public class User extends TacsModel {
 		}
 		throw new InexistentTacsModelException("character is not favorite of user: " + getName());
 	}
-        
-        public String getEncryptedPassword() {
-		return encryptedPassword;
-	}
 
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
-	}
+
 
 	@Override
 	public void valid() {
