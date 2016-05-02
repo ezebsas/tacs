@@ -3,10 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.utn.tacs.</groupId>
 	<artifactId>tacsthree</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>war</packaging>
-	<name>Simple CXF Java-first SOAP project using Spring configuration</name>
-	<description>Simple CXF Java-first SOAP project using Spring configuration</description>
+	<name>TacsThree Marvel API Proyect</name>
 	<repositories>
 		<repository>
 			<id>jboss</id>
@@ -15,6 +14,7 @@
 	</repositories>
 	<properties>
 		<resteasy.version>3.0.16.Final</resteasy.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -48,9 +48,24 @@
 			<version>${resteasy.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>net.sf.scannotation</groupId>
 			<artifactId>scannotation</artifactId>
 			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -58,6 +73,22 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb.morphia</groupId>
+			<artifactId>morphia</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.6.0</version>
+		</dependency>		
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -152,4 +183,5 @@
 			</repositories>
 		</profile>
 	</profiles>
+	<description>TacsThree Marvel API Proyect</description>
 </project>

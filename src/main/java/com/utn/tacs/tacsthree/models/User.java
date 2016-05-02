@@ -2,17 +2,25 @@ package com.utn.tacs.tacsthree.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
 
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
+import org.mongodb.morphia.annotations.Entity;
+
+@Entity
 public class User extends TacsModel {
 
 	private String name = null;
-	private List<MarvelCharacter> favoriteCharacters = new ArrayList<MarvelCharacter>();
-        private String encryptedPassword= null;
-        private Date current_sign_in_at; 
-                
+        private String password = null;
+	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
+	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
+
 	public User() {
+	}
+
+	public User(String _id) {
+		setId(_id);
 	}
 
 	public User(String _id, String _name) {
@@ -20,42 +28,98 @@ public class User extends TacsModel {
 		setName(_name);
 	}
 
+	public User(String _id, String _name, String _password) {
+		setId(_id);
+		setName(_name);
+                setPassword(_password);
+	}
+        
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<MarvelCharacter> getFavorites() {
-		return favoriteCharacters;
-	}
-
-	public void addFavorite(MarvelCharacter _charact) {
-		this.favoriteCharacters.add(_charact);
-	}
-
-	public Boolean removeFavorite(MarvelCharacter _charact) {
-		return this.favoriteCharacters.remove(_charact);
+	public void setName(String _name) {
+		this.name = _name;
 	}
         
-        public String getEncryptedPassword() {
-		return encryptedPassword;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
+	public void setPassword(String _password) {
+		this.name = _password;
+	}        
+
+	public List<MarvelCharacter> getCharacters() {
+		return characters;
+	}
+
+	public void addCharacter(MarvelCharacter _charact) {
+		this.characters.add(_charact);
+	}
+
+	public void removeCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
+		MarvelCharacter chosen = null;
+		for (MarvelCharacter character : getCharacters())
+			if (character.sameModels(_charact))
+				chosen = character;
+		if (chosen == null)
+			throw new InexistentTacsModelException("Character isn't favorite of " + getName());
+		this.characters.remove(chosen);
+	}
+
+	public void removeCharacters() {
+		this.characters.clear();
+	}
+
+	public List<CharacterGroup> getGroups() {
+		return groups;
+	}
+
+	public CharacterGroup getGroup(CharacterGroup _group) throws InexistentTacsModelException {
+		for (CharacterGroup group : getGroups()) {
+			if (group.getId().equals(_group.getId()))
+				return group;
+		}
+		throw new InexistentTacsModelException("group was not created by user: " + getName());
+	}
+
+	public void addGroup(CharacterGroup _group) {
+		this.groups.add(_group);
+	}
+
+	public void removeGroup(CharacterGroup _group) {
+		CharacterGroup chosen = null;
+		for (CharacterGroup group : getGroups()) {
+			if (group.sameModels(_group))
+				chosen = group;
+		}
+		if (chosen == null)
+			throw new InexistentTacsModelException("Group wasn't created by " + getName());
+		this.groups.remove(chosen);
+	}
+
+	public void removeGroup() {
+		this.groups.clear();
+	}
+
+	public MarvelCharacter getCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
+		for (MarvelCharacter character : getCharacters()) {
+			if (character.getId().equals(_charact.getId()))
+				return character;
+		}
+		throw new InexistentTacsModelException("character is not favorite of user: " + getName());
 	}
 
 	@Override
-	public Boolean isValid() {
+	public void valid() {
 		if (this.getId() == null)
-			return false;
+			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
-			return false;
-		if (this.getFavorites() == null)
-			return false;
-		return true;
+			throw new InvalidTacsModelException("invalid name");
+		if (this.getCharacters() == null)
+			throw new InvalidTacsModelException("invalid favorite list");
+		if (this.getGroups() == null)
+			throw new InvalidTacsModelException("invalid group list");
 	}
 }

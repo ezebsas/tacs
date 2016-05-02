@@ -4,29 +4,38 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+
 public class UserTest {
 
 	@Test
 	public void createUserRequiredValues() {
-		assertTrue("Id and Name constructor working properly", new User("1", "Test").isValid());
+		new User("5709b8799a96331925075306", "Test").valid();
 		User testSubject = new User();
-		testSubject.setId("1");
+		testSubject.setId("5709b8799a96331925075306");
 		testSubject.setName("Test");
-		assertTrue("Simple working properly with required attributes", testSubject.isValid());
+		testSubject.valid();
 	}
 
 	@Test
 	public void createUserWithoutId() {
 		User testSubject = new User();
 		testSubject.setName("Test");
-		assertFalse("Id is required", testSubject.isValid());
+		try {
+			testSubject.valid();
+		} catch (InvalidTacsModelException e) {
+			assertEquals("invalid id", e.getMessage());
+		}
 	}
 
 	@Test
 	public void createUserWithoutName() {
 		User testSubject = new User();
-		testSubject.setId("2");
-		assertFalse("Name is required", testSubject.isValid());
+		testSubject.setId("5709b8799a96331925075306");
+		try {
+			testSubject.valid();
+		} catch (InvalidTacsModelException e) {
+			assertEquals("invalid name", e.getMessage());
+		}
 	}
-
 }

@@ -4,15 +4,17 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+
 public class CharacterGroupTest {
 
 	@Test
 	public void createGroupRequiredValues() {
 		CharacterGroup testGroup = new CharacterGroup();
-		testGroup.setId("1");
+		testGroup.setId("5709b8799a96331925075306");
 		testGroup.setName("Test");
 		testGroup.addCharacters(new MarvelCharacter());
-		assertTrue("Simple working properly with required attributes", testGroup.isValid());
+		testGroup.valid();
 	}
 
 	@Test
@@ -20,23 +22,34 @@ public class CharacterGroupTest {
 		CharacterGroup testGroup = new CharacterGroup();
 		testGroup.setName("Test");
 		testGroup.addCharacters(new MarvelCharacter());
-		assertFalse("Id is required", testGroup.isValid());
+		try {
+			testGroup.valid();
+		} catch (InvalidTacsModelException e) {
+			assertEquals("invalid id", e.getMessage());
+		}
 	}
 
 	@Test
 	public void createUserWithoutName() {
 		CharacterGroup testGroup = new CharacterGroup();
-		testGroup.setId("2");
+		testGroup.setId("5709b8799a96331925075306");
 		testGroup.addCharacters(new MarvelCharacter());
-		assertFalse("Name is required", testGroup.isValid());
+		try {
+			testGroup.valid();
+		} catch (InvalidTacsModelException e) {
+			assertEquals("invalid name", e.getMessage());
+		}
 	}
 
 	@Test
 	public void createUserWithoutCharacters() {
 		CharacterGroup testGroup = new CharacterGroup();
-		testGroup.setId("2");
+		testGroup.setId("5709b8799a96331925075306");
 		testGroup.setName("Test");
-		assertFalse("The group must have at least one character", testGroup.isValid());
+		try {
+			testGroup.valid();
+		} catch (InvalidTacsModelException e) {
+			assertEquals("invalid characters", e.getMessage());
+		}
 	}
-
 }
