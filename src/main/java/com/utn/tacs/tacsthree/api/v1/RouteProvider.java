@@ -26,6 +26,7 @@ import com.utn.tacs.tacsthree.persistence.UserDAO;
 import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
+import com.utn.tacs.tacsthree.auth.Authenticator;
 
 @Path("api/v1/")
 public class RouteProvider {
@@ -37,6 +38,7 @@ public class RouteProvider {
 	public MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
 	public CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
 	public ReportsController reportsController = new ReportsController();
+        public Authenticator authenticator= new Authenticator(this);
 
 	@GET
 	@Path("/users")
@@ -342,4 +344,15 @@ public class RouteProvider {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+        
+        @POST
+        @Path("/login")
+        public Response login(@PathParam("username") String username, @PathParam("password") String password) {
+            try{
+                return Response.ok(authenticator.login(username, password)).build();                
+            } catch (InexistentTacsModelException e) {
+                //Todo: Return to login
+                return Response.status(Status.NOT_FOUND).build();
+            }
+        }
 }

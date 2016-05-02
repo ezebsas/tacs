@@ -42,6 +42,14 @@ public class UserTestRepository implements UserDAO {
 				return _user;
 		throw new InexistentTacsModelException("get failed");
 	}
+        
+        @Override
+        public User get(String username) throws InexistentTacsModelException{
+            for (User _user: userList)
+                if(_user.getName().equals(username))
+                    return _user;
+            throw new InexistentTacsModelException("get user failed");
+        }
 
 	@Override
 	public void save(User user) {

@@ -33,7 +33,11 @@ public class UserMongoRepository implements UserDAO {
 			throw new InexistentTacsModelException("get failed");
 		return _user;
 	}
-
+        @Override
+        public User get(String username) throws InexistentTacsModelException{
+            throw new InexistentTacsModelException("get user failed");
+        }
+        
 	@Override
 	public void delete(User user) throws InexistentTacsModelException {
 		try {
