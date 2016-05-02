@@ -1,6 +1,8 @@
 package com.utn.tacs.tacsthree.api.v1;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,9 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
+import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
+import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
@@ -31,6 +36,12 @@ public class RouteProviderTest {
 		((UserTestRepository) route.userRepo).restart();
 		((MarvelCharacterTestRepository) route.characRepo).restart();
 		((CharacterGroupTestRepository) route.groupsRepo).restart();
+
+		route.userController = new UsersController(UserTestRepository.getInstance(),
+				MarvelCharacterTestRepository.getInstance());
+		route.characterController = new MarvelCharactersController(MarvelCharacterTestRepository.getInstance());
+		route.groupsController = new CharacterGroupsController(CharacterGroupTestRepository.getInstance(),
+				MarvelCharacterTestRepository.getInstance());
 	}
 
 	@Test
@@ -231,13 +242,13 @@ public class RouteProviderTest {
 
 	@Test
 	public void getCharacter() {
-		Response response = route.getCharacter("1309b8799a96331925075301");
+		Response response = route.getCharacter("20");
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void getCharacterInexistentCharacter() {
-		Response response = route.getCharacter("1309b8799a963319250753a1");
+		Response response = route.getCharacter("1309");
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 

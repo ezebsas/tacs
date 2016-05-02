@@ -19,9 +19,9 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 
 	public void restart() {
 		characters.clear();
-		characters.add(new MarvelCharacter("1309b8799a96331925075301", "Peter Benjamin Parker",
+		characters.add(new MarvelCharacter("1309b8799a96331925075301", 10L, "Peter Benjamin Parker",
 				"Peter can cling to most surfaces, has superhuman strength..."));
-		characters.add(new MarvelCharacter("1309b8799a96331925075302", "Robert Bruce Banner",
+		characters.add(new MarvelCharacter("1309b8799a96331925075302", 20L, "Robert Bruce Banner",
 				"Dr. Bruce Banner is a genius in nuclear physics, possessing a ..."));
 	}
 
@@ -38,6 +38,14 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
 		for (MarvelCharacter character : characters)
 			if (character.sameModels(_character))
+				return character;
+		throw new InexistentTacsModelException("get failed");
+	}
+
+	@Override
+	public MarvelCharacter getByIdMarvel(MarvelCharacter _character) throws InexistentTacsModelException {
+		for (MarvelCharacter character : characters)
+			if (character.getIdMarvel().equals(_character.getIdMarvel()))
 				return character;
 		throw new InexistentTacsModelException("get failed");
 	}

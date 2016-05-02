@@ -7,7 +7,6 @@ import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
@@ -41,7 +40,8 @@ public class CharacterGroupsController {
 	}
 
 	public List<CharacterGroup> updateGroups(List<CharacterGroup> groupList) {
-		groupList.forEach(u -> updateGroup(u));
+		for (CharacterGroup group : groupList)
+			updateGroup(group);
 		return groupList;
 	}
 

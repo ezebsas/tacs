@@ -12,6 +12,42 @@ public class MarvelApiCharacter {
 	private String resourceURI;
 	private List<MarvelUrl> urls;
 	private MarvelImage thumbnail;
+	private MarvelResource comics;
+	private MarvelResource series;
+	private MarvelResource stories;
+	private MarvelResource events;
+
+	public MarvelResource getComics() {
+		return comics;
+	}
+
+	public void setComics(MarvelResource comics) {
+		this.comics = comics;
+	}
+
+	public MarvelResource getSeries() {
+		return series;
+	}
+
+	public void setSeries(MarvelResource series) {
+		this.series = series;
+	}
+
+	public MarvelResource getStories() {
+		return stories;
+	}
+
+	public void setStories(MarvelResource stories) {
+		this.stories = stories;
+	}
+
+	public MarvelResource getEvents() {
+		return events;
+	}
+
+	public void setEvents(MarvelResource events) {
+		this.events = events;
+	}
 
 	public MarvelApiCharacter() {
 
