@@ -10,4 +10,6 @@ public interface MarvelCharacterDAO {
 	List<MarvelCharacter> get();
 
 	MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException;
+
+	MarvelCharacter getByIdMarvel(MarvelCharacter _character) throws InexistentTacsModelException;
 }

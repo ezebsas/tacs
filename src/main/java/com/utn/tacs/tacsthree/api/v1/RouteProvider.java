@@ -13,7 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.utn.tacs.tacsthree.api.v1.controllers.*;
+import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
+import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
+import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
+import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
 import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
@@ -24,24 +27,24 @@ import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
-import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
+import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
 @Path("api/v1/")
 public class RouteProvider {
 
-	private UserDAO userRepo = UserTestRepository.getInstance();
-	private MarvelCharacterDAO characRepo = MarvelCharacterDAOImpl.getInstance();
-	private CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
-	private UsersController userController = new UsersController(userRepo, characRepo);
-	private MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
-	private CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
-	private ReportsController reportsController = new ReportsController();
+	public UserDAO userRepo = UserTestRepository.getInstance();
+	public MarvelCharacterDAO characRepo = MarvelCharacterDAOImpl.getInstance();
+	public CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
+	public UsersController userController = new UsersController(userRepo, characRepo);
+	public MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
+	public CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
+	public ReportsController reportsController = new ReportsController();
 
 	@GET
 	@Path("/users")
 	@Produces("application/json")
-	public Response users() {
+	public Response getUsers() {
 		try {
 			return Response.ok(userController.getAllUsers()).build();
 		} catch (NullPointerException e) {
@@ -67,7 +70,7 @@ public class RouteProvider {
 	@Path("/users")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response updateUser(List<User> listaUsuarios) {
+	public Response updateUsers(List<User> listaUsuarios) {
 		try {
 			return Response.ok(userController.updateUsers(listaUsuarios)).build();
 		} catch (InvalidTacsModelException e) {
@@ -91,7 +94,7 @@ public class RouteProvider {
 	@GET
 	@Path("/users/{id}")
 	@Produces("application/json")
-	public Response user(@PathParam("id") String rawId) {
+	public Response getUser(@PathParam("id") String rawId) {
 		try {
 			return Response.ok(userController.getUser(rawId)).build();
 		} catch (InexistentTacsModelException e) {
@@ -104,9 +107,9 @@ public class RouteProvider {
 	@Path("/users/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response putUser(@PathParam("id") String rawId, User usuario) {
+	public Response updateUser(@PathParam("id") String rawId, User usuario) {
 		try {
-			if (!rawId.equals(usuario.getId()))
+			if (!userController.getUser(rawId).sameModels(usuario))
 				throw new InvalidTacsModelException("user id doesnt match path id");
 			return Response.ok(userController.updateUser(usuario)).build();
 		} catch (InvalidTacsModelException e) {
@@ -157,7 +160,7 @@ public class RouteProvider {
 
 	@DELETE
 	@Path("/users/{id}/characters")
-	public Response deleteUserCharacter(@PathParam("id") String rawId) {
+	public Response deleteUserCharacters(@PathParam("id") String rawId) {
 		try {
 			userController.removeCharactersOf(rawId);
 			return Response.ok().build();
@@ -184,7 +187,7 @@ public class RouteProvider {
 	@GET
 	@Path("/characters")
 	@Produces("application/json")
-	public Response characters() {
+	public Response getCharacters() {
 		try {
 			return Response.ok(characterController.getAllCharacters()).build();
 		} catch (NullPointerException e) {
@@ -195,9 +198,9 @@ public class RouteProvider {
 	@GET
 	@Path("/characters/{id}")
 	@Produces("application/json")
-	public Response character(@PathParam("id") String rawId) {
+	public Response getCharacter(@PathParam("id") String rawId) {
 		try {
-			return Response.ok(characterController.getCharacter(Long.valueOf(rawId))).build();
+			return Response.ok(characterController.getCharacterByMarvelId(Long.valueOf(rawId))).build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
@@ -206,7 +209,7 @@ public class RouteProvider {
 	@GET
 	@Path("/groups")
 	@Produces("application/json")
-	public Response groups() {
+	public Response getGroups() {
 		try {
 			return Response.ok(groupsController.getAllGroups()).build();
 		} catch (NullPointerException e) {
@@ -218,7 +221,7 @@ public class RouteProvider {
 	@Path("/groups")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response createGroup(CharacterGroup group) {
+	public Response addGroup(CharacterGroup group) {
 		try {
 			return Response.ok(groupsController.createGroup(group)).build();
 		} catch (InvalidTacsModelException e) {
@@ -271,7 +274,7 @@ public class RouteProvider {
 	@Consumes("application/json")
 	public Response updateGroup(@PathParam("id") String rawId, CharacterGroup newGroup) {
 		try {
-			if (!rawId.equals(newGroup.getId()))
+			if (!groupsController.getGroup(rawId).sameModels(newGroup))
 				throw new InvalidTacsModelException("group id doesnt match path id");
 			return Response.ok(groupsController.updateGroup(newGroup)).build();
 		} catch (InvalidTacsModelException e) {
@@ -307,7 +310,7 @@ public class RouteProvider {
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response addCharacter(@PathParam("id") String chId, MarvelCharacter character) {
+	public Response addGroupCharacter(@PathParam("id") String chId, MarvelCharacter character) {
 		try {
 			return Response.ok(groupsController.addCharacter(chId, character)).build();
 		} catch (InvalidTacsModelException e) {
@@ -321,7 +324,7 @@ public class RouteProvider {
 
 	@DELETE
 	@Path("/groups/{id1}/characters/{id2}")
-	public Response deleteCharacter(@PathParam("id1") String groupId, @PathParam("id2") String characId) {
+	public Response deleteGroupCharacter(@PathParam("id1") String groupId, @PathParam("id2") String characId) {
 		try {
 			groupsController.removeCharacter(groupId, characId);
 			return Response.ok().build();

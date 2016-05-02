@@ -32,8 +32,9 @@ public class MarvelCharacter extends TacsModel {
 		this.idMarvel = idMarvel;
 	}
 
-	public MarvelCharacter(String _id, String nombre, String descripcion) {
+	public MarvelCharacter(String _id, Long idMarvel, String nombre, String descripcion) {
 		this.setId(_id);
+		this.setIdMarvel(idMarvel);
 		this.setName(nombre);
 		this.setDescription(descripcion);
 

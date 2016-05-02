@@ -43,8 +43,14 @@ public class CharacterGroup extends TacsModel {
 		throw new InexistentTacsModelException("character is not in group");
 	}
 
-	public Boolean removeCharacters(TacsModel _charact) {
-		return this.characters.remove(_charact);
+	public void removeCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
+		MarvelCharacter chosen = null;
+		for (MarvelCharacter character : getCharacters())
+			if (character.sameModels(_charact))
+				chosen = character;
+		if (chosen == null)
+			throw new InexistentTacsModelException("Character isn't in " + getName());
+		this.characters.remove(chosen);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class MarvelService {
 		@Override
 		public MarvelCharacter apply(MarvelApiCharacter input) {
 			MarvelCharacter marvelCharacter = new MarvelCharacter();
-			marvelCharacter.setCharacterId(input.getId());
+			marvelCharacter.setIdMarvel(input.getId());
 			marvelCharacter.setName(input.getName());
 			marvelCharacter.setModified(input.getModified());
 			marvelCharacter.setDescription(input.getDescription());

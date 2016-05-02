@@ -7,7 +7,6 @@ import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
@@ -89,8 +88,8 @@ public class CharacterGroupsController {
 	public void removeCharacter(String _groupId, String _characterId)
 			throws InexistentTacsModelException, InvalidTacsModelException {
 		CharacterGroup group = getGroup(_groupId);
-		TacsModel character = characterRepo.get(new MarvelCharacter(_characterId));
-		group.removeCharacters(character);
+		MarvelCharacter character = characterRepo.get(new MarvelCharacter(_characterId));
+		group.removeCharacter(character);
 		updateGroup(group);
 	}
 }
