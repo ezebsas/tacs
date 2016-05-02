@@ -1,9 +1,4 @@
 TP TACS - Be a Good API Citizen [![Travis Build Status](https://travis-ci.org/tferraro/tacs.svg?branch=master)](https://travis-ci.org/tferraro/tacs)
-<<<<<<< HEAD
-===============================================
-=======
-================================
->>>>>>> branch update + auth
 
 - Running the app
 ```

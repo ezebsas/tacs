@@ -41,7 +41,10 @@ import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 import com.utn.tacs.tacsthree.auth.Authenticator;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
-import com.utn.tacs.tacsthree.api.v1.controllers.*;
+import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
+import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
+import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
+import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
 import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
@@ -50,11 +53,11 @@ import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
-import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
-import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 import com.utn.tacs.tacsthree.auth.Authenticator;
+import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
 @Path("api/v1/")
 public class RouteProvider {
