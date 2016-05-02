@@ -41,6 +41,7 @@ public class UsersController {
 	public List<User> updateUsers(List<User> userList) throws InexistentTacsModelException, InvalidTacsModelException {
 		for (User u : userList)
 			updateUser(u);
+
 		return userList;
 	}
 
