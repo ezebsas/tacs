@@ -39,7 +39,7 @@ public class RouteProvider {
 	public UsersController userController = new UsersController(userRepo, characRepo);
 	public MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
 	public CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
-	public ReportsController reportsController = new ReportsController();
+	public ReportsController reportsController = new ReportsController(userRepo, characRepo);
 
 	@GET
 	@Path("/users")
