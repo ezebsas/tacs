@@ -17,8 +17,8 @@ public class MarvelCharactersController {
 		return repository.get();
 	}
 
-	public MarvelCharacter getCharacter(String _id) throws InexistentTacsModelException {
-		return repository.get(new MarvelCharacter(_id));
+	public MarvelCharacter getCharacter(Long id) throws InexistentTacsModelException {
+		return repository.get(new MarvelCharacter(id));
 	}
 
 }

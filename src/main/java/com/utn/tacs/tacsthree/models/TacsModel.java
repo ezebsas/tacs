@@ -20,4 +20,8 @@ public abstract class TacsModel {
 	}
 
 	public abstract void valid() throws InvalidTacsModelException;
+
+	public Boolean sameModels(TacsModel _model) {
+		return getId().equals(_model.getId());
+	}
 }

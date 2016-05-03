@@ -10,14 +10,14 @@ public class MarvelCharacterTest {
 
 	@Test
 	public void createCharacterRequiredValues() {
-		MarvelCharacter testSpidey = new MarvelCharacter();
+		TacsModel testSpidey = new MarvelCharacter();
 		testSpidey.setId("5709b8799a96331925075306");
 		testSpidey.valid();
 	}
 
 	@Test
 	public void createCharacterWithoutId() {
-		MarvelCharacter testSpidey = new MarvelCharacter();
+		TacsModel testSpidey = new MarvelCharacter();
 		try {
 			testSpidey.valid();
 		} catch (InvalidTacsModelException e) {

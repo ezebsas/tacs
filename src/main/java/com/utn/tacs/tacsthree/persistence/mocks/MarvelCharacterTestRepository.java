@@ -1,8 +1,8 @@
 package com.utn.tacs.tacsthree.persistence.mocks;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
@@ -20,10 +20,19 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 
 	public void restart() {
 		characters.clear();
-		characters.add(new MarvelCharacter("1309b8799a96331925075301", "Peter Benjamin Parker",
-				"Peter can cling to most surfaces, has superhuman strength..."));
-		characters.add(new MarvelCharacter("1309b8799a96331925075302", "Robert Bruce Banner",
-				"Dr. Bruce Banner is a genius in nuclear physics, possessing a ..."));
+		MarvelCharacter peterCharacter = new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", "");
+		peterCharacter.setModified(new Date(1315515501000L));
+		peterCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009491");
+		peterCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		characters.add(peterCharacter);
+
+		MarvelCharacter bruceCharacter = new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", "");
+		bruceCharacter.setModified(new Date(1326594561000L));
+		bruceCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
+		characters.add(bruceCharacter);
 	}
 
 	public MarvelCharacterTestRepository() {
@@ -37,11 +46,10 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 
 	@Override
 	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
-		try {
-			return characters.stream().filter(o -> o.getId().equals(_character.getId())).findFirst().get();
-		} catch (NoSuchElementException e) {
-			throw new InexistentTacsModelException("get failed");
-		}
+		for (MarvelCharacter character : characters)
+			if (character.sameModels(_character))
+				return character;
+		throw new InexistentTacsModelException("get failed");
 	}
 
 }

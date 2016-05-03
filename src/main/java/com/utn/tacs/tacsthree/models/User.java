@@ -2,17 +2,19 @@ package com.utn.tacs.tacsthree.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
 import org.mongodb.morphia.annotations.Entity;
+
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
 @Entity
 public class User extends TacsModel {
 
 	private String name = null;
-	private List<MarvelCharacter> favoriteCharacters = new ArrayList<MarvelCharacter>();
+	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
+	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
+	private Integer groupsHistoric = 0;
 
 	public User() {
 	}
@@ -34,24 +36,73 @@ public class User extends TacsModel {
 		this.name = name;
 	}
 
-	public List<MarvelCharacter> getFavorites() {
-		return favoriteCharacters;
+	public List<MarvelCharacter> getCharacters() {
+		return characters;
 	}
 
-	public void addFavorite(MarvelCharacter _charact) {
-		this.favoriteCharacters.add(_charact);
+	public void addCharacter(MarvelCharacter _charact) {
+		this.characters.add(_charact);
 	}
 
-	public Boolean removeFavorite(MarvelCharacter _charact) {
-		return this.favoriteCharacters.remove(_charact);
+	public void removeCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
+		MarvelCharacter chosen = null;
+		for (MarvelCharacter character : getCharacters())
+			if (character.sameModels(_charact))
+				chosen = character;
+		if (chosen == null)
+			throw new InexistentTacsModelException("Character isn't favorite of " + getName());
+		this.characters.remove(chosen);
 	}
 
-	public void removeFavorites() {
-		this.favoriteCharacters.clear();
+	public void removeCharacters() {
+		this.characters.clear();
 	}
 
-	public MarvelCharacter getFavorite(MarvelCharacter _charact) throws NoSuchElementException {
-		return getFavorites().stream().filter(u -> u.getId().equals(_charact.getId())).findFirst().get();
+	public List<CharacterGroup> getGroups() {
+		return groups;
+	}
+
+	public CharacterGroup getGroup(CharacterGroup _group) throws InexistentTacsModelException {
+		for (CharacterGroup group : getGroups()) {
+			if (group.getId().equals(_group.getId()))
+				return group;
+		}
+		throw new InexistentTacsModelException("group was not created by user: " + getName());
+	}
+
+	public void addGroup(CharacterGroup _group) {
+		this.groups.add(_group);
+	}
+
+	public void removeGroup(CharacterGroup _group) {
+		CharacterGroup chosen = null;
+		for (CharacterGroup group : getGroups()) {
+			if (group.sameModels(_group))
+				chosen = group;
+		}
+		if (chosen == null)
+			throw new InexistentTacsModelException("Group wasn't created by " + getName());
+		this.groups.remove(chosen);
+	}
+
+	public void removeGroup() {
+		this.groups.clear();
+	}
+
+	public MarvelCharacter getCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
+		for (MarvelCharacter character : getCharacters()) {
+			if (character.getIdMarvel().equals(_charact.getIdMarvel()))
+				return character;
+		}
+		throw new InexistentTacsModelException("character is not favorite of user: " + getName());
+	}
+
+	public Integer getGroupsHistoric() {
+		return groupsHistoric;
+	}
+
+	public void setGroupsHistoric(Integer groupsHistoric) {
+		this.groupsHistoric = groupsHistoric;
 	}
 
 	@Override
@@ -60,7 +111,9 @@ public class User extends TacsModel {
 			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
 			throw new InvalidTacsModelException("invalid name");
-		if (this.getFavorites() == null)
-			throw new InvalidTacsModelException("invalid favorites");
+		if (this.getCharacters() == null)
+			throw new InvalidTacsModelException("invalid favorite list");
+		if (this.getGroups() == null)
+			throw new InvalidTacsModelException("invalid group list");
 	}
 }
