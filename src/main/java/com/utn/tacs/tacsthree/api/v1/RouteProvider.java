@@ -1,5 +1,6 @@
 package com.utn.tacs.tacsthree.api.v1;
 
+
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -7,11 +8,22 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
+
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.GET;
+import javax.ws.rs.FormParam;
+
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.POST;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.servlet.http.*;
+import java.util.HashMap; 
+
 
 import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
 import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
@@ -31,8 +43,10 @@ import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 import com.utn.tacs.tacsthree.auth.Authenticator;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
+
 @Path("api/v1/")
 public class RouteProvider {
+
 
 	public UserDAO userRepo = UserTestRepository.getInstance();
 	public MarvelCharacterDAO characRepo = MarvelCharacterDAOImpl.getInstance();
@@ -42,7 +56,7 @@ public class RouteProvider {
 	public CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
 	public ReportsController reportsController = new ReportsController();
         public Authenticator authenticator= new Authenticator(this);
-
+	
 	@GET
 	@Path("/users")
 	@Produces("application/json")
