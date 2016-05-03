@@ -9,14 +9,14 @@ public class ReportTest {
 
 	@Test
 	public void createReportRequiredValues() {
-		Report report = new ReportFavoriteCharacterRanking();
+		Report report = new ReportFavoriteCharacterRanking(null, null);
 		report.setId("5709b8799a96331925075306");
 		report.valid();
 	}
 
 	@Test
 	public void createReportWithoutId() {
-		Report report = new ReportFavoriteCharacterRanking();
+		Report report = new ReportFavoriteCharacterRanking(null, null);
 		try {
 			report.valid();
 		} catch (InvalidTacsModelException e) {

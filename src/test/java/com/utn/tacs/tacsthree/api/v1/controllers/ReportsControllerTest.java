@@ -15,7 +15,7 @@ public class ReportsControllerTest {
 
 	@Before
 	public void setUp() {
-		controller = new ReportsController();
+		controller = new ReportsController(null, null);
 	}
 
 	@Test
