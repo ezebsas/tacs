@@ -29,22 +29,29 @@ public class MarvelConnector {
 
 	private static final Logger LOGGER = Logger.getLogger(MarvelConnector.class);
 
-	private ResteasyClient client = new ResteasyClientBuilder().build().register(new ObjectMapperProvider());
-
 	public MarvelApiCharacter getCharacter(Long id) {
 		return get(createCharacterUrl(id)).getResults().get(0);
 	}
 
 	public List<MarvelApiCharacter> getAllCharacters() {
+		Boolean first = true;
 		List<MarvelApiCharacter> characters = new ArrayList<MarvelApiCharacter>();
 
-		MarvelApiCharacterDataContainer response = get(createCharactersUrl(0, MAX_LIMIT));
-
-		Long total = response.getTotal();
-		Integer offset = MAX_LIMIT;
-		while (offset < total) {
+		
+		Long total = 0L;
+		Integer offset = 0;
+		while (first || offset < total) {
+			
 			try {
-			characters.addAll(getCharacters(MAX_LIMIT, offset));
+				if (first) {
+					MarvelApiCharacterDataContainer response = get(createCharactersUrl(0, MAX_LIMIT));
+					characters.addAll(response.getResults());
+					total = response.getTotal();
+					first = false;
+				} else {
+					List<MarvelApiCharacter> list = getCharacters(MAX_LIMIT, offset);
+					characters.addAll(list);
+				}
 			} catch (Exception e) {
 				LOGGER.error(String.format("Cannot get characters with offset %s and limit %s",offset, MAX_LIMIT), e);
 			}
@@ -60,6 +67,8 @@ public class MarvelConnector {
 	}
 
 	private MarvelApiCharacterDataContainer get(String url) {
+		ResteasyClient client = new ResteasyClientBuilder().build().register(new ObjectMapperProvider());
+		try {
 		WebTarget target = client.target(url);
 
 		LOGGER.info(format(GET_REQUEST, url));
@@ -70,6 +79,9 @@ public class MarvelConnector {
 			return handleApiResponse(response);
 		} else {
 			throw new RuntimeException();
+		}
+		}finally {
+			client.close();
 		}
 	}
 
@@ -82,10 +94,6 @@ public class MarvelConnector {
 		} else {
 			throw new MarvelApiException(format(ERROR_LOG, status, dataWrapper.getStatus()));
 		}
-	}
-
-	public void setClient(ResteasyClient client) {
-		this.client = client;
 	}
 
 }
