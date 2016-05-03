@@ -3,10 +3,10 @@ package com.utn.tacs.tacsthree.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mongodb.morphia.annotations.Entity;
+
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
-
-import org.mongodb.morphia.annotations.Entity;
 
 @Entity
 public class User extends TacsModel {
@@ -105,7 +105,7 @@ public class User extends TacsModel {
 
 	public MarvelCharacter getCharacter(MarvelCharacter _charact) throws InexistentTacsModelException {
 		for (MarvelCharacter character : getCharacters()) {
-			if (character.getId().equals(_charact.getId()))
+			if (character.getIdMarvel().equals(_charact.getIdMarvel()))
 				return character;
 		}
 		throw new InexistentTacsModelException("character is not favorite of user: " + getName());

@@ -1,6 +1,7 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -141,17 +142,17 @@ public class CharacterGroupsControllerTest {
 	public void removeCharacterFromGroup() {
 		controller.addCharacter("0709b8799a96331925075510", characRepo.get().get(1));
 		assertEquals(2, controller.getGroup("0709b8799a96331925075510").getCharacters().size());
-		controller.removeCharacter("0709b8799a96331925075510", characRepo.get().get(1).getId());
+		controller.removeCharacter("0709b8799a96331925075510", characRepo.get().get(1).getIdMarvel());
 		assertEquals(1, controller.getGroup("0709b8799a96331925075510").getCharacters().size());
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
 	public void removeInexistentCharacterOfGroup() {
-		controller.removeCharacter("0709b8799a96331925075510", "123ab1111a96331925075302");
+		controller.removeCharacter("0709b8799a96331925075510", 123L);
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
 	public void removeInexistentCharacterOfUser() {
-		controller.removeCharacter("5709b8799a96331925075301", characRepo.get().get(1).getId());
+		controller.removeCharacter("5709b8799a96331925075301", characRepo.get().get(1).getIdMarvel());
 	}
 }

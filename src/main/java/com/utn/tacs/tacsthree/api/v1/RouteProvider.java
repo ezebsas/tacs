@@ -175,7 +175,7 @@ public class RouteProvider {
 
 	@DELETE
 	@Path("/users/{id}/characters/{id2}")
-	public Response deleteUserSingleCharacter(@PathParam("id") String usrId, @PathParam("id2") String characId) {
+	public Response deleteUserSingleCharacter(@PathParam("id") String usrId, @PathParam("id2") Long characId) {
 		try {
 			userController.removeCharacter(usrId, characId);
 			return Response.ok().build();
@@ -202,7 +202,7 @@ public class RouteProvider {
 	@Produces("application/json")
 	public Response getCharacter(@PathParam("id") String rawId) {
 		try {
-			return Response.ok(characterController.getCharacterByMarvelId(Long.valueOf(rawId))).build();
+			return Response.ok(characterController.getCharacter(Long.valueOf(rawId))).build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
@@ -326,7 +326,7 @@ public class RouteProvider {
 
 	@DELETE
 	@Path("/groups/{id1}/characters/{id2}")
-	public Response deleteGroupCharacter(@PathParam("id1") String groupId, @PathParam("id2") String characId) {
+	public Response deleteGroupCharacter(@PathParam("id1") String groupId, @PathParam("id2") Long characId) {
 		try {
 			groupsController.removeCharacter(groupId, characId);
 			return Response.ok().build();
