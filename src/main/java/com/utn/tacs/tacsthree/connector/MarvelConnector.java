@@ -50,7 +50,7 @@ public class MarvelConnector {
 			}
 			offset += MAX_LIMIT;
 		} 
-                
+
 		return characters;
 	}
 
