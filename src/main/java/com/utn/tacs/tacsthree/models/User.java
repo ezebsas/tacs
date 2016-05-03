@@ -3,6 +3,8 @@ package com.utn.tacs.tacsthree.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Date;
+
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
@@ -109,6 +111,14 @@ public class User extends TacsModel {
 				return character;
 		}
 		throw new InexistentTacsModelException("character is not favorite of user: " + getName());
+	}
+        
+        public String getEncryptedPassword() {
+		return encryptedPassword;
+	}
+
+	public void setEncryptedPassword(String encryptedPassword) {
+		this.encryptedPassword = encryptedPassword;
 	}
 
 
