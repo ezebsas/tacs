@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
 public abstract class Report extends TacsModel {
-
+		
 	@JsonProperty("name")
 	private String name;
 

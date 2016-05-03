@@ -1,9 +1,14 @@
 package com.utn.tacs.tacsthree.models;
 
 import org.codehaus.jackson.annotate.JsonRawValue;
+import com.utn.tacs.tacsthree.persistence.mongo.*;
+import java.util.List;
 
 public class ReportFavoriteCharacterRanking extends Report {
-
+	
+	private UserMongoRepository usrRepository;
+	private List<User> allUsers;
+	
 	public ReportFavoriteCharacterRanking() {
 		super.setName("Ranking de Personajes favoritos");
 	}
@@ -11,7 +16,8 @@ public class ReportFavoriteCharacterRanking extends Report {
 	@Override
 	@JsonRawValue
 	public String getData() {
-		return "{\"holis\":\"holis\"}";
+		allUsers = usrRepository.get();
+		return "{holis}";
 	}
 
 }
