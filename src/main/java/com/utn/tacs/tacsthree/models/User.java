@@ -23,6 +23,7 @@ public class User extends TacsModel {
 		setId(_id);
 	}
 
+
 	public User(String _id, String _name) {
 		setId(_id);
 		setName(_name);
