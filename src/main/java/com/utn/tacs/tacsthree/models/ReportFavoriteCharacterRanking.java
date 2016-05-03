@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonRawValue;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
@@ -42,7 +43,7 @@ public class ReportFavoriteCharacterRanking extends Report {
 			}
 		});
 		try {
-			return mapper.writeValueAsString(result_list);
+			return mapper.writeValueAsString(FluentIterable.from(result_list).limit(10).toList());
 		} catch (IOException e) {
 			return "";
 		}
