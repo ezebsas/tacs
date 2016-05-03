@@ -14,6 +14,7 @@ public class User extends TacsModel {
 	private String name = null;
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
+	private Integer groupsHistoric = 0;
 
 	public User() {
 	}
@@ -94,6 +95,14 @@ public class User extends TacsModel {
 				return character;
 		}
 		throw new InexistentTacsModelException("character is not favorite of user: " + getName());
+	}
+
+	public Integer getGroupsHistoric() {
+		return groupsHistoric;
+	}
+
+	public void setGroupsHistoric(Integer groupsHistoric) {
+		this.groupsHistoric = groupsHistoric;
 	}
 
 	@Override
