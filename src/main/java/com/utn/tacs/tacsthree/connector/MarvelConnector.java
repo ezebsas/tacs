@@ -34,16 +34,24 @@ public class MarvelConnector {
 	}
 
 	public List<MarvelApiCharacter> getAllCharacters() {
+		Boolean first = true;
 		List<MarvelApiCharacter> characters = new ArrayList<MarvelApiCharacter>();
 
-		MarvelApiCharacterDataContainer response = get(createCharactersUrl(0, MAX_LIMIT));
-
-		Long total = response.getTotal();
-		Integer offset = MAX_LIMIT;
-		while (offset < total) {
+		
+		Long total = 0L;
+		Integer offset = 0;
+		while (first || offset < total) {
+			
 			try {
-			List<MarvelApiCharacter> list = getCharacters(MAX_LIMIT, offset);
-			characters.addAll(list);
+				if (first) {
+					MarvelApiCharacterDataContainer response = get(createCharactersUrl(0, MAX_LIMIT));
+					characters.addAll(response.getResults());
+					total = response.getTotal();
+					first = false;
+				} else {
+					List<MarvelApiCharacter> list = getCharacters(MAX_LIMIT, offset);
+					characters.addAll(list);
+				}
 			} catch (Exception e) {
 				LOGGER.error(String.format("Cannot get characters with offset %s and limit %s",offset, MAX_LIMIT), e);
 			}
