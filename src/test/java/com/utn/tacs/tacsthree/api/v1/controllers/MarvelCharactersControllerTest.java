@@ -28,15 +28,15 @@ public class MarvelCharactersControllerTest {
 
 	@Test
 	public void getCharacter() {
-		String _id = repository.get().get(0).getId();
+		Long _id = repository.get().get(0).getIdMarvel();
 		MarvelCharacter _character = controller.getCharacter(_id);
-		assertEquals(_id, _character.getId());
+		assertEquals(_id, _character.getIdMarvel());
 	}
 
 	@Test
 	public void getCharacterInexistentCharacter() {
 		try {
-			controller.getCharacter("1309b8799a96331925075301");
+			controller.getCharacter(1309L);
 		} catch (InexistentTacsModelException e) {
 			assertEquals("get failed", e.getMessage());
 		}

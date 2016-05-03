@@ -1,5 +1,7 @@
 package com.utn.tacs.tacsthree.models;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,12 +15,12 @@ public class MarvelCharacter extends TacsModel {
 	private String description = null;
 	private Date modified;
 	private String resourceURI;
-	private List<String> urls;
+	private List<String> urls = newArrayList();
 	private String thumbnailUrl;
-	private List<String> comics;
-	private List<String> stories;
-	private List<String> events;
-	private List<String> series;
+	private List<String> comics = newArrayList();
+	private List<String> stories = newArrayList();
+	private List<String> events = newArrayList();
+	private List<String> series = newArrayList();
 
 	public MarvelCharacter() {
 
@@ -221,5 +223,11 @@ public class MarvelCharacter extends TacsModel {
 	public void valid() {
 		if (this.getId() == null)
 			throw new InvalidTacsModelException("invalid id");
+	}
+
+	@Override
+	public Boolean sameModels(TacsModel _model) {
+		MarvelCharacter character = (MarvelCharacter) _model;
+		return this.getIdMarvel().equals(character.getIdMarvel());
 	}
 }

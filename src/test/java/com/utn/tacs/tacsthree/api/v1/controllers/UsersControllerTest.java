@@ -106,7 +106,7 @@ public class UsersControllerTest {
 	@Test
 	public void addCharacterOfUser() {
 		controller.addCharacter("5709b8799a96331925075301",
-				new MarvelCharacter("1309b8799a96331925075301", 200L, "Test", "Hey Baby!"));
+				new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", ""));
 		assertEquals(1, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 	}
 
@@ -124,9 +124,9 @@ public class UsersControllerTest {
 	@Test
 	public void removeCharactersOfUser() {
 		controller.addCharacter("5709b8799a96331925075301",
-				new MarvelCharacter("1309b8799a96331925075301", 200L, "Test", "Hey Baby!"));
+				new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", ""));
 		controller.addCharacter("5709b8799a96331925075301",
-				new MarvelCharacter("1309b8799a96331925075302", 200L, "Test2", "Hey Baby!"));
+				new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", ""));
 		assertEquals(2, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 		controller.removeCharactersOf("5709b8799a96331925075301");
 		assertEquals(0, controller.getUser("5709b8799a96331925075301").getCharacters().size());
@@ -142,17 +142,17 @@ public class UsersControllerTest {
 		controller.addCharacter("5709b8799a96331925075301", characRepo.get().get(0));
 		controller.addCharacter("5709b8799a96331925075301", characRepo.get().get(1));
 		assertEquals(2, controller.getUser("5709b8799a96331925075301").getCharacters().size());
-		controller.removeCharacter("5709b8799a96331925075301", characRepo.get().get(0).getId());
+		controller.removeCharacter("5709b8799a96331925075301", characRepo.get().get(0).getIdMarvel());
 		assertEquals(1, controller.getUser("5709b8799a96331925075301").getCharacters().size());
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
 	public void removeCharacterOfInexistentUser() {
-		controller.removeCharacter("123ab1111a96331925075302", "123ab1111a96331925075302");
+		controller.removeCharacter("123ab1111a96331925075302", 1234L);
 	}
 
 	@Test(expected = InexistentTacsModelException.class)
 	public void removeInexistentCharacterOfUser() {
-		controller.removeCharacter("5709b8799a96331925075301", "123ab1111a96331925075302");
+		controller.removeCharacter("5709b8799a96331925075301", 12311L);
 	}
 }
