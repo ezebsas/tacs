@@ -8,24 +8,20 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
-import java.io.IOException;
-import java.util.NoSuchElementException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.GET;
-import javax.ws.rs.FormParam;
-
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import java.util.HashMap; 
-
 
 import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
 import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
 import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
 import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
+import com.utn.tacs.tacsthree.auth.Authenticator;
+import com.utn.tacs.tacsthree.auth.AuthenticationFilter;
+import com.utn.tacs.tacsthree.auth.Secured;
+import com.utn.tacs.tacsthree.auth.Credentials;
 import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
@@ -37,25 +33,6 @@ import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
-import com.utn.tacs.tacsthree.auth.Authenticator;
-import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
-
-import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
-import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
-import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
-import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
-import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
-import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
-import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
-import com.utn.tacs.tacsthree.models.CharacterGroup;
-import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.models.User;
-import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
-import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
-import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
-import com.utn.tacs.tacsthree.persistence.UserDAO;
-import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
-import com.utn.tacs.tacsthree.auth.Authenticator;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
 
@@ -71,8 +48,10 @@ public class RouteProvider {
 	public CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
 	public ReportsController reportsController = new ReportsController();
         public Authenticator authenticator= new Authenticator(this);
-	
+        public AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticator);
+        
 	@GET
+        @Secured
 	@Path("/users")
 	@Produces("application/json")
 	public Response getUsers() {
@@ -84,6 +63,7 @@ public class RouteProvider {
 	}
 
 	@POST
+        @Secured
 	@Path("/users")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -98,6 +78,7 @@ public class RouteProvider {
 	}
 
 	@PUT
+        @Secured
 	@Path("/users")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -112,6 +93,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+        @Secured
 	@Path("/users")
 	public Response deleteUsers() {
 		try {
@@ -123,6 +105,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/users/{id}")
 	@Produces("application/json")
 	public Response getUser(@PathParam("id") String rawId) {
@@ -135,6 +118,7 @@ public class RouteProvider {
 	}
 
 	@PUT
+        @Secured
 	@Path("/users/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -151,6 +135,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+        @Secured
 	@Path("/users/{id}")
 	public Response deleteUser(@PathParam("id") String rawId) {
 		try {
@@ -162,6 +147,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/users/{id}/characters")
 	@Produces("application/json")
 	public Response getUserCharacters(@PathParam("id") String rawId) {
@@ -174,6 +160,7 @@ public class RouteProvider {
 	}
 
 	@POST
+        @Secured
 	@Path("/users/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -190,6 +177,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+        @Secured
 	@Path("/users/{id}/characters")
 	public Response deleteUserCharacters(@PathParam("id") String rawId) {
 		try {
@@ -203,6 +191,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+        @Secured
 	@Path("/users/{id}/characters/{id2}")
 	public Response deleteUserSingleCharacter(@PathParam("id") String usrId, @PathParam("id2") Long characId) {
 		try {
@@ -216,6 +205,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/characters")
 	@Produces("application/json")
 	public Response getCharacters() {
@@ -227,6 +217,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/characters/{id}")
 	@Produces("application/json")
 	public Response getCharacter(@PathParam("id") String rawId) {
@@ -238,6 +229,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/groups")
 	@Produces("application/json")
 	public Response getGroups() {
@@ -249,6 +241,7 @@ public class RouteProvider {
 	}
 
 	@POST
+        @Secured
 	@Path("/groups")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -263,6 +256,7 @@ public class RouteProvider {
 	}
 
 	@PUT
+        @Secured
 	@Path("/groups")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -277,6 +271,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+        @Secured
 	@Path("/groups")
 	public Response deleteAllGroups() {
 		try {
@@ -288,6 +283,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/groups/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -300,6 +296,7 @@ public class RouteProvider {
 	}
 
 	@PUT
+        @Secured
 	@Path("/groups/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -316,6 +313,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+        @Secured
 	@Path("/groups/{id}")
 	public Response deleteGroup(@PathParam("id") String rawId) {
 		try {
@@ -327,6 +325,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	public Response groupCharacters(@PathParam("id") String rawId) {
@@ -338,6 +337,7 @@ public class RouteProvider {
 	}
 
 	@POST
+        @Secured
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -354,6 +354,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+        @Secured
 	@Path("/groups/{id1}/characters/{id2}")
 	public Response deleteGroupCharacter(@PathParam("id1") String groupId, @PathParam("id2") Long characId) {
 		try {
@@ -367,6 +368,7 @@ public class RouteProvider {
 	}
 
 	@GET
+        @Secured
 	@Path("/reports")
 	@Produces("application/json")
 	public Response getReports() {
@@ -377,14 +379,19 @@ public class RouteProvider {
 		}
 	}
         
+        
         @POST
         @Path("/login")
-        public Response login(@PathParam("username") String username, @PathParam("password") String password) {
-            try{
-                return Response.ok(authenticator.login(username, password)).build();                
+        @Produces("application/json")
+        @Consumes("application/json")
+        public Response authenticateUser(Credentials credentials) {
+
+            String username = credentials.getUsername();
+            String password = credentials.getPassword();
+            try {
+                return Response.ok(authenticator.login(username, password)).build();
             } catch (InexistentTacsModelException e) {
-                //Todo: Return to login
-                return Response.status(Status.NOT_FOUND).build();
-            }
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }      
         }
 }

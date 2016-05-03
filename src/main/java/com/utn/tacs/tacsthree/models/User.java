@@ -12,6 +12,7 @@ import org.mongodb.morphia.annotations.Entity;
 public class User extends TacsModel {
 
 	private String name = null;
+        private String encryptedPassword = "tacs1234";
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
 	private List<MarvelCharacter> favoriteCharacters = new ArrayList<MarvelCharacter>();
@@ -43,8 +44,12 @@ public class User extends TacsModel {
 		this.name = _name;
 	}
         
+        public String getPassword(){
+            return encryptedPassword;
+        }
+        
 	public void setPassword(String _password) {
-		this.name = _password;
+		this.encryptedPassword = _password;
 	}        
 
 	public List<MarvelCharacter> getCharacters() {

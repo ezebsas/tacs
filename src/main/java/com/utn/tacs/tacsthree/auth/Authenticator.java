@@ -10,7 +10,7 @@ import java.security.Key;
 
 
 import com.utn.tacs.tacsthree.api.v1.RouteProvider;
-import com.utn.tacs.tacsthree.exceptions.AuthenticationException;
+import com.utn.tacs.tacsthree.exceptions.NotAuthorizedException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.User;
     
@@ -34,13 +34,17 @@ public class Authenticator {
         cal.setTime(new Date());
         cal.add(Calendar.HOUR_OF_DAY, 1);
         Date expirationDate =cal.getTime();
+        String jwt=null;
         
-        route.userRepo.get(username);
-        
-        String jwt = Jwts.builder().setSubject(username)
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, key)
-                .compact();
+        User user=route.userRepo.get(username);
+        if(user.getPassword().equals(password)){
+            jwt = Jwts.builder().setSubject(username)
+                    .setExpiration(expirationDate)
+                    .signWith(SignatureAlgorithm.HS512, key)
+                    .compact();
+        } else {
+            new NotAuthorizedException("incorrect password"); 
+        }
         
         return jwt;
     }
@@ -54,7 +58,7 @@ public class Authenticator {
         
         route.userRepo.get(username);
         if(currentDate.after(expirationDate)){
-            throw new AuthenticationException("session expired");
+            throw new NotAuthorizedException("session expired");
         }
     }
 }
