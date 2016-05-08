@@ -8,4 +8,7 @@ public class InexistentTacsModelException extends TacsModelException {
 		super(msj);
 	}
 
+	public InexistentTacsModelException(String msj, Throwable cause) {
+		super(msj, cause);
+	}
 }

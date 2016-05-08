@@ -35,7 +35,7 @@ public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 
 	@Override
 	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
-		MarvelCharacter marvelCharacter = characters.get(_character.getId());
+		MarvelCharacter marvelCharacter = characters.get(_character.getIdMarvel());
 
 		if (marvelCharacter == null) {
 			marvelCharacter = marvelService.getCharacter(_character.getIdMarvel());
