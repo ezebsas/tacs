@@ -4,12 +4,18 @@
           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<display-name>TacsThree API</display-name>
-	<!-- <context-param> <param-name>resteasy.scan</param-name> <param-value>true</param-value> 
-		</context-param> -->
-	<context-param>
-		<param-name>resteasy.resources</param-name>
-		<param-value>com.utn.tacs.tacsthree.api.v1.RouteProvider</param-value>
-	</context-param>
+	<servlet>
+		<servlet-name>private-resteasy-servlet</servlet-name>
+		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.utn.tacs.tacsthree.jsonmapper</param-value>
+		</init-param>
+		<init-param>
+			<param-name>resteasy.resources</param-name>
+			<param-value>com.utn.tacs.tacsthree.api.v1.RouteProvider</param-value>
+		</init-param>
+	</servlet>
 	<servlet>
 		<servlet-name>resteasy-servlet</servlet-name>
 		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
@@ -17,9 +23,17 @@
 			<param-name>com.sun.jersey.config.property.packages</param-name>
 			<param-value>com.utn.tacs.tacsthree.jsonmapper</param-value>
 		</init-param>
+		<init-param>
+			<param-name>resteasy.resources</param-name>
+			<param-value>com.utn.tacs.tacsthree.TacsPath</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>resteasy-servlet</servlet-name>
 		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>private-resteasy-servlet</servlet-name>
+		<url-pattern>/api/v1/*</url-pattern>
 	</servlet-mapping>
 </web-app>
