@@ -1,8 +1,11 @@
 package com.utn.tacs.tacsthree.service;
 
 import static com.google.common.collect.Lists.transform;
+import static java.lang.String.format;
 
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.google.common.base.Function;
 import com.utn.tacs.tacsthree.connector.MarvelConnector;
@@ -10,9 +13,12 @@ import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
 import com.utn.tacs.tacsthree.connector.api.MarvelImage;
 import com.utn.tacs.tacsthree.connector.api.MarvelItem;
 import com.utn.tacs.tacsthree.connector.api.MarvelResource;
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 
 public class MarvelService {
+
+	private static final Logger LOGGER = Logger.getLogger(MarvelService.class);
 
 	private static Function<MarvelItem, String> ITEM_TRANSFORM = new Function<MarvelItem, String>() {
 
@@ -66,9 +72,13 @@ public class MarvelService {
 	}
 
 	public MarvelCharacter getCharacter(Long characterId) {
-		MarvelApiCharacter character = connector.getCharacter(characterId);
-
-		return TRANSFORM_FUNCTION.apply(character);
+		try {
+			MarvelApiCharacter character = connector.getCharacter(characterId);
+			return TRANSFORM_FUNCTION.apply(character);
+		} catch (Exception e) {
+			LOGGER.error(format("Cannot find character with id %s", characterId));
+			throw new InexistentTacsModelException(e.getMessage(), e);
+		}
 	}
 
 	public void setConnector(MarvelConnector connector) {

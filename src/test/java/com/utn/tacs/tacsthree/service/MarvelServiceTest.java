@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
@@ -19,6 +20,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.utn.tacs.tacsthree.connector.MarvelConnector;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
 import com.utn.tacs.tacsthree.connector.api.MarvelImage;
+import com.utn.tacs.tacsthree.exceptions.InexistentMarvelCharacterException;
+import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,6 +43,7 @@ public class MarvelServiceTest {
 		character.setThumbnail(new MarvelImage("test", "jpg"));
 
 		when(this.connector.getCharacter(eq(20L))).thenReturn(character);
+		when(this.connector.getCharacter(eq(209999L))).thenThrow(new InexistentMarvelCharacterException("error"));
 		when(this.connector.getAllCharacters()).thenReturn(newArrayList(character));
 	}
 
@@ -51,6 +55,12 @@ public class MarvelServiceTest {
 		assertEquals("Iron Man", character.getName());
 		assertEquals("Description", character.getDescription());
 		assertEquals("test/standard_amazing.jpg", character.getThumbnailUrl());
+	}
+
+	@Test(expected = InexistentTacsModelException.class)
+	public void getInexistentCharacter() {
+		service.getCharacter(209999L);
+		fail();
 	}
 
 	@Test
