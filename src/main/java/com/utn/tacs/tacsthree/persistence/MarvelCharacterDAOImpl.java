@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import com.google.common.collect.Maps;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
+import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.service.MarvelService;
 
 public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
@@ -19,6 +20,12 @@ public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 
 	private MarvelService marvelService = new MarvelService();
 	private Map<Long, MarvelCharacter> characters = new HashMap<Long, MarvelCharacter>();
+
+	public MarvelCharacterDAOImpl() {
+		for (MarvelCharacter character : MarvelCharacterTestRepository.getInstance().get()) {
+			characters.put(character.getIdMarvel(), character);
+		}
+	}
 
 	public static MarvelCharacterDAOImpl getInstance() {
 		return instance;
