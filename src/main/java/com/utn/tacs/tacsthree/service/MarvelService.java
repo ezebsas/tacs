@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.google.common.base.Function;
+import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.connector.MarvelConnector;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
 import com.utn.tacs.tacsthree.connector.api.MarvelImage;
@@ -63,7 +64,12 @@ public class MarvelService {
 		}
 	};
 
-	private MarvelConnector connector = new MarvelConnector();
+	private MarvelConnector connector;
+
+	@Inject
+	public MarvelService(MarvelConnector connector) {
+		this.connector = connector;
+	}
 
 	public List<MarvelCharacter> getAllCharacters() {
 		List<MarvelApiCharacter> characters = connector.getAllCharacters();
@@ -79,10 +85,6 @@ public class MarvelService {
 			LOGGER.error(format("Cannot find character with id %s", characterId));
 			throw new InexistentTacsModelException(e.getMessage(), e);
 		}
-	}
-
-	public void setConnector(MarvelConnector connector) {
-		this.connector = connector;
 	}
 
 }
