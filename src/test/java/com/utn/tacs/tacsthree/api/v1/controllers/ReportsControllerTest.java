@@ -1,6 +1,6 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class ReportsControllerTest {
 	@Test
 	public void getReports() {
 		List<Report> result = controller.getReports();
-		assertEquals(controller.reports.size(), result.size());
+		assertEquals(controller.getReports().size(), result.size());
 	}
 
 }

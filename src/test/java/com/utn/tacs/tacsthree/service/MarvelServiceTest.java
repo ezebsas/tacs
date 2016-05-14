@@ -27,7 +27,7 @@ import com.utn.tacs.tacsthree.models.MarvelCharacter;
 @RunWith(MockitoJUnitRunner.class)
 public class MarvelServiceTest {
 
-	private MarvelService service = new MarvelService();
+	private MarvelService service;
 
 	@Mock
 	private MarvelConnector connector;
@@ -35,7 +35,7 @@ public class MarvelServiceTest {
 	@Before
 	public void before() {
 		reset(connector);
-		service.setConnector(connector);
+		service = new MarvelService(connector);
 
 		MarvelApiCharacter character = new MarvelApiCharacter();
 		character.setName("Iron Man");

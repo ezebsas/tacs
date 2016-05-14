@@ -2,6 +2,7 @@ package com.utn.tacs.tacsthree.api.v1.controllers;
 
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
@@ -15,6 +16,7 @@ public class CharacterGroupsController {
 	private CharacterGroupDAO repository;
 	private MarvelCharacterDAO characterRepo;
 
+	@Inject
 	public CharacterGroupsController(CharacterGroupDAO _repository, MarvelCharacterDAO _characterRepo) {
 		this.repository = _repository;
 		this.characterRepo = _characterRepo;

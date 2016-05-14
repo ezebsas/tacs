@@ -10,13 +10,11 @@ import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
 public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 
-	public static MarvelCharacterTestRepository instance = new MarvelCharacterTestRepository();
+	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 
-	public static MarvelCharacterTestRepository getInstance() {
-		return instance;
+	public MarvelCharacterTestRepository() {
+		restart();
 	}
-
-	public List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 
 	public void restart() {
 		characters.clear();
@@ -33,10 +31,6 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
 		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
 		characters.add(bruceCharacter);
-	}
-
-	public MarvelCharacterTestRepository() {
-		restart();
 	}
 
 	@Override

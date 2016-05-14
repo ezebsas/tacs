@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
+import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacterDataContainer;
 import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacterDataWrapper;
@@ -31,6 +32,10 @@ public class MarvelConnector {
 	private static final String GET_RESPONSE = "GET RESPONSE %s STATUS %s";
 
 	private static final Logger LOGGER = Logger.getLogger(MarvelConnector.class);
+
+	@Inject
+	public MarvelConnector() {
+	}
 
 	public MarvelApiCharacter getCharacter(Long id) {
 		return get(createCharacterUrl(id)).getResults().get(0);
