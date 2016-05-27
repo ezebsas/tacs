@@ -1,4 +1,18 @@
-<div ng-controller="charactersCtrl">
-  <p>Hola</p>
-  <p ng-repeat="personaje in personajes">{{personaje.name}}</p>
+<div ng-controller="CharactersControllers">
+
+  <div class="col-md-2">
+    <p>
+      Buscar:
+      <input ng-model="$ctrl.query" />
+    </p>
+  </div>
+
+  <div class="col-md-10">
+    <ul>
+      <li ng-repeat="personaje in characters | filter:$ctrl.query| orderBy:'name'">
+        <span>{{personaje.id}}</span>
+        <p>{{personaje.name}}</p>
+      </li>
+    </ul>
+  </div>
 </div>

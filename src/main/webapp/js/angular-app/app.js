@@ -1,6 +1,6 @@
 angular.module('tacsthree.common', []);
 angular.module('tacsthree.user', ['ngResource', 'ui.bootstrap', 'tacsthree.common']);
-angular.module('tacsthree.characters', []);
+angular.module('tacsthree.characters', ['ngResource', 'ui.bootstrap', 'tacsthree.common']);
 
 var tacsthreeApp = angular.module('tacsthree', [
   'tacsthree.common',
@@ -26,7 +26,7 @@ tacsthreeApp.config(['$routeProvider',
     })
     .when('/characters', {
       templateUrl: 'templates/characters.html',
-      controller: 'charactersCtrl'
+      controller: 'CharactersControllers'
     })
     .otherwise({
       redirectTo: '/'
