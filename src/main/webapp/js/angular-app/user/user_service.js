@@ -2,7 +2,7 @@ angular.module('tacsthree.user').factory('UsersService',
   ['$resource', 'User', 'CommonService', function($resource, User, CommonService) {
   'use strict';
   
-  this.api = $resource('/api/v1/users/:id', {
+  this.api = $resource('/tacsthree/api/v1/characters/:id', {
     id: '@id', format: 'json'
   }, {
     update: { method: 'PUT' },
