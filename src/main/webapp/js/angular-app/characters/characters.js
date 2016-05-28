@@ -2,7 +2,8 @@ angular.module('tacsthree.characters').factory('Characters', function(){
 
   'use strict';
 
-  var INSTANCE_PROPERTIES = ['id', 'name'];
+  var INSTANCE_PROPERTIES = ['idMarvel', 'name', 'description', 'thumbnailUrl','urls'
+        ,'comics', 'stories', 'events', 'series'];
 
   function Characters(attributes) {
     _.merge(this, _.pick(attributes, INSTANCE_PROPERTIES));

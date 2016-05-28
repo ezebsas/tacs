@@ -2,10 +2,8 @@ angular.module('tacsthree.characters').factory('CharactersService',
   ['$resource', 'Characters', 'CommonService', function($resource, Characters, CommonService) {
   'use strict';
   
-  this.api = $resource('/tacsthree/api/v1/characters/', {
-    format: 'json'
-  }, {
-    get: { method: 'GET' }
+  this.api = $resource('/tacsthree/api/v1/characters/:id', {
+    id: '@id',format: 'json'
   });
 
   this.buildElement = function(attributes) {
