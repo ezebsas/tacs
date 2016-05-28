@@ -2,7 +2,7 @@ angular.module('tacsthree.user').factory('User', function(){
 
   'use strict';
 
-  var INSTANCE_PROPERTIES = ['id', 'name'];
+  var INSTANCE_PROPERTIES = ['id', 'name', 'groupsHistoric', 'characters', 'groups'];
 
   function User(attributes) {
     _.merge(this, _.pick(attributes, INSTANCE_PROPERTIES));
