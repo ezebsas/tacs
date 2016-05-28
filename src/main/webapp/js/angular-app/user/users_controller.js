@@ -1,9 +1,9 @@
 angular.module('tacsthree.user').controller('UsersController', 
-['$scope', 'UserService', '$controller', 'User',
-function($scope, UserService, $controller, User) {
+['$scope', 'UsersService', '$controller', 'User',
+function($scope, UsersService, $controller, User) {
   'use strict';
 
-  $scope.service = UserService;
+  $scope.service = UsersService;
   $scope.currentPage = 'users';
   $scope.users = [];
   $scope.model = User;
