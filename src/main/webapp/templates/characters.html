@@ -3,16 +3,25 @@
   <div class="col-md-2">
     <p>
       Buscar:
-      <input ng-model="$ctrl.query" />
+      <input ng-model="search.name" />
     </p>
   </div>
 
   <div class="col-md-10">
-    <ul>
-      <li ng-repeat="personaje in characters | filter:$ctrl.query| orderBy:'name'">
-        <span>{{personaje.id}}</span>
-        <p>{{personaje.name}}</p>
-      </li>
-    </ul>
+    <div class="media" ng-repeat="personaje in characters | filter: search | orderBy:'name'">
+
+      <div class="media-left media-middle" >
+        <a href="#/characters/{{personaje.idMarvel}}" class="thumb">
+          <img class="media-object" ng-src="{{personaje.thumbnailUrl}}"/>
+        </a>
+      </div>
+
+      <div class="media-body">
+        <a href="#/characters/{{personaje.idMarvel}}">{{personaje.name}}</a>
+        <p>{{personaje.description}}</p>
+      </div>
+    </div>
+
+
   </div>
 </div>
