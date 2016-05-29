@@ -9,19 +9,24 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
+import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.service.MarvelService;
 
 public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 
-	private static MarvelCharacterDAOImpl instance = new MarvelCharacterDAOImpl();
-
-	private MarvelService marvelService = new MarvelService();
+	private final MarvelService marvelService;
 	private Map<Long, MarvelCharacter> characters = new HashMap<Long, MarvelCharacter>();
 
-	public static MarvelCharacterDAOImpl getInstance() {
-		return instance;
+	@Inject
+	public MarvelCharacterDAOImpl(MarvelService marvelService) {
+		this.marvelService = marvelService;
+
+		for (MarvelCharacter character : new MarvelCharacterTestRepository().get()) {
+			characters.put(character.getIdMarvel(), character);
+		}
 	}
 
 	@Override
@@ -35,7 +40,7 @@ public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 
 	@Override
 	public MarvelCharacter get(MarvelCharacter _character) throws InexistentTacsModelException {
-		MarvelCharacter marvelCharacter = characters.get(_character.getId());
+		MarvelCharacter marvelCharacter = characters.get(_character.getIdMarvel());
 
 		if (marvelCharacter == null) {
 			marvelCharacter = marvelService.getCharacter(_character.getIdMarvel());

@@ -5,6 +5,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
 public class MarvelCharacter extends TacsModel {
@@ -40,6 +42,12 @@ public class MarvelCharacter extends TacsModel {
 		this.setName(nombre);
 		this.setDescription(descripcion);
 
+	}
+
+	@Override
+	@JsonIgnore
+	public String getId() {
+		return super.getId();
 	}
 
 	public Long getIdMarvel() {

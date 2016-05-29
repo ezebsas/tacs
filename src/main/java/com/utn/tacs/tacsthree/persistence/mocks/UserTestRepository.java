@@ -3,15 +3,18 @@ package com.utn.tacs.tacsthree.persistence.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
 public class UserTestRepository implements UserDAO {
-	public static UserTestRepository instance = new UserTestRepository();
 
-	public static UserTestRepository getInstance() {
-		return instance;
+	public List<User> userList = new ArrayList<User>();
+
+	@Inject
+	public UserTestRepository() {
+		restart();
 	}
 
 	public void restart() {
@@ -22,12 +25,6 @@ public class UserTestRepository implements UserDAO {
 		userList.add(new User("5709b8799a96331925075304", "Eze"));
 		userList.add(new User("5709b8799a96331925075305", "Ramiro"));
 		userList.add(new User("5709b8799a96331925075306", "Facu"));
-	}
-
-	public List<User> userList = new ArrayList<User>();
-
-	public UserTestRepository() {
-		restart();
 	}
 
 	@Override

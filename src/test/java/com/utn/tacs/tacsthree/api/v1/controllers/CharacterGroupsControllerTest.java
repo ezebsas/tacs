@@ -18,8 +18,8 @@ import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 public class CharacterGroupsControllerTest {
 
 	private CharacterGroupsController controller;
-	private CharacterGroupDAO groupRepo = CharacterGroupTestRepository.getInstance();
-	private MarvelCharacterDAO characRepo = MarvelCharacterTestRepository.getInstance();
+	private CharacterGroupDAO groupRepo = new CharacterGroupTestRepository();
+	private MarvelCharacterDAO characRepo = new MarvelCharacterTestRepository();
 
 	@Before
 	public void setUp() {

@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
 import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
 import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
@@ -28,20 +29,26 @@ import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
-import com.utn.tacs.tacsthree.auth.Authenticator;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
+
 
 @Path("api/v1/")
 public class RouteProvider {
 
-	public UserDAO userRepo = UserTestRepository.getInstance();
-	public MarvelCharacterDAO characRepo = MarvelCharacterDAOImpl.getInstance();
-	public CharacterGroupDAO groupsRepo = CharacterGroupTestRepository.getInstance();
-	public UsersController userController = new UsersController(userRepo, characRepo);
-	public MarvelCharactersController characterController = new MarvelCharactersController(characRepo);
-	public CharacterGroupsController groupsController = new CharacterGroupsController(groupsRepo, characRepo);
-	public ReportsController reportsController = new ReportsController();
-        public Authenticator authenticator= new Authenticator(this);
+
+	private UsersController userController;
+	private MarvelCharactersController characterController;
+	private CharacterGroupsController groupsController;
+	private ReportsController reportsController;
+
+	@Inject
+	public RouteProvider(MarvelCharactersController characterController, UsersController userController,
+			CharacterGroupsController groupsController, ReportsController reportsController) {
+		this.characterController = characterController;
+		this.userController = userController;
+		this.groupsController = groupsController;
+		this.reportsController = reportsController;
+	}
 
 	@GET
 	@Path("/users")
@@ -347,15 +354,4 @@ public class RouteProvider {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-        
-        @POST
-        @Path("/login")
-        public Response login(@PathParam("username") String username, @PathParam("password") String password) {
-            try{
-                return Response.ok(authenticator.login(username, password)).build();                
-            } catch (InexistentTacsModelException e) {
-                //Todo: Return to login
-                return Response.status(Status.NOT_FOUND).build();
-            }
-        }
 }

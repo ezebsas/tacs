@@ -17,8 +17,8 @@ import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 public class UsersControllerTest {
 
 	private UsersController controller;
-	private UserDAO userRepo = UserTestRepository.getInstance();
-	private MarvelCharacterDAO characRepo = MarvelCharacterTestRepository.getInstance();
+	private UserDAO userRepo = new UserTestRepository();
+	private MarvelCharacterDAO characRepo = new MarvelCharacterTestRepository();
 
 	@Before
 	public void setUp() {

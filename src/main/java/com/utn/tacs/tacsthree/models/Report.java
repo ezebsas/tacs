@@ -1,6 +1,7 @@
 package com.utn.tacs.tacsthree.models;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 
@@ -8,6 +9,7 @@ public abstract class Report extends TacsModel {
 
 	@JsonProperty("name")
 	private String name;
+	protected ObjectMapper mapper = new ObjectMapper();
 
 	private String getName() {
 		return name;
