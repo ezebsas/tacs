@@ -1,0 +1,46 @@
+<div ng-controller="GroupsControllers">
+
+	<section>
+		<h1>Nuevo Grupo</h1>
+		<!-- El formulario nuevo artículo -->
+		<form>
+			<div>
+				<label for="name">Nombre del grupo</label>
+				<div>
+					<input type="text" data-ng-model="name" id="name"
+						placeholder="Nombre del grupo" required>
+				</div>
+			</div>
+			<div>
+				<input type="submit">
+			</div>
+			<!-- El elemento mensaje de error -->
+			<div data-ng-show="error">
+				<strong data-ng-bind="error"></strong>
+			</div>
+		</form>
+	</section>
+
+	<br />
+
+	<div>
+		<p>
+			Buscar: <input ng-model="search.name" />
+		</p>
+	</div>
+
+	<div>
+		<table style="width: 100%">
+			<tr>
+				<th>Grupo</th>
+				<th>Personajes</th>
+			</tr>
+			<tr ng-repeat="group in groups | filter: search | orderBy:'name'">
+				<td>{{group.name}}</td>
+				<td>{{group.characters.length}}</td>
+			</tr>
+			</div>
+		</table>
+
+
+	</div>
