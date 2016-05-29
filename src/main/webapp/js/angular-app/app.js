@@ -3,6 +3,7 @@ angular.module('tacsthree.user', ['ngResource', 'ui.bootstrap', 'tacsthree.commo
 angular.module('tacsthree.characters', ['ngResource', 'ui.bootstrap', 'tacsthree.common']);
 angular.module('tacsthree.char', ['ngResource']);
 angular.module('tacsthree.abm_user', ['ngResource']);
+angular.module('tacsthree.abm_group', ['ngResource']);
 
 var tacsthreeApp = angular.module('tacsthree', [
   'tacsthree.common',
@@ -10,6 +11,7 @@ var tacsthreeApp = angular.module('tacsthree', [
   'tacsthree.abm_user',
   'tacsthree.characters',
   'tacsthree.char',
+  'tacsthree.abm_group',
   'ngResource',
   'ngRoute',
   'ui.bootstrap'
@@ -39,6 +41,10 @@ tacsthreeApp.config(['$routeProvider',
     .when('/characters/:idMarvel', {
       templateUrl: 'templates/characters_detail.html',
       controller: 'charactCtrl'
+    })
+    .when('/groups', {
+      templateUrl: 'templates/groups.html',
+      controller: 'GroupsControllers'
     })
     .otherwise({
       redirectTo: '/'
