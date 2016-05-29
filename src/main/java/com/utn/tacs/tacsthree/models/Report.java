@@ -24,8 +24,6 @@ public abstract class Report extends TacsModel {
 
 	@Override
 	public void valid() throws InvalidTacsModelException {
-		if (this.getId() == null)
-			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
 			throw new InvalidTacsModelException("invalid name");
 	}

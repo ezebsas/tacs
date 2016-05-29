@@ -3,6 +3,7 @@ package com.utn.tacs.tacsthree.api.v1.controllers;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,8 +29,31 @@ public class CharacterGroupsControllerTest {
 
 	@Before
 	public void setUp() {
-		((CharacterGroupTestRepository) groupRepo).restart();
-		((MarvelCharacterTestRepository) characRepo).restart();
+		((MarvelCharacterTestRepository) characRepo).characters.clear();
+
+		MarvelCharacter peterCharacter = new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", "");
+		peterCharacter.setModified(new Date(1315515501000L));
+		peterCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009491");
+		peterCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		((MarvelCharacterTestRepository) characRepo).characters.add(peterCharacter);
+
+		MarvelCharacter bruceCharacter = new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", "");
+		bruceCharacter.setModified(new Date(1326594561000L));
+		bruceCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
+		((MarvelCharacterTestRepository) characRepo).characters.add(bruceCharacter);
+
+		((CharacterGroupTestRepository) groupRepo).groupList.clear();
+		Integer index = 0;
+		for (MarvelCharacter _charac : characRepo.get()) {
+			CharacterGroup group = new CharacterGroup();
+			group.setId((index++).toString() + "709b8799a96331925075510");
+			group.setName("Group of " + _charac.getName());
+			group.addCharacters(_charac);
+			((CharacterGroupTestRepository) groupRepo).groupList.add(group);
+		}
 		controller = new CharacterGroupsController(groupRepo, characRepo);
 	}
 

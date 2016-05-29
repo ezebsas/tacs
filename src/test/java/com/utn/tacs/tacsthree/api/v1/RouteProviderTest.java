@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -34,10 +35,38 @@ public class RouteProviderTest {
 
 	@Before
 	public void setUp() {
-		characterRepository.restart();
-		userRepository.restart();
-		groupRepository.restart();
+		characterRepository.characters.clear();
+		MarvelCharacter peterCharacter = new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", "");
+		peterCharacter.setModified(new Date(1315515501000L));
+		peterCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009491");
+		peterCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		characterRepository.characters.add(peterCharacter);
 
+		MarvelCharacter bruceCharacter = new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", "");
+		bruceCharacter.setModified(new Date(1326594561000L));
+		bruceCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
+		characterRepository.characters.add(bruceCharacter);
+
+		userRepository.delete();
+		userRepository.userList.add(new User("5709b8799a96331925075301", "Tom"));
+		userRepository.userList.add(new User("5709b8799a96331925075302", "Seba"));
+		userRepository.userList.add(new User("5709b8799a96331925075303", "Fabi"));
+		userRepository.userList.add(new User("5709b8799a96331925075304", "Eze"));
+		userRepository.userList.add(new User("5709b8799a96331925075305", "Ramiro"));
+		userRepository.userList.add(new User("5709b8799a96331925075306", "Facu"));
+
+		groupRepository.groupList.clear();
+		Integer index = 0;
+		for (MarvelCharacter _charac : characterRepository.get()) {
+			CharacterGroup group = new CharacterGroup();
+			group.setId((index++).toString() + "709b8799a96331925075510");
+			group.setName("Group of " + _charac.getName());
+			group.addCharacters(_charac);
+			groupRepository.groupList.add(group);
+		}
 		MarvelCharactersController characterController = new MarvelCharactersController(characterRepository);
 		UsersController userController = new UsersController(userRepository, characterRepository);
 		CharacterGroupsController groupsController = new CharacterGroupsController(groupRepository,
@@ -56,7 +85,9 @@ public class RouteProviderTest {
 
 	@Test
 	public void addUserTest() {
-		Response response = route.addUser(new User("5709b8799a96331925075300", "Test Subject"));
+		User _user = new User();
+		_user.setName("Test Subject");
+		Response response = route.addUser(_user);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 

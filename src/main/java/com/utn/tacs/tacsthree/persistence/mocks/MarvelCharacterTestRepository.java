@@ -10,7 +10,7 @@ import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 
 public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 
-	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
+	public List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 
 	public MarvelCharacterTestRepository() {
 		restart();
@@ -23,6 +23,7 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 		peterCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009491");
 		peterCharacter.setThumbnailUrl(
 				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		peterCharacter.generateNewId();
 		characters.add(peterCharacter);
 
 		MarvelCharacter bruceCharacter = new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", "");
@@ -30,6 +31,7 @@ public class MarvelCharacterTestRepository implements MarvelCharacterDAO {
 		bruceCharacter.setThumbnailUrl(
 				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
 		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
+		bruceCharacter.generateNewId();
 		characters.add(bruceCharacter);
 	}
 

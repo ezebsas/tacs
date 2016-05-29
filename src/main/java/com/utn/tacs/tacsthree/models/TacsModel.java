@@ -24,4 +24,8 @@ public abstract class TacsModel {
 	public Boolean sameModels(TacsModel _model) {
 		return getId().equals(_model.getId());
 	}
+
+	public void generateNewId() {
+		this.id = new ObjectId();
+	}
 }
