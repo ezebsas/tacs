@@ -8,7 +8,7 @@
   </div>
 
   <div class="col-md-10">
-    <div class="media" ng-repeat="personaje in characters | filter: search | orderBy:'name'">
+    <div class="media" ng-repeat="personaje in characters | filter: search | orderBy:'-modified'">
 
       <div class="media-left media-middle" >
         <a href="#/characters/{{personaje.idMarvel}}" class="thumb">
