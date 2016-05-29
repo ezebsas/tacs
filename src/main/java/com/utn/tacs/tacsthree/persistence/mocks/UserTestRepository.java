@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.models.CharacterGroup;
+import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
@@ -64,5 +66,16 @@ public class UserTestRepository implements UserDAO {
 	@Override
 	public void delete() {
 		userList.clear();
+	}
+
+	@Override
+	public void tellAboutElimination(List<? extends TacsModel> observees) {
+		for (User user : userList)
+			for (TacsModel character : observees)
+				try {
+					user.removeGroup((CharacterGroup) character);
+				} catch (InexistentTacsModelException e) {
+					// It's Ok, if that group wasnt crated by this user ;)
+				}
 	}
 }

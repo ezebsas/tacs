@@ -9,7 +9,7 @@ import com.google.inject.Provides;
 import com.utn.tacs.tacsthree.api.v1.RouteProvider;
 import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
 import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
-import com.utn.tacs.tacsthree.connector.MarvelConnector;
+import com.utn.tacs.tacsthree.connectors.MarvelConnector;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;

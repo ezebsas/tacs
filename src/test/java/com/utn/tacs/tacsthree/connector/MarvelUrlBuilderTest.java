@@ -1,7 +1,7 @@
 package com.utn.tacs.tacsthree.connector;
 
-import static com.utn.tacs.tacsthree.connector.MarvelUrlBuilder.createCharacterUrl;
-import static com.utn.tacs.tacsthree.connector.MarvelUrlBuilder.createCharactersUrl;
+import static com.utn.tacs.tacsthree.connectors.MarvelUrlBuilder.createCharacterUrl;
+import static com.utn.tacs.tacsthree.connectors.MarvelUrlBuilder.createCharactersUrl;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

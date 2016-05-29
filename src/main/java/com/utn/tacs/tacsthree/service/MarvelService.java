@@ -9,11 +9,11 @@ import org.apache.log4j.Logger;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
-import com.utn.tacs.tacsthree.connector.MarvelConnector;
-import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
-import com.utn.tacs.tacsthree.connector.api.MarvelImage;
-import com.utn.tacs.tacsthree.connector.api.MarvelItem;
-import com.utn.tacs.tacsthree.connector.api.MarvelResource;
+import com.utn.tacs.tacsthree.connectors.MarvelConnector;
+import com.utn.tacs.tacsthree.connectors.api.MarvelApiCharacter;
+import com.utn.tacs.tacsthree.connectors.api.MarvelImage;
+import com.utn.tacs.tacsthree.connectors.api.MarvelItem;
+import com.utn.tacs.tacsthree.connectors.api.MarvelResource;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 
