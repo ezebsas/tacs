@@ -1,27 +1,103 @@
 <div ng-controller="CharactersControllers">
 
-  <div class="col-md-2">
-    <p>
-      Buscar:
-      <input ng-model="search.name" />
-    </p>
-  </div>
+  <p>
+    Buscar:
+    <input ng-model="search.name" />
+  </p>
 
-  <div class="col-md-10">
-    <div class="media" ng-repeat="personaje in characters | filter: search | orderBy:'-modified'">
+  <br/>
 
-      <div class="media-left media-middle" >
-        <a href="#/characters/{{personaje.idMarvel}}" class="thumb">
-          <img class="media-object" ng-src="{{personaje.thumbnailUrl}}"/>
-        </a>
+  <div class="media" ng-repeat="personaje in characters | filter: search | orderBy:'-modified'">
+
+    <div class="media-left media-middle" >
+      <a href="#/characters/{{personaje.idMarvel}}" class="thumb">
+        <img class="media-object" ng-src="{{personaje.thumbnailUrl}}"/>
+      </a>
+    </div>
+
+    <div class="media-body">
+      <a href="#/characters/{{personaje.idMarvel}}">{{personaje.name}}</a>
+      <p>{{personaje.description}}</p>
+    </div>
+
+    <button ng-click="showme=true" ng-hide="showme">Ver mas</button> 
+    <button ng-click="showme=false" ng-show="showme">Ocultar</button> 
+
+    <div class="container" ng-show="showme">
+      <div class="row info" style="text-align:center;">
+        <div class="col-xs-12 alert alert-info">
+          Detalle de {{personaje.name}}
+        </div>
       </div>
 
-      <div class="media-body">
-        <a href="#/characters/{{personaje.idMarvel}}">{{personaje.name}}</a>
-        <p>{{personaje.description}}</p>
+      <div class="resume">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+            <div class="panel panel-default">
+              <div class="panel-heading resume-heading">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="col-xs-12 col-sm-4 col-lg-4">
+                      <figure>
+                        <img class="img-circle img-responsive" alt="" ng-src="{{personaje.thumbnailUrl}}">
+                      </figure>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-lg-8">
+                      <ul class="list-group">
+                        <li class="list-group-item">{{personaje.name}}</li>
+                        <li class="list-group-item">Personaje</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="bs-callout bs-callout-danger">
+                  <h4>Descripcion</h4>
+                  <p>{{personaje.description}}</p>
+                </div>
+                <div class="bs-callout bs-callout-danger">
+                  <h4>Comics</h4>
+                  <p ng-repeat="comic in personaje.comics">
+                    {{comic}}
+                  </p>
+                </div>
+
+                <div class="bs-callout bs-callout-danger">
+                  <h4>Historias</h4>
+                  <ul class="list-group">
+                    <a class="list-group-item inactive-link " href="#" ng-repeat="storie in personaje.stories">
+                      <h4 class="list-group-item-heading">
+                        {{storie}}
+                      </h4>
+                    </a>
+                  </ul>
+                </div>
+                <div class="bs-callout bs-callout-danger">
+                  <h4>Eventos</h4>
+                  <ul class="list-group" ng-repeat="event in personaje.events">
+                    <li class="list-group-item">{{event}}</li>
+                  </ul>
+                </div>
+                <div class="bs-callout bs-callout-danger">
+                  <h4>Series</h4>
+                  <ul class="list-group" ng-repeat="serie in personaje.series">
+                    <li class="list-group-item">{{serie}}</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
 
+    <button ng-click="showme=false" ng-show="showme">Ocultar</button> 
 
   </div>
+
+
+
 </div>
+
+
