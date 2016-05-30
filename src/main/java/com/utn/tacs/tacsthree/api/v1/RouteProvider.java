@@ -31,6 +31,7 @@ import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
+import com.utn.tacs.tacsthree.auth.*;
 
 
 @Path("api/v1/")

@@ -35,8 +35,12 @@ public class Authenticator {
         cal.add(Calendar.HOUR_OF_DAY, 1);
         Date expirationDate =cal.getTime();
         String jwt=null;
+        User requestedUser;
         
-        User user=route.userRepo.get(username);
+        requestedUser.setName(username);
+        requestedUser.setId(password);
+        
+        User user=route.userRepo.get(requestedUser);
         if(user.getPassword().equals(password)){
             jwt = Jwts.builder().setSubject(username)
                     .setExpiration(expirationDate)
