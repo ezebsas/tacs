@@ -17,9 +17,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.utn.tacs.tacsthree.connector.MarvelConnector;
-import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
-import com.utn.tacs.tacsthree.connector.api.MarvelImage;
+import com.utn.tacs.tacsthree.connectors.MarvelConnector;
+import com.utn.tacs.tacsthree.connectors.api.MarvelApiCharacter;
+import com.utn.tacs.tacsthree.connectors.api.MarvelImage;
 import com.utn.tacs.tacsthree.exceptions.InexistentMarvelCharacterException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;

@@ -18,18 +18,6 @@ public class CharacterGroupTest {
 	}
 
 	@Test
-	public void createUserWithoutId() {
-		CharacterGroup testGroup = new CharacterGroup();
-		testGroup.setName("Test");
-		testGroup.addCharacters(new MarvelCharacter());
-		try {
-			testGroup.valid();
-		} catch (InvalidTacsModelException e) {
-			assertEquals("invalid id", e.getMessage());
-		}
-	}
-
-	@Test
 	public void createUserWithoutName() {
 		CharacterGroup testGroup = new CharacterGroup();
 		testGroup.setId("5709b8799a96331925075306");

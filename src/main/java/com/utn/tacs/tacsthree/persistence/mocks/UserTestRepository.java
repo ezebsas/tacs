@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.models.CharacterGroup;
+import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
@@ -19,12 +21,12 @@ public class UserTestRepository implements UserDAO {
 
 	public void restart() {
 		userList.clear();
-		userList.add(new User("5709b8799a96331925075301", "Tom"));
-		userList.add(new User("5709b8799a96331925075302", "Seba"));
-		userList.add(new User("5709b8799a96331925075303", "Fabi"));
-		userList.add(new User("5709b8799a96331925075304", "Eze"));
-		userList.add(new User("5709b8799a96331925075305", "Ramiro"));
-		userList.add(new User("5709b8799a96331925075306", "Facu"));
+		save(new User("1309b8799a96331925075301", "Tom"));
+		save(new User("1309b8799a96331925075301", "Seba"));
+		save(new User("1309b8799a96331925075301", "Fabi"));
+		save(new User("1309b8799a96331925075301", "Eze"));
+		save(new User("1309b8799a96331925075301", "Ramiro"));
+		save(new User("1309b8799a96331925075301", "Facu"));
 	}
 
 	@Override
@@ -47,6 +49,7 @@ public class UserTestRepository implements UserDAO {
 			userList.remove(_user);
 		} catch (InexistentTacsModelException e) {
 			// Ok! So it doesn't exist, let's create it!
+			user.generateNewId();
 		}
 		userList.add(user);
 	}
@@ -64,5 +67,16 @@ public class UserTestRepository implements UserDAO {
 	@Override
 	public void delete() {
 		userList.clear();
+	}
+
+	@Override
+	public void tellAboutElimination(List<? extends TacsModel> observees) {
+		for (User user : userList)
+			for (TacsModel character : observees)
+				try {
+					user.removeGroup((CharacterGroup) character);
+				} catch (InexistentTacsModelException e) {
+					// It's Ok, if that group wasnt crated by this user ;)
+				}
 	}
 }

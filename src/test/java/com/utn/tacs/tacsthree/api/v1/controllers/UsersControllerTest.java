@@ -2,6 +2,8 @@ package com.utn.tacs.tacsthree.api.v1.controllers;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,8 +24,27 @@ public class UsersControllerTest {
 
 	@Before
 	public void setUp() {
-		((UserTestRepository) userRepo).restart();
-		((MarvelCharacterTestRepository) characRepo).restart();
+		((UserTestRepository) userRepo).delete();
+		((UserTestRepository) userRepo).userList.add(new User("5709b8799a96331925075301", "Tom"));
+		((UserTestRepository) userRepo).userList.add(new User("5709b8799a96331925075302", "Seba"));
+		((UserTestRepository) userRepo).userList.add(new User("5709b8799a96331925075303", "Fabi"));
+		((UserTestRepository) userRepo).userList.add(new User("5709b8799a96331925075304", "Eze"));
+		((UserTestRepository) userRepo).userList.add(new User("5709b8799a96331925075305", "Ramiro"));
+		((UserTestRepository) userRepo).userList.add(new User("5709b8799a96331925075306", "Facu"));
+
+		((MarvelCharacterTestRepository) characRepo).characters.clear();
+		MarvelCharacter peterCharacter = new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", "");
+		peterCharacter.setModified(new Date(1315515501000L));
+		peterCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009491");
+		peterCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		((MarvelCharacterTestRepository) characRepo).characters.add(peterCharacter);
+		MarvelCharacter bruceCharacter = new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", "");
+		bruceCharacter.setModified(new Date(1326594561000L));
+		bruceCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
+		((MarvelCharacterTestRepository) characRepo).characters.add(bruceCharacter);
 		controller = new UsersController(userRepo, characRepo);
 	}
 

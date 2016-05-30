@@ -1,8 +1,8 @@
-package com.utn.tacs.tacsthree.connector;
+package com.utn.tacs.tacsthree.connectors;
 
-import static com.utn.tacs.tacsthree.connector.MarvelUrlBuilder.MAX_LIMIT;
-import static com.utn.tacs.tacsthree.connector.MarvelUrlBuilder.createCharacterUrl;
-import static com.utn.tacs.tacsthree.connector.MarvelUrlBuilder.createCharactersUrl;
+import static com.utn.tacs.tacsthree.connectors.MarvelUrlBuilder.MAX_LIMIT;
+import static com.utn.tacs.tacsthree.connectors.MarvelUrlBuilder.createCharacterUrl;
+import static com.utn.tacs.tacsthree.connectors.MarvelUrlBuilder.createCharactersUrl;
 import static java.lang.String.format;
 
 import java.util.ArrayList;
@@ -16,13 +16,13 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import com.google.inject.Inject;
-import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacter;
-import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacterDataContainer;
-import com.utn.tacs.tacsthree.connector.api.MarvelApiCharacterDataWrapper;
-import com.utn.tacs.tacsthree.connector.api.MarvelApiError;
+import com.utn.tacs.tacsthree.connectors.api.MarvelApiCharacter;
+import com.utn.tacs.tacsthree.connectors.api.MarvelApiCharacterDataContainer;
+import com.utn.tacs.tacsthree.connectors.api.MarvelApiCharacterDataWrapper;
+import com.utn.tacs.tacsthree.connectors.api.MarvelApiError;
 import com.utn.tacs.tacsthree.exceptions.InexistentMarvelCharacterException;
 import com.utn.tacs.tacsthree.exceptions.MarvelApiException;
-import com.utn.tacs.tacsthree.jsonmapper.ObjectMapperProvider;
+import com.utn.tacs.tacsthree.helpers.ObjectMapperProvider;
 
 public class MarvelConnector {
 

@@ -1,4 +1,4 @@
-package com.utn.tacs.tacsthree.connector.api;
+package com.utn.tacs.tacsthree.connectors.api;
 
 public class MarvelUrl {
 
