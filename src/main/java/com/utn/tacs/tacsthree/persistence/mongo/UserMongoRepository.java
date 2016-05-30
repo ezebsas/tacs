@@ -43,7 +43,12 @@ public class UserMongoRepository implements UserDAO {
 			throw new InexistentTacsModelException("delete failed");
 		}
 	}
-
+	
+	@Override
+	public User getByName(String name) throws InexistentTacsModelException {
+		User _user = datastore.g
+	}
+	
 	@Override
 	public void delete() {
 		datastore.getCollection(User.class).drop();
