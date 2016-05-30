@@ -23,9 +23,9 @@ public class TacsModule implements Module {
 	public void configure(Binder binder) {
 		binder.bind(RouteProvider.class);
 		binder.bind(MarvelCharactersController.class);
-		binder.bind(MarvelCharacterDAO.class).to(MarvelCharacterDAOImpl.class);
-		binder.bind(UserDAO.class).to(UserTestRepository.class);
-		binder.bind(CharacterGroupDAO.class).to(CharacterGroupTestRepository.class);
+		binder.bind(MarvelCharacterDAO.class).to(MarvelCharacterDAOImpl.class).asEagerSingleton();
+		binder.bind(UserDAO.class).to(UserTestRepository.class).asEagerSingleton();
+		binder.bind(CharacterGroupDAO.class).to(CharacterGroupTestRepository.class).asEagerSingleton();
 		binder.bind(ReportsController.class);
 		binder.bind(MarvelConnector.class);
 	}
