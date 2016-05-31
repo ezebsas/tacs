@@ -4,6 +4,7 @@ angular.module('tacsthree.characters', ['ngResource', 'ui.bootstrap', 'tacsthree
 angular.module('tacsthree.char', ['ngResource']);
 angular.module('tacsthree.abm_user', ['ngResource']);
 angular.module('tacsthree.abm_group', ['ngResource']);
+angular.module('tacsthree.login', []);
 
 var tacsthreeApp = angular.module('tacsthree', [
   'tacsthree.common',
@@ -12,6 +13,7 @@ var tacsthreeApp = angular.module('tacsthree', [
   'tacsthree.characters',
   'tacsthree.char',
   'tacsthree.abm_group',
+  'tacsthree.login',
   'ngResource',
   'ngRoute',
   'ui.bootstrap'
@@ -45,6 +47,10 @@ tacsthreeApp.config(['$routeProvider',
     .when('/groups', {
       templateUrl: 'templates/groups.html',
       controller: 'GroupsControllers'
+    })
+    .when('/login',{
+    	templateUrl: 'templates/login.html',
+    	controller: 'loginController'
     })
     .otherwise({
       redirectTo: '/'

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -22,6 +23,7 @@ import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
 import com.utn.tacs.tacsthree.exceptions.DuplicateTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
+import com.utn.tacs.tacsthree.exceptions.NotAuthorizedException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
@@ -354,6 +356,20 @@ public class RouteProvider {
 			return Response.ok(reportsController.getReports()).build();
 		} catch (NullPointerException e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	@POST
+	@Path("/login")
+	@Consumes("application/x-www-form-urlencoded")
+	public Response login(@FormParam("username") String user, @FormParam("password") String pass){
+		
+		Authenticator authEngine = new Authenticator(userController.userRepository);
+		
+		try{
+			return Response.ok(authEngine.login(user, pass)).build();
+		} catch (NotAuthorizedException e){
+			return Response.status(Status.UNAUTHORIZED).build();
 		}
 	}
 }

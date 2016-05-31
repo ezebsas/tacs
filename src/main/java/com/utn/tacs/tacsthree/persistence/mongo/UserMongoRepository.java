@@ -38,9 +38,14 @@ public class UserMongoRepository implements UserDAO {
 	@Override
     public User get(String username) throws InexistentTacsModelException{
         
+		List<User> usuarios = datastore.find(User.class).asList();
+		User user = new User();
+		
 		try{
-        	User user = datastore.find(User.class).filter("username =", username).get();
-        	return user;
+			for (User _user: usuarios)
+                if(_user.getName().equals(username))
+                    user = _user;
+			return user;
         } catch (InexistentTacsModelException e) {
         	throw new InexistentTacsModelException("Get user by name failed");
         }

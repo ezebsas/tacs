@@ -3,8 +3,6 @@ package com.utn.tacs.tacsthree.auth;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.mongodb.morphia.Datastore;
-
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
@@ -14,17 +12,17 @@ import java.security.Key;
 import com.utn.tacs.tacsthree.api.v1.RouteProvider;
 import com.utn.tacs.tacsthree.exceptions.NotAuthorizedException;
 import com.utn.tacs.tacsthree.models.User;
-import com.utn.tacs.tacsthree.persistence.mongo.UserMongoRepository;
+import com.utn.tacs.tacsthree.persistence.UserDAO;
     
 public class Authenticator {
 	
-	private Datastore _datastore;
+	private UserDAO userRepo;
 	
     public Key key = MacProvider.generateKey();
     public RouteProvider route;
     
-    public Authenticator(Datastore datastore) {
-    	this._datastore = datastore;
+    public Authenticator(UserDAO repo) {
+    	this.userRepo = repo;
     }
 
     public Authenticator(RouteProvider route) {
@@ -41,7 +39,6 @@ public class Authenticator {
         cal.add(Calendar.HOUR_OF_DAY, 1);
         Date expirationDate =cal.getTime();
         String jwt=null;
-        UserMongoRepository userRepo = new UserMongoRepository(_datastore);
         
         User user = userRepo.get(username);
         
@@ -63,7 +60,6 @@ public class Authenticator {
         
         String username=Jwts.parser().setSigningKey(key).parseClaimsJws(compactJwt).getBody().getSubject();
         Date expirationDate=Jwts.parser().setSigningKey(key).parseClaimsJws(compactJwt).getBody().getExpiration();
-        UserMongoRepository userRepo = new UserMongoRepository(_datastore);
         
         userRepo.get(username);
         if(currentDate.after(expirationDate)){
