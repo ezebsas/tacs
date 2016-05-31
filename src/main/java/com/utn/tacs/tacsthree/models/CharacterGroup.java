@@ -55,8 +55,6 @@ public class CharacterGroup extends TacsModel {
 
 	@Override
 	public void valid() {
-		if (this.getId() == null)
-			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
 			throw new InvalidTacsModelException("invalid name");
 		if (this.getCharacters().isEmpty())

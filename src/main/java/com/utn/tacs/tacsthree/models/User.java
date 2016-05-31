@@ -21,7 +21,11 @@ public class User extends TacsModel {
 	}
 
 	public User(String _id) {
-		setId(_id);
+		try {
+			setId(_id);
+		} catch (IllegalArgumentException e) {
+			// ID will be null
+		}
 	}
 
 	public User(String _id, String _name) {
@@ -122,8 +126,6 @@ public class User extends TacsModel {
 
 	@Override
 	public void valid() {
-		if (this.getId() == null)
-			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
 			throw new InvalidTacsModelException("invalid name");
 		if (this.getCharacters() == null)

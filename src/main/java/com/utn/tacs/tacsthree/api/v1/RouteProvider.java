@@ -1,5 +1,6 @@
 package com.utn.tacs.tacsthree.api.v1;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -258,7 +259,7 @@ public class RouteProvider {
 	@Path("/groups")
 	public Response deleteAllGroups() {
 		try {
-			groupsController.deleteAllGroups();
+			groupsController.deleteAllGroups(Arrays.asList(userController.userRepository));
 			return Response.ok().build();
 		} catch (NullPointerException e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -297,7 +298,7 @@ public class RouteProvider {
 	@Path("/groups/{id}")
 	public Response deleteGroup(@PathParam("id") String rawId) {
 		try {
-			groupsController.deleteGroup(rawId);
+			groupsController.deleteGroup(rawId, Arrays.asList(userController.userRepository));
 			return Response.ok().build();
 		} catch (InexistentTacsModelException e) {
 			return Response.status(Status.NOT_FOUND).build();

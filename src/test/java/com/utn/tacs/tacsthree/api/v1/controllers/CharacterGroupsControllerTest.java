@@ -1,7 +1,9 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,21 +12,48 @@ import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
+import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.UserDAO;
 import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
+import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
 public class CharacterGroupsControllerTest {
 
 	private CharacterGroupsController controller;
 	private CharacterGroupDAO groupRepo = new CharacterGroupTestRepository();
 	private MarvelCharacterDAO characRepo = new MarvelCharacterTestRepository();
+	private UserDAO usersRepo = new UserTestRepository();
 
 	@Before
 	public void setUp() {
-		((CharacterGroupTestRepository) groupRepo).restart();
-		((MarvelCharacterTestRepository) characRepo).restart();
+		((MarvelCharacterTestRepository) characRepo).characters.clear();
+
+		MarvelCharacter peterCharacter = new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", "");
+		peterCharacter.setModified(new Date(1315515501000L));
+		peterCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009491");
+		peterCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		((MarvelCharacterTestRepository) characRepo).characters.add(peterCharacter);
+
+		MarvelCharacter bruceCharacter = new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", "");
+		bruceCharacter.setModified(new Date(1326594561000L));
+		bruceCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
+		((MarvelCharacterTestRepository) characRepo).characters.add(bruceCharacter);
+
+		((CharacterGroupTestRepository) groupRepo).groupList.clear();
+		Integer index = 0;
+		for (MarvelCharacter _charac : characRepo.get()) {
+			CharacterGroup group = new CharacterGroup();
+			group.setId((index++).toString() + "709b8799a96331925075510");
+			group.setName("Group of " + _charac.getName());
+			group.addCharacters(_charac);
+			((CharacterGroupTestRepository) groupRepo).groupList.add(group);
+		}
 		controller = new CharacterGroupsController(groupRepo, characRepo);
 	}
 
@@ -98,7 +127,7 @@ public class CharacterGroupsControllerTest {
 	@Test
 	public void deleteGroup() {
 		controller.getGroup("0709b8799a96331925075510");
-		controller.deleteGroup("0709b8799a96331925075510");
+		controller.deleteGroup("0709b8799a96331925075510", Arrays.asList(usersRepo));
 		try {
 			controller.getGroup("5709b8799a96331925075301");
 		} catch (InexistentTacsModelException e) {
@@ -108,7 +137,7 @@ public class CharacterGroupsControllerTest {
 
 	@Test(expected = InexistentTacsModelException.class)
 	public void deleteInexistentGroup() {
-		controller.deleteGroup("123ab8799a96331925075301");
+		controller.deleteGroup("123ab8799a96331925075301", Arrays.asList(usersRepo));
 	}
 
 	@Test
@@ -154,5 +183,19 @@ public class CharacterGroupsControllerTest {
 	@Test(expected = InexistentTacsModelException.class)
 	public void removeInexistentCharacterOfUser() {
 		controller.removeCharacter("5709b8799a96331925075301", characRepo.get().get(1).getIdMarvel());
+	}
+
+	@Test
+	public void deleteGroupImpactsOwnerUser() throws Exception {
+		User randomUser = usersRepo.get().get(0);
+		CharacterGroup _tempGroup = controller.getGroup("0709b8799a96331925075510");
+		randomUser.addGroup(_tempGroup);
+		usersRepo.save(randomUser);
+		controller.deleteGroup("0709b8799a96331925075510", Arrays.asList(usersRepo));
+		try {
+			usersRepo.get(randomUser).getGroup(_tempGroup);
+			fail("Group is still attached to user.");
+		} catch (InexistentTacsModelException e) {
+		}
 	}
 }

@@ -20,13 +20,11 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 
 	public void restart() {
 		groupList.clear();
-		Integer index = 0;
 		for (MarvelCharacter _charac : new MarvelCharacterTestRepository().get()) {
 			CharacterGroup group = new CharacterGroup();
-			group.setId((index++).toString() + "709b8799a96331925075510");
 			group.setName("Group of " + _charac.getName());
 			group.addCharacters(_charac);
-			groupList.add(group);
+			save(group);
 		}
 	}
 
@@ -50,6 +48,7 @@ public class CharacterGroupTestRepository implements CharacterGroupDAO {
 			groupList.remove(_group);
 		} catch (InexistentTacsModelException e) {
 			// Ok! So it doesn't exist, let's create it!
+			group.generateNewId();
 		}
 		groupList.add(group);
 	}

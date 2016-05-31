@@ -13,7 +13,7 @@ import com.utn.tacs.tacsthree.persistence.UserDAO;
 
 public class UsersController {
 
-	private UserDAO userRepository;
+	public UserDAO userRepository;
 	private MarvelCharacterDAO characterRepository;
 
 	@Inject

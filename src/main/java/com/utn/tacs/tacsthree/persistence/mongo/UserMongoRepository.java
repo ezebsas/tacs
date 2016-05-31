@@ -5,6 +5,7 @@ import java.util.List;
 import org.mongodb.morphia.Datastore;
 
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
+import com.utn.tacs.tacsthree.models.TacsModel;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.UserDAO;
 
@@ -51,5 +52,11 @@ public class UserMongoRepository implements UserDAO {
 	@Override
 	public void delete() {
 		datastore.getCollection(User.class).drop();
+	}
+
+	@Override
+	public void tellAboutElimination(List<? extends TacsModel> observees) {
+		// TODO Auto-generated method stub
+		
 	}
 }

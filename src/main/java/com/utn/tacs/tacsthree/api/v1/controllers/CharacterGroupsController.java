@@ -1,5 +1,6 @@
 package com.utn.tacs.tacsthree.api.v1.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -10,6 +11,7 @@ import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
+import com.utn.tacs.tacsthree.persistence.ObserverDAO;
 
 public class CharacterGroupsController {
 
@@ -56,12 +58,17 @@ public class CharacterGroupsController {
 
 	}
 
-	public void deleteAllGroups() {
+	public void deleteAllGroups(List<? extends ObserverDAO> observers) {
+ 		for (ObserverDAO observer : observers)
+ 			observer.tellAboutElimination(repository.get());		
 		repository.delete();
 	}
 
-	public void deleteGroup(String _id) throws InexistentTacsModelException {
-		repository.delete(new CharacterGroup(_id));
+	public <T> void deleteGroup(String _id, List<? extends ObserverDAO> observers) throws InexistentTacsModelException {
+		CharacterGroup group = new CharacterGroup(_id);
+		for (ObserverDAO observer : observers)
+		observer.tellAboutElimination(Arrays.asList(repository.get(group)));
+		repository.delete(group);
 	}
 
 	// Group Characters

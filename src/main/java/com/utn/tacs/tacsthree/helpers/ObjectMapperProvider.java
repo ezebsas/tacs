@@ -1,4 +1,4 @@
-package com.utn.tacs.tacsthree.jsonmapper;
+package com.utn.tacs.tacsthree.helpers;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
