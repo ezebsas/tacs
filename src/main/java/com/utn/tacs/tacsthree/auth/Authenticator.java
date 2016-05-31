@@ -12,6 +12,7 @@ import java.security.Key;
 import com.utn.tacs.tacsthree.api.v1.RouteProvider;
 import com.utn.tacs.tacsthree.exceptions.NotAuthorizedException;
 import com.utn.tacs.tacsthree.models.User;
+
 import com.utn.tacs.tacsthree.persistence.UserDAO;
     
 public class Authenticator {
@@ -23,6 +24,7 @@ public class Authenticator {
     
     public Authenticator(UserDAO repo) {
     	this.userRepo = repo;
+
     }
 
     public Authenticator(RouteProvider route) {
