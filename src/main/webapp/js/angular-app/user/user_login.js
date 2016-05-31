@@ -1,6 +1,6 @@
 angular.module('tacsthree.user').controller('LoginController', 
-['$scope', 'UsersService', '$controller',
-function($scope, UsersService, $controller) {
+['$scope', 'UsersService', '$http',
+function($scope, UsersService, $http) {
   'use strict';
 
   $scope.username = "" ;
@@ -16,13 +16,12 @@ function($scope, UsersService, $controller) {
     UsersService.login(encodedString)
       .success(
         function(authToken){
-          debugger;
-          angular.module('tacsthree').config(
-          ['$httpProvider', function($httpProvider) { 
-            $httpProvider.defaults.headers.common.Authorize = 'Bearer ' + authToken;
-          }]);
-          console.log('Logged with token: ' + authToken.token);
+          $http.defaults.headers.common['Authorization'] = 'Bearer ' + authToken.token;
+          alert('Login successful');
         })
-      .error(function(response){ debugger; });
+      .error(function(response){
+          alert('Login Error');
+          $scope.password = "" ;
+       });
   };
 }]);
