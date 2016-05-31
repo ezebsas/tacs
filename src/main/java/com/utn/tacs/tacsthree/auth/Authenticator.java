@@ -15,15 +15,16 @@ import com.utn.tacs.tacsthree.api.v1.RouteProvider;
 import com.utn.tacs.tacsthree.exceptions.NotAuthorizedException;
 import com.utn.tacs.tacsthree.models.User;
 import com.utn.tacs.tacsthree.persistence.mongo.UserMongoRepository;
+import com.utn.tacs.tacsthree.persistence.UserDAO;
+
     
 public class Authenticator {
 	
-	private Datastore _datastore;
-	
+    private UserDAO _datastore;
     public Key key = MacProvider.generateKey();
     public RouteProvider route;
     
-    public Authenticator(Datastore datastore) {
+    public Authenticator(UserDAO datastore) {
     	this._datastore = datastore;
     }
 
@@ -41,9 +42,8 @@ public class Authenticator {
         cal.add(Calendar.HOUR_OF_DAY, 1);
         Date expirationDate =cal.getTime();
         String jwt=null;
-        UserMongoRepository userRepo = new UserMongoRepository(_datastore);
         
-        User user = userRepo.get(username);
+        User user = _datastore.get(username);
         
         if(user.getPassword().equals(password)){
             jwt = Jwts.builder().setSubject(username)
@@ -63,9 +63,8 @@ public class Authenticator {
         
         String username=Jwts.parser().setSigningKey(key).parseClaimsJws(compactJwt).getBody().getSubject();
         Date expirationDate=Jwts.parser().setSigningKey(key).parseClaimsJws(compactJwt).getBody().getExpiration();
-        UserMongoRepository userRepo = new UserMongoRepository(_datastore);
         
-        userRepo.get(username);
+        _datastore.get(username);
         if(currentDate.after(expirationDate)){
             throw new NotAuthorizedException("session expired");
         }
