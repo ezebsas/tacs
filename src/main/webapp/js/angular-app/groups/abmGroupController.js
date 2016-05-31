@@ -10,7 +10,7 @@ angular.module('tacsthree.abm_group').controller('abmGroupCtrl', ['$scope', '$ro
             // Usar los campos form para crear un nuevo objeto $resource article
             var group = new GroupsService({
             	
-            	id: "5709b8799a96331925075398",
+            	//id: "5709b8799a96331925075398",
                 name: this.name,
                 characters: [{"id":this.personaje.id,"idMarvel":this.personaje.idMarvel,"name":this.personaje.name,"description":this.personaje.description,"modified":this.personaje.modified,"resourceURI":this.personaje.resourceURI,"urls":this.personaje.urls,"thumbnailUrl":this.personaje.thumbnailUrl,"comics":this.personaje.comics,"stories":this.personaje.stories,"events":this.personaje.events,"series":this.personaje.series}]
              
