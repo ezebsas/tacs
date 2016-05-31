@@ -17,5 +17,8 @@ angular.module('tacsthree.abm_group').factory('GroupsService',
   
   return {
     query: angular.bind(this, CommonService.query),
+    create : angular.bind(this, CommonService.create),
+    update : angular.bind(this, CommonService.update),
+    destroy : angular.bind(this, CommonService.destroy)
   }
 }]);

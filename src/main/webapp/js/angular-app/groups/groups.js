@@ -2,7 +2,7 @@ angular.module('tacsthree.abm_group').factory('Groups', function(){
 
   'use strict';
 
-  var INSTANCE_PROPERTIES = ['name', 'characters'];
+  var INSTANCE_PROPERTIES = ['id', 'name', 'characters'];
 
   function Groups(attributes) {
     _.merge(this, _.pick(attributes, INSTANCE_PROPERTIES));
