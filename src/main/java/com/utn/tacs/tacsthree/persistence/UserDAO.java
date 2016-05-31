@@ -10,6 +10,8 @@ public interface UserDAO extends ObserverDAO {
 	List<User> get();
 
 	User get(User user) throws InexistentTacsModelException;
+        
+    User get(String username) throws InexistentTacsModelException;
 
 	void save(User user);
 

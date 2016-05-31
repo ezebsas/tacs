@@ -73,7 +73,7 @@ public class RouteProviderTest {
 				characterRepository);
 		ReportsController reportController = new ReportsController(userRepository, characterRepository);
 
-		route = new RouteProvider(characterController, userController, groupsController, reportController);
+		route = new RouteProvider(characterController, userController, groupsController, reportController, null);
 	}
 
 	@Test

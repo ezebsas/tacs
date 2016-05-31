@@ -21,12 +21,12 @@ public class UserTestRepository implements UserDAO {
 
 	public void restart() {
 		userList.clear();
-		save(new User("1309b8799a96331925075301", "Tom"));
-		save(new User("1309b8799a96331925075301", "Seba"));
-		save(new User("1309b8799a96331925075301", "Fabi"));
-		save(new User("1309b8799a96331925075301", "Eze"));
-		save(new User("1309b8799a96331925075301", "Ramiro"));
-		save(new User("1309b8799a96331925075301", "Facu"));
+		save(new User("1309b8799a96331925075301", "Tom", "tacs1234"));
+		save(new User("1309b8799a96331925075301", "Seba", "tacs1234"));
+		save(new User("1309b8799a96331925075301", "Fabi", "tacs1234"));
+		save(new User("1309b8799a96331925075301", "Eze", "tacs1234"));
+		save(new User("1309b8799a96331925075301", "Ramiro", "tacs1234"));
+		save(new User("1309b8799a96331925075301", "Facu", "tacs1234"));
 	}
 
 	@Override
@@ -41,6 +41,14 @@ public class UserTestRepository implements UserDAO {
 				return _user;
 		throw new InexistentTacsModelException("get failed");
 	}
+        
+        @Override
+        public User get(String username) throws InexistentTacsModelException{
+            for (User _user: userList)
+                if(_user.getName().equals(username))
+                    return _user;
+            throw new InexistentTacsModelException("Get user by name failed");
+        }
 
 	@Override
 	public void save(User user) {

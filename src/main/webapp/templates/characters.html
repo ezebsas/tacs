@@ -1,0 +1,27 @@
+<div ng-controller="CharactersControllers">
+
+  <div class="col-md-2">
+    <p>
+      Buscar:
+      <input ng-model="search.name" />
+    </p>
+  </div>
+
+  <div class="col-md-10">
+    <div class="media" ng-repeat="personaje in characters | filter: search | orderBy:'name'">
+
+      <div class="media-left media-middle" >
+        <a href="#/characters/{{personaje.idMarvel}}" class="thumb">
+          <img class="media-object" ng-src="{{personaje.thumbnailUrl}}"/>
+        </a>
+      </div>
+
+      <div class="media-body">
+        <a href="#/characters/{{personaje.idMarvel}}">{{personaje.name}}</a>
+        <p>{{personaje.description}}</p>
+      </div>
+    </div>
+
+
+  </div>
+</div>
