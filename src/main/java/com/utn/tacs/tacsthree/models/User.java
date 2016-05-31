@@ -12,7 +12,7 @@ import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 public class User extends TacsModel {
 
 	private String name = null;
-        private String password = null;
+	private String password = null;
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
 	private Integer groupsHistoric = 0;
@@ -36,9 +36,9 @@ public class User extends TacsModel {
 	public User(String _id, String _name, String _password) {
 		setId(_id);
 		setName(_name);
-                setPassword(_password);
+		setPassword(_password);
 	}
-        
+
 	public String getName() {
 		return name;
 	}
@@ -46,14 +46,14 @@ public class User extends TacsModel {
 	public void setName(String _name) {
 		this.name = _name;
 	}
-        
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String _password) {
-		this.name = _password;
-	}        
+		this.password = _password;
+	}
 
 	public List<MarvelCharacter> getCharacters() {
 		return characters;

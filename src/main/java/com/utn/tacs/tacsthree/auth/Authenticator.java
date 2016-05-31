@@ -50,7 +50,7 @@ public class Authenticator {
                     .signWith(SignatureAlgorithm.HS512, key)
                     .compact();
         } else {
-            new NotAuthorizedException("incorrect password"); 
+            throw new NotAuthorizedException("incorrect password"); 
         }
         
         return jwt;
