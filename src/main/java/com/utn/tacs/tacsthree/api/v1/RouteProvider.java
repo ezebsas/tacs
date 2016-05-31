@@ -27,34 +27,29 @@ import com.utn.tacs.tacsthree.exceptions.NotAuthorizedException;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
-import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
-import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
-import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAOImpl;
-import com.utn.tacs.tacsthree.persistence.UserDAO;
-import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
-import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 import com.utn.tacs.tacsthree.auth.*;
-
 
 @Path("api/v1/")
 public class RouteProvider {
-
 
 	private UsersController userController;
 	private MarvelCharactersController characterController;
 	private CharacterGroupsController groupsController;
 	private ReportsController reportsController;
+	private Authenticator authEngine;
 
 	@Inject
 	public RouteProvider(MarvelCharactersController characterController, UsersController userController,
-			CharacterGroupsController groupsController, ReportsController reportsController) {
+			CharacterGroupsController groupsController, ReportsController reportsController, Authenticator authEngine) {
 		this.characterController = characterController;
 		this.userController = userController;
 		this.groupsController = groupsController;
 		this.reportsController = reportsController;
+		this.authEngine = authEngine;
 	}
 
 	@GET
+	@Secured
 	@Path("/users")
 	@Produces("application/json")
 	public Response getUsers() {
@@ -66,6 +61,7 @@ public class RouteProvider {
 	}
 
 	@POST
+	@Secured
 	@Path("/users")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -117,6 +113,7 @@ public class RouteProvider {
 	}
 
 	@PUT
+	@Secured
 	@Path("/users/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -133,6 +130,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/users/{id}")
 	public Response deleteUser(@PathParam("id") String rawId) {
 		try {
@@ -144,6 +142,7 @@ public class RouteProvider {
 	}
 
 	@GET
+	@Secured
 	@Path("/users/{id}/characters")
 	@Produces("application/json")
 	public Response getUserCharacters(@PathParam("id") String rawId) {
@@ -156,6 +155,7 @@ public class RouteProvider {
 	}
 
 	@POST
+	@Secured
 	@Path("/users/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -172,6 +172,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/users/{id}/characters")
 	public Response deleteUserCharacters(@PathParam("id") String rawId) {
 		try {
@@ -185,6 +186,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/users/{id}/characters/{id2}")
 	public Response deleteUserSingleCharacter(@PathParam("id") String usrId, @PathParam("id2") Long characId) {
 		try {
@@ -198,6 +200,7 @@ public class RouteProvider {
 	}
 
 	@GET
+	@Secured
 	@Path("/characters")
 	@Produces("application/json")
 	public Response getCharacters() {
@@ -209,6 +212,7 @@ public class RouteProvider {
 	}
 
 	@GET
+	@Secured
 	@Path("/characters/{id}")
 	@Produces("application/json")
 	public Response getCharacter(@PathParam("id") String rawId) {
@@ -220,6 +224,7 @@ public class RouteProvider {
 	}
 
 	@GET
+	@Secured
 	@Path("/groups")
 	@Produces("application/json")
 	public Response getGroups() {
@@ -231,6 +236,7 @@ public class RouteProvider {
 	}
 
 	@POST
+	@Secured
 	@Path("/groups")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -245,6 +251,7 @@ public class RouteProvider {
 	}
 
 	@PUT
+	@Secured
 	@Path("/groups")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -259,6 +266,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/groups")
 	public Response deleteAllGroups() {
 		try {
@@ -270,6 +278,7 @@ public class RouteProvider {
 	}
 
 	@GET
+	@Secured
 	@Path("/groups/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -282,6 +291,7 @@ public class RouteProvider {
 	}
 
 	@PUT
+	@Secured
 	@Path("/groups/{id}")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -298,6 +308,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/groups/{id}")
 	public Response deleteGroup(@PathParam("id") String rawId) {
 		try {
@@ -309,6 +320,7 @@ public class RouteProvider {
 	}
 
 	@GET
+	@Secured
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	public Response groupCharacters(@PathParam("id") String rawId) {
@@ -320,6 +332,7 @@ public class RouteProvider {
 	}
 
 	@POST
+	@Secured
 	@Path("/groups/{id}/characters")
 	@Produces("application/json")
 	@Consumes("application/json")
@@ -336,6 +349,7 @@ public class RouteProvider {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/groups/{id1}/characters/{id2}")
 	public Response deleteGroupCharacter(@PathParam("id1") String groupId, @PathParam("id2") Long characId) {
 		try {
@@ -349,6 +363,7 @@ public class RouteProvider {
 	}
 
 	@GET
+	@Secured
 	@Path("/reports")
 	@Produces("application/json")
 	public Response getReports() {
@@ -358,17 +373,14 @@ public class RouteProvider {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 	@POST
 	@Path("/login")
 	@Consumes("application/x-www-form-urlencoded")
-	public Response login(@FormParam("username") String user, @FormParam("password") String pass){
-		
-		Authenticator authEngine = new Authenticator(userController.userRepository);
-		
-		try{
+	public Response login(@FormParam("username") String user, @FormParam("password") String pass) {
+		try {
 			return Response.ok(authEngine.login(user, pass)).build();
-		} catch (NotAuthorizedException e){
+		} catch (NotAuthorizedException | InexistentTacsModelException e) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		}
 	}

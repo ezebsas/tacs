@@ -12,7 +12,6 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.utn.tacs.tacsthree.exceptions.InexistentTacsModelException;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
-import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.service.MarvelService;
 
 public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
@@ -23,10 +22,6 @@ public class MarvelCharacterDAOImpl implements MarvelCharacterDAO {
 	@Inject
 	public MarvelCharacterDAOImpl(MarvelService marvelService) {
 		this.marvelService = marvelService;
-
-		for (MarvelCharacter character : new MarvelCharacterTestRepository().get()) {
-			characters.put(character.getIdMarvel(), character);
-		}
 	}
 
 	@Override

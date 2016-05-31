@@ -9,6 +9,8 @@ import com.google.inject.Provides;
 import com.utn.tacs.tacsthree.api.v1.RouteProvider;
 import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
 import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
+import com.utn.tacs.tacsthree.auth.AuthenticationFilter;
+import com.utn.tacs.tacsthree.auth.Authenticator;
 import com.utn.tacs.tacsthree.connectors.MarvelConnector;
 import com.utn.tacs.tacsthree.persistence.CharacterGroupDAO;
 import com.utn.tacs.tacsthree.persistence.MarvelCharacterDAO;
@@ -27,6 +29,8 @@ public class TacsModule implements Module {
 		binder.bind(UserDAO.class).to(UserTestRepository.class).asEagerSingleton();
 		binder.bind(CharacterGroupDAO.class).to(CharacterGroupTestRepository.class).asEagerSingleton();
 		binder.bind(ReportsController.class);
+		binder.bind(Authenticator.class).asEagerSingleton();
+		binder.bind(AuthenticationFilter.class).asEagerSingleton();
 		binder.bind(MarvelConnector.class);
 	}
 

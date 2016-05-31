@@ -1,43 +1,22 @@
 package com.utn.tacs.tacsthree.auth;
 
-import com.utn.tacs.tacsthree.api.v1.RouteProvider;
-import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
-import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
-import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
-import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
 import com.utn.tacs.tacsthree.exceptions.NotAuthorizedException;
-import com.utn.tacs.tacsthree.models.CharacterGroup;
-import com.utn.tacs.tacsthree.models.MarvelCharacter;
 import com.utn.tacs.tacsthree.models.User;
-import com.utn.tacs.tacsthree.persistence.mocks.CharacterGroupTestRepository;
-import com.utn.tacs.tacsthree.persistence.mocks.MarvelCharacterTestRepository;
 import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-import java.security.Key;
-import java.util.Date;
-import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AuthenticationTest {
 
 	private UserTestRepository userRepository = new UserTestRepository();
-	private RouteProvider route;
-	private String header;
-	private String payload;
-	private String signature;
 	private String username = "Facu";
 	private String password = "tacs1234";
 	private String wrongPassword = "hacker666";
 	private Authenticator authenticator = new Authenticator(userRepository);
-	private Key key = MacProvider.generateKey();
 
 	@Before
 	public void setUp() {
@@ -52,18 +31,16 @@ public class AuthenticationTest {
 
 	@Test
 	public void successLoginTest() {
-
-		String jwt = authenticator.login(username, password);
-
+		String response = authenticator.login(username, password);
+		String jwt = response.substring("{ \"token\": \"".length(),response.length() - 2).trim();
+		System.out.println(jwt);
 		assertEquals(Jwts.parser().setSigningKey(authenticator.key).parseClaimsJws(jwt).getBody().getSubject(),
 				(username));
 	}
 
 	@Test(expected = NotAuthorizedException.class)
 	public void failLoginTest() {
-
-		String jwt = authenticator.login(username, wrongPassword);
-
+		authenticator.login(username, wrongPassword);
 		fail();
 	}
 
