@@ -23,7 +23,8 @@ public class Authenticator {
     public Key key = MacProvider.generateKey();
     public RouteProvider route;
     
-    public Authenticator() {
+    public Authenticator(Datastore datastore) {
+    	this._datastore = datastore;
     }
 
     public Authenticator(RouteProvider route) {
