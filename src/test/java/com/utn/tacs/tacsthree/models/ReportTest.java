@@ -15,12 +15,12 @@ public class ReportTest {
 	}
 
 	@Test
-	public void createReportWithoutId() {
+	public void createReportWithoutName() {
 		Report report = new ReportFavoriteCharacterRanking(null, null);
 		try {
 			report.valid();
 		} catch (InvalidTacsModelException e) {
-			assertEquals("invalid id", e.getMessage());
+			assertEquals("invalid name", e.getMessage());
 		}
 	}
 }

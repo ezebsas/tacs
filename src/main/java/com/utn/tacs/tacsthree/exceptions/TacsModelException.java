@@ -7,4 +7,8 @@ public class TacsModelException extends RuntimeException {
 	public TacsModelException(String msj) {
 		super(msj);
 	}
+
+	public TacsModelException(String msj, Throwable cause) {
+		super(msj, cause);
+	}
 }

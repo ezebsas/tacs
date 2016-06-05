@@ -18,17 +18,6 @@ public class UserTest {
 	}
 
 	@Test
-	public void createUserWithoutId() {
-		User testSubject = new User();
-		testSubject.setName("Test");
-		try {
-			testSubject.valid();
-		} catch (InvalidTacsModelException e) {
-			assertEquals("invalid id", e.getMessage());
-		}
-	}
-
-	@Test
 	public void createUserWithoutName() {
 		User testSubject = new User();
 		testSubject.setId("5709b8799a96331925075306");

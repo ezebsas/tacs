@@ -1,0 +1,28 @@
+<div ng-controller="UsersController">
+
+  <div>
+    <p>
+      Buscar:
+      <input ng-model="search.name" />
+    </p>
+  </div>
+
+	<div>
+		<table style="width: 100%">
+			<tr>
+				<th>User</th>
+				<th>Grupos</th>
+				<th>Personajes</th>
+				<th>Grupos Históricos</th>
+				<th>Last loggin</th>
+			</tr>
+			<tr ng-repeat="user in users | filter: search | orderBy:'name'">
+				<td>{{user.name}}</td>
+				<td>{{user.groups.length}}</td>
+				<td>{{user.characters.length}}</td>
+				<td>{{user.groupsHistoric}}</td>
+				<td></td>
+			</tr>
+			</div>
+		</table>
+	</div>

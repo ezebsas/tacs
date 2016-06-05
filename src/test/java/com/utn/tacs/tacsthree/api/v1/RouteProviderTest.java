@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -15,6 +16,7 @@ import org.junit.Test;
 
 import com.utn.tacs.tacsthree.api.v1.controllers.CharacterGroupsController;
 import com.utn.tacs.tacsthree.api.v1.controllers.MarvelCharactersController;
+import com.utn.tacs.tacsthree.api.v1.controllers.ReportsController;
 import com.utn.tacs.tacsthree.api.v1.controllers.UsersController;
 import com.utn.tacs.tacsthree.models.CharacterGroup;
 import com.utn.tacs.tacsthree.models.MarvelCharacter;
@@ -25,23 +27,53 @@ import com.utn.tacs.tacsthree.persistence.mocks.UserTestRepository;
 
 public class RouteProviderTest {
 
-	public RouteProvider route;
+	private MarvelCharacterTestRepository characterRepository = new MarvelCharacterTestRepository();
+	private UserTestRepository userRepository = new UserTestRepository();
+	private CharacterGroupTestRepository groupRepository = new CharacterGroupTestRepository();
+
+	private RouteProvider route;
 
 	@Before
 	public void setUp() {
-		route = new RouteProvider();
-		route.userRepo = UserTestRepository.getInstance();
-		route.characRepo = MarvelCharacterTestRepository.getInstance();
-		route.groupsRepo = CharacterGroupTestRepository.getInstance();
-		((UserTestRepository) route.userRepo).restart();
-		((MarvelCharacterTestRepository) route.characRepo).restart();
-		((CharacterGroupTestRepository) route.groupsRepo).restart();
+		characterRepository.characters.clear();
+		MarvelCharacter peterCharacter = new MarvelCharacter("1309b8799a96331925075301", 1009491L, "Peter Parker", "");
+		peterCharacter.setModified(new Date(1315515501000L));
+		peterCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009491");
+		peterCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		characterRepository.characters.add(peterCharacter);
 
-		route.userController = new UsersController(UserTestRepository.getInstance(),
-				MarvelCharacterTestRepository.getInstance());
-		route.characterController = new MarvelCharactersController(MarvelCharacterTestRepository.getInstance());
-		route.groupsController = new CharacterGroupsController(CharacterGroupTestRepository.getInstance(),
-				MarvelCharacterTestRepository.getInstance());
+		MarvelCharacter bruceCharacter = new MarvelCharacter("1309b8799a96331925075302", 1009167L, "Bruce Banner", "");
+		bruceCharacter.setModified(new Date(1326594561000L));
+		bruceCharacter.setThumbnailUrl(
+				"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/standard_amazing.jpg");
+		bruceCharacter.setResourceURI("http://gateway.marvel.com/v1/public/characters/1009167");
+		characterRepository.characters.add(bruceCharacter);
+
+		userRepository.delete();
+		userRepository.userList.add(new User("5709b8799a96331925075301", "Tom"));
+		userRepository.userList.add(new User("5709b8799a96331925075302", "Seba"));
+		userRepository.userList.add(new User("5709b8799a96331925075303", "Fabi"));
+		userRepository.userList.add(new User("5709b8799a96331925075304", "Eze"));
+		userRepository.userList.add(new User("5709b8799a96331925075305", "Ramiro"));
+		userRepository.userList.add(new User("5709b8799a96331925075306", "Facu"));
+
+		groupRepository.groupList.clear();
+		Integer index = 0;
+		for (MarvelCharacter _charac : characterRepository.get()) {
+			CharacterGroup group = new CharacterGroup();
+			group.setId((index++).toString() + "709b8799a96331925075510");
+			group.setName("Group of " + _charac.getName());
+			group.addCharacters(_charac);
+			groupRepository.groupList.add(group);
+		}
+		MarvelCharactersController characterController = new MarvelCharactersController(characterRepository);
+		UsersController userController = new UsersController(userRepository, characterRepository);
+		CharacterGroupsController groupsController = new CharacterGroupsController(groupRepository,
+				characterRepository);
+		ReportsController reportController = new ReportsController(userRepository, characterRepository);
+
+		route = new RouteProvider(characterController, userController, groupsController, reportController, null);
 	}
 
 	@Test
@@ -53,7 +85,9 @@ public class RouteProviderTest {
 
 	@Test
 	public void addUserTest() {
-		Response response = route.addUser(new User("5709b8799a96331925075300", "Test Subject"));
+		User _user = new User();
+		_user.setName("Test Subject");
+		Response response = route.addUser(_user);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
@@ -100,7 +134,7 @@ public class RouteProviderTest {
 	public void deleteUsers() {
 		Response response = route.deleteUsers();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		assertTrue(route.userRepo.get().isEmpty());
+		assertTrue(userRepository.get().isEmpty());
 	}
 
 	@Test
@@ -176,13 +210,13 @@ public class RouteProviderTest {
 
 	@Test
 	public void addUserCharacter() {
-		Response response = route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
+		Response response = route.addUserCharacter("5709b8799a96331925075301", characterRepository.get().get(0));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void addUserCharacterCatchesInexistentUser() {
-		Response response = route.addUserCharacter("5709b8799a96331925075300", route.characRepo.get().get(0));
+		Response response = route.addUserCharacter("5709b8799a96331925075300", characterRepository.get().get(0));
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
@@ -195,8 +229,8 @@ public class RouteProviderTest {
 
 	@Test
 	public void addUserCharacterCatchesDuplicateCharacter() {
-		route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
-		Response response = route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
+		route.addUserCharacter("5709b8799a96331925075301", characterRepository.get().get(0));
+		Response response = route.addUserCharacter("5709b8799a96331925075301", characterRepository.get().get(0));
 		assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
 	}
 
@@ -214,23 +248,23 @@ public class RouteProviderTest {
 
 	@Test
 	public void deleteUserSingleCharacter() {
-		route.addUserCharacter("5709b8799a96331925075301", route.characRepo.get().get(0));
+		route.addUserCharacter("5709b8799a96331925075301", characterRepository.get().get(0));
 		Response response = route.deleteUserSingleCharacter("5709b8799a96331925075301",
-				route.characRepo.get().get(0).getIdMarvel());
+				characterRepository.get().get(0).getIdMarvel());
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void deleteUserSingleCharacterCatchesInexistentCharacter() {
 		Response response = route.deleteUserSingleCharacter("5709b8799a96331925075301",
-				route.characRepo.get().get(0).getIdMarvel());
+				characterRepository.get().get(0).getIdMarvel());
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void deleteUserSingleCharacterCatchesInexistentUser() {
 		Response response = route.deleteUserSingleCharacter("5709b8799a96331925075300",
-				route.characRepo.get().get(0).getIdMarvel());
+				characterRepository.get().get(0).getIdMarvel());
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
@@ -274,7 +308,7 @@ public class RouteProviderTest {
 	public void addGroup() {
 		CharacterGroup group = new CharacterGroup("9909b8799a96331925075510");
 		group.setName("Test Subject");
-		group.addCharacters(route.characRepo.get().get(0));
+		group.addCharacters(characterRepository.get().get(0));
 		Response response = route.addGroup(group);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
@@ -291,7 +325,7 @@ public class RouteProviderTest {
 	public void addGroupTestCatchesDuplicatedGroup() {
 		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
 		group.setName("Test Subject");
-		group.addCharacters(route.characRepo.get().get(0));
+		group.addCharacters(characterRepository.get().get(0));
 		Response response = route.addGroup(group);
 		assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
 	}
@@ -304,8 +338,8 @@ public class RouteProviderTest {
 		CharacterGroup group2 = new CharacterGroup("1709b8799a96331925075510");
 		group1.setName("Test Subject");
 		group2.setName("Test Subject");
-		group1.addCharacters(route.characRepo.get().get(0));
-		group2.addCharacters(route.characRepo.get().get(0));
+		group1.addCharacters(characterRepository.get().get(0));
+		group2.addCharacters(characterRepository.get().get(0));
 
 		list.add(group1);
 		list.add(group2);
@@ -321,7 +355,7 @@ public class RouteProviderTest {
 		CharacterGroup group2 = new CharacterGroup("1709b8799a96331925075510");
 		group1.setName("Test Subject");
 		group2.setName("Test Subject");
-		group2.addCharacters(route.characRepo.get().get(0));
+		group2.addCharacters(characterRepository.get().get(0));
 		list.add(group1);
 		list.add(group2);
 		Response response = route.updateGroups(list);
@@ -336,8 +370,8 @@ public class RouteProviderTest {
 		CharacterGroup group2 = new CharacterGroup("1709b8799a96331925075510");
 		group1.setName("Test Subject");
 		group2.setName("Test Subject");
-		group1.addCharacters(route.characRepo.get().get(0));
-		group2.addCharacters(route.characRepo.get().get(0));
+		group1.addCharacters(characterRepository.get().get(0));
+		group2.addCharacters(characterRepository.get().get(0));
 
 		list.add(group1);
 		list.add(group2);
@@ -355,7 +389,7 @@ public class RouteProviderTest {
 	public void updateGroup() {
 		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
 		group.setName("Test Subject");
-		group.addCharacters(route.characRepo.get().get(0));
+		group.addCharacters(characterRepository.get().get(0));
 		Response response = route.updateGroup(group.getId(), group);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
@@ -364,7 +398,7 @@ public class RouteProviderTest {
 	public void updateGroupCatchesInvalidPath() {
 		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
 		group.setName("Test Subject");
-		group.addCharacters(route.characRepo.get().get(0));
+		group.addCharacters(characterRepository.get().get(0));
 		Response response = route.updateGroup("1709b8799a96331925075510", group);
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
@@ -381,7 +415,7 @@ public class RouteProviderTest {
 	public void updateGroupCatchesInexistentGroup() {
 		CharacterGroup group = new CharacterGroup("aa09b8799a96331925075510");
 		group.setName("Test Subject");
-		group.addCharacters(route.characRepo.get().get(0));
+		group.addCharacters(characterRepository.get().get(0));
 		Response response = route.updateGroup(group.getId(), group);
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
@@ -390,7 +424,7 @@ public class RouteProviderTest {
 	public void updateGroupCatchesInexistentPath() {
 		CharacterGroup group = new CharacterGroup("0709b8799a96331925075510");
 		group.setName("Test Subject");
-		group.addCharacters(route.characRepo.get().get(0));
+		group.addCharacters(characterRepository.get().get(0));
 		Response response = route.updateGroup("aaa9b8799a96331925075510", group);
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
@@ -421,7 +455,7 @@ public class RouteProviderTest {
 
 	@Test
 	public void addGroupCharacter() {
-		Response response = route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(1));
+		Response response = route.addGroupCharacter("0709b8799a96331925075510", characterRepository.get().get(1));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
@@ -434,27 +468,27 @@ public class RouteProviderTest {
 
 	@Test
 	public void addGroupCharacterCatchesInexistentGroup() {
-		Response response = route.addGroupCharacter("aaa9b8799a96331925075510", route.characRepo.get().get(1));
+		Response response = route.addGroupCharacter("aaa9b8799a96331925075510", characterRepository.get().get(1));
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void addGroupCharacterCatchesDuplicateCharacter() {
-		Response response = route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(0));
+		Response response = route.addGroupCharacter("0709b8799a96331925075510", characterRepository.get().get(0));
 		assertEquals(Status.CONFLICT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void deleteGroupCharacter() {
-		route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(1));
+		route.addGroupCharacter("0709b8799a96331925075510", characterRepository.get().get(1));
 		Response response = route.deleteGroupCharacter("0709b8799a96331925075510",
-				route.characRepo.get().get(0).getIdMarvel());
+				characterRepository.get().get(0).getIdMarvel());
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void deleteGroupCharacterCatchesInexistentCharacter() {
-		route.addGroupCharacter("0709b8799a96331925075510", route.characRepo.get().get(1));
+		route.addGroupCharacter("0709b8799a96331925075510", characterRepository.get().get(1));
 		Response response = route.deleteGroupCharacter("0709b8799a96331925075510", 7098799L);
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
@@ -462,14 +496,14 @@ public class RouteProviderTest {
 	@Test
 	public void deleteGroupCharacterCatchesInvalidGroup() {
 		Response response = route.deleteGroupCharacter("0709b8799a96331925075510",
-				route.characRepo.get().get(0).getIdMarvel());
+				characterRepository.get().get(0).getIdMarvel());
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void deleteGroupCharacterCatchesInexistentCharacterInGroup() {
 		Response response = route.deleteGroupCharacter("0709b8799a96331925075510",
-				route.characRepo.get().get(1).getIdMarvel());
+				characterRepository.get().get(1).getIdMarvel());
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 

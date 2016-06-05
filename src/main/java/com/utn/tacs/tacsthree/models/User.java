@@ -12,6 +12,7 @@ import com.utn.tacs.tacsthree.exceptions.InvalidTacsModelException;
 public class User extends TacsModel {
 
 	private String name = null;
+	private String password = null;
 	private List<MarvelCharacter> characters = new ArrayList<MarvelCharacter>();
 	private List<CharacterGroup> groups = new ArrayList<CharacterGroup>();
 	private Integer groupsHistoric = 0;
@@ -20,7 +21,11 @@ public class User extends TacsModel {
 	}
 
 	public User(String _id) {
-		setId(_id);
+		try {
+			setId(_id);
+		} catch (IllegalArgumentException e) {
+			// ID will be null
+		}
 	}
 
 	public User(String _id, String _name) {
@@ -28,12 +33,26 @@ public class User extends TacsModel {
 		setName(_name);
 	}
 
+	public User(String _id, String _name, String _password) {
+		setId(_id);
+		setName(_name);
+		setPassword(_password);
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String _name) {
+		this.name = _name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String _password) {
+		this.password = _password;
 	}
 
 	public List<MarvelCharacter> getCharacters() {
@@ -107,8 +126,6 @@ public class User extends TacsModel {
 
 	@Override
 	public void valid() {
-		if (this.getId() == null)
-			throw new InvalidTacsModelException("invalid id");
 		if (this.getName() == null)
 			throw new InvalidTacsModelException("invalid name");
 		if (this.getCharacters() == null)
